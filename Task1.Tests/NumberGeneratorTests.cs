@@ -1,0 +1,69 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using NUnit.Framework;
+using Task1.StorageSystem.Concrete;
+
+namespace Task1.Tests
+{
+    [TestFixture]
+    public class NumGeneratorTests
+    {
+        [Test]
+        public void GetNumbers_InvokeMethod_FirstNumberIsZero()
+        {
+            var numbers = NumberGenerator.GetEvenNumbers();
+            Assert.AreEqual(0, numbers.First());
+        }
+
+        [Test]
+        public void GetNumbers_GetFirstFiveNumbers_ReturnEvenNumberSequence()
+        {
+            int count = 5;
+            var numbers = NumberGenerator.GetEvenNumbers().Take(count).ToList();
+            Assert.IsNotNull(numbers);
+
+            // only for own test
+            //numbers.ForEach(n => Debug.WriteLine(n));
+
+            int[] evenNumbers = { 0, 2, 4, 6, 8 };
+            for (int i = 0; i < count; i++)
+            {
+                Assert.AreEqual(evenNumbers[i], numbers[i]);
+            }
+        }
+
+        [Test]
+        public void GetNumbers_InvokeMethod_FirstHundredNubmersAreEven()
+        {
+            int count = 100;
+            var numbers = NumberGenerator.GetEvenNumbers().Take(count).ToList();
+            Assert.IsNotNull(numbers);
+            foreach (var number in numbers)
+            {
+                bool isEven = number % 2 == 0;
+                Assert.IsTrue(isEven);
+
+            }
+        }
+
+        [Test]
+        public void GetNumbers_InvokeMethodTwiceAndGetFirstFiveNumbers_EqualNumberSequence()
+        {
+            int count = 5;
+            var numbers = NumberGenerator.GetEvenNumbers().Take(count).ToList();
+            var anotherNumbers = NumberGenerator.GetEvenNumbers().Take(count).ToList();
+            bool areEqual = numbers.SequenceEqual(anotherNumbers);
+            Assert.IsTrue(areEqual);
+        }
+
+        [Test]
+        public void GetNumbers_InvokeMethod_EverySequenceNumberGreaterThanPrevious()
+        {
+            int cout = 50;
+            var numbers = NumberGenerator.GetEvenNumbers().Take(cout);
+        }
+    }
+}
