@@ -60,6 +60,7 @@ namespace Task1.StorageSystem.Entities
 
     public enum Gender
     {
+        None,
         Female,
         Male
     }
