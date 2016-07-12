@@ -43,6 +43,7 @@
     <Compile Include="Concrete\EvenIdGenerator.cs" />
     <Compile Include="Concrete\NumberGenerator.cs" />
     <Compile Include="Concrete\UserMemoryStorage.cs" />
+    <Compile Include="Concrete\Validation\ValidationBase.cs" />
     <Compile Include="Interfaces\INumGenerator.cs" />
     <Compile Include="Interfaces\IUserStorage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
