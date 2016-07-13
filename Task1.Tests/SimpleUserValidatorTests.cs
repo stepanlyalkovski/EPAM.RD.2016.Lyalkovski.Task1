@@ -15,36 +15,38 @@ namespace Task1.Tests
     {
         public SimpleUserValidator Validator { get; set; } = new SimpleUserValidator();
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Validate_LastNameIsNull_ThrownArgumentException()
+        public void Validate_LastNameIsNull_ReturnsProperErrorMessage()
         {
+            var expectedMessage = "Last Name must not be null";
             var user = new User
             {
                 FirstName = "Ivan",
                 LastName = null
             };
 
-            Validator.Validate(user);
-
+            var messages = Validator.Validate(user);
+            Assert.IsTrue(messages.Contains(expectedMessage));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Validate_FirstNameIsNull_ThrownArgumentException()
+        public void Validate_FirstNameIsNull_ReturnsProperErrorMessage()
         {
+            var expectedMessage = "First Name must not be null";
+
             var user = new User
             {
                 FirstName = null,
                 LastName = "Ivanov"
             };
 
-            Validator.Validate(user);
+            var messages = Validator.Validate(user);
+            Assert.IsTrue(messages.Contains(expectedMessage));
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void Validate_DateYearIsDefaultTypeValue_ThrownArgumentException()
+        public void Validate_DateYearIsDefaultTypeValue_ReturnsProperErrorMessage()
         {
+            var expectedMessage = "Year value must be more than 1900";
             var user = new User
             {
                 FirstName = "Ivan",
@@ -52,7 +54,29 @@ namespace Task1.Tests
                 BirthDate = new DateTime()
             };
 
-            Validator.Validate(user);
+            var messages = Validator.Validate(user);
+            Assert.IsTrue(messages.Contains(expectedMessage));
+        }
+
+        [Test]
+        public void Validate_ValidUser_NoErrorMessagesReturned()
+        {
+            var user = new User
+            {
+                FirstName = "Ivan",
+                LastName = "Ivanov",
+                BirthDate = DateTime.Now
+            };
+            var messages = Validator.Validate(user);
+            Assert.IsTrue(!messages.Any());
+        }
+
+        [Test]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void Validate_SendNull_ThrownArgumentNullException()
+        {
+           Validator.Validate(null);
+
         }
     }
 }

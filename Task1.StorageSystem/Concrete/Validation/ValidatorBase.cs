@@ -16,25 +16,27 @@ namespace Task1.StorageSystem.Concrete.Validation
         }
         protected abstract IEnumerable<Rule> Rules { get; }
 
-        private IEnumerable<string> GetMessages(T t)
+        public IEnumerable<string> Validate(T t)
         {
+            if (t == null)
+                throw new ArgumentNullException(nameof(t),"User must not be a null");
             return Rules?.Where(r => !r.Test(t)).Select(r => r.Message);
         }
 
-        public void Validate(T t)
-        {
-            var errorMessages = GetMessages(t);
+        //public void Validate(T t)
+        //{
+        //    var errorMessages = Validate(t);
 
-            if (errorMessages == null)
-                return;
+        //    if (errorMessages == null)
+        //        return;
 
-            var messages = errorMessages as IList<string> ?? errorMessages.ToList();
+        //    var messages = errorMessages as IList<string> ?? errorMessages.ToList();
 
-            if (messages.Any())
-            {
-                throw new ArgumentException("Entity is not valid:\n" + string.Join("\n", messages));
-            }
-        }
+        //    if (messages.Any())
+        //    {
+        //        throw new ArgumentException("Entity is not valid:\n" + string.Join("\n", messages));
+        //    }
+        //}
 
     }
 }

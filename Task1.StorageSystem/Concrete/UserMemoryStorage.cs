@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
@@ -20,8 +21,13 @@ namespace Task1.StorageSystem.Concrete
 
         public int Add(User user)
         {
-            //throws exception if invalid
-            Validator.Validate(user);
+
+            var errorMessages = Validator.Validate(user);
+
+            if (errorMessages != null)
+            {
+                throw new ArgumentException("Entity is not valid:\n" + string.Join("\n", errorMessages));
+            }
 
             user.Id = _numGenerator.GenerateId();
 
