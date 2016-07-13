@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Task1.StorageSystem.Interfaces;
 
-namespace Task1.StorageSystem.Concrete
+namespace Task1.StorageSystem.Concrete.IdGenerator
 {
     public class EvenIdGenerator : INumGenerator
     {

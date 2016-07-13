@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using NUnit.Framework;
 using Task1.StorageSystem.Concrete;
+using Task1.StorageSystem.Concrete.IdGenerator;
+
 namespace Task1.Tests
 {
     [TestFixture]

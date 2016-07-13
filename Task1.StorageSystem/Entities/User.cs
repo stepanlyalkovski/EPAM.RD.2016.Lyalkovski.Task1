@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using Task1.StorageSystem.Interfaces;
 
 namespace Task1.StorageSystem.Entities
 {
-    public class User : IEquatable<User>
+    public class User : IEquatable<User>, IEntity
     {
         public int Id { get; set; }
         public string PersonalId { get; set; }
@@ -11,9 +12,10 @@ namespace Task1.StorageSystem.Entities
         public string LastName { get; set; }
         public DateTime BirthDate { get; set; }
 
-        public Gender Gender { get; set; }
+        public Gender Gender { get; set; } = new Gender();
 
         public IList<VisaRecord> VisaRecords { get; set; }
+
 
 
         public bool Equals(User other)

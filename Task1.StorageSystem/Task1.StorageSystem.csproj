@@ -40,13 +40,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Concrete\EvenIdGenerator.cs" />
-    <Compile Include="Concrete\NumberGenerator.cs" />
-    <Compile Include="Concrete\UserMemoryStorage.cs" />
+    <Compile Include="Concrete\IdGenerator\EvenIdGenerator.cs" />
+    <Compile Include="Concrete\MemoryRepository.cs" />
+    <Compile Include="Concrete\IdGenerator\NumberGenerator.cs" />
+    <Compile Include="Concrete\UserStorage.cs" />
     <Compile Include="Concrete\Validation\SimpleUserValidator.cs" />
     <Compile Include="Concrete\Validation\ValidatorBase.cs" />
+    <Compile Include="Interfaces\IEntity.cs" />
     <Compile Include="Interfaces\INumGenerator.cs" />
-    <Compile Include="Interfaces\IUserStorage.cs" />
+    <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\User.cs" />
   </ItemGroup>

@@ -1,46 +1,52 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
 using Task1.StorageSystem.Interfaces;
 
 namespace Task1.StorageSystem.Concrete
 {
-    public class UserMemoryStorage : IUserStorage
+    public class UserStorage
     {
         private INumGenerator _numGenerator;
-        private IList<User> _users;
+        private IRepository<User> _repository; 
         public ValidatorBase<User> Validator { get; set; }
-        public UserMemoryStorage(INumGenerator numGenerator, ValidatorBase<User> validator)
+        public UserStorage(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository )
         {
-            this._numGenerator = numGenerator;
-            this.Validator = validator;
-            _users = new List<User>();
+            _numGenerator = numGenerator;
+            Validator = validator;
+            _repository = repository;
         }
 
         public int Add(User user)
         {
 
-            var errorMessages = Validator.Validate(user);
+            var errorMessages = Validator.Validate(user).ToList();
 
-            if (errorMessages != null)
+            if (errorMessages.Any())
             {
                 throw new ArgumentException("Entity is not valid:\n" + string.Join("\n", errorMessages));
             }
-
+            
             user.Id = _numGenerator.GenerateId();
 
-            //Memory way
-            //TODO create some inteface or use Repository
-            _users.Add(user);
+            _repository.Add(user);
 
             return user.Id;
         }
 
+        public User Get(int id)
+        {
+            return _repository.GetById(id);
+        }
+
         public void Delete(User user)
         {
-            throw new System.NotImplementedException();
+            
+            _repository.Delete(user);
         }
     }
 }
