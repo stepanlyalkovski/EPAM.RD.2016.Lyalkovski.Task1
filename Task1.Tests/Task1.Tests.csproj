@@ -61,9 +61,14 @@
     <Compile Include="SimpleUserValidatorTests.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ConfigGenerator\ConfigGenerator.csproj">
+      <Project>{eeac5fa5-1389-49e3-8d8d-f6048c588013}</Project>
+      <Name>ConfigGenerator</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Task1.StorageSystem\Task1.StorageSystem.csproj">
       <Project>{480892f4-86a3-43ae-b1f6-6bf9b8db434d}</Project>
       <Name>Task1.StorageSystem</Name>

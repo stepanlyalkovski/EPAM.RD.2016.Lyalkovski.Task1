@@ -7,20 +7,22 @@ using System.Threading.Tasks;
 using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
 using Task1.StorageSystem.Interfaces;
+using Task1.StorageSystem.Interfaces.Repository;
 
 namespace Task1.StorageSystem.Concrete
 {
-    public class UserStorage
+    public class UserService
     {
         private INumGenerator _numGenerator;
         private IRepository<User> _repository;
         public int LastGeneratedId { get; private set; } //temp        
         public ValidatorBase<User> Validator { get; set; }
-        public UserStorage(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository )
+        public UserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository )
         {
             _numGenerator = numGenerator;
             Validator = validator;
             _repository = repository;
+            _repository.Initialize();
         }
 
         public int Add(User user)
@@ -44,10 +46,15 @@ namespace Task1.StorageSystem.Concrete
             
             _repository.Delete(user);
         }
-
-        public User SearchForUser(Func<User, bool> predicate)
+       
+        public IEnumerable<int> SearchForUser(Func<User, bool>[] predicates)
         {
-            return  _repository.SearhByPredicate(predicate);
+            return _repository.SearhByPredicate(predicates).ToList();
+        }
+
+        public void Save()
+        {
+            _repository.Save(LastGeneratedId);
         }
     }
 }

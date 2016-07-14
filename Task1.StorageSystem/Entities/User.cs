@@ -15,7 +15,7 @@ namespace Task1.StorageSystem.Entities
 
         public Gender Gender { get; set; } = new Gender();
 
-        //public IList<VisaRecord> VisaRecords { get; set; }
+        public List<VisaRecord> VisaRecords { get; set; }
 
 
 
