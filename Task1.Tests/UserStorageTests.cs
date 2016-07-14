@@ -9,9 +9,52 @@ using Task1.StorageSystem.Concrete.IdGenerator;
 using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
 using Task1.StorageSystem.Interfaces;
-
+using System.Configuration;
 namespace Task1.Tests
 {
+    public class FolderElement : ConfigurationElement
+    {
+
+        [ConfigurationProperty("folderType", DefaultValue = "", IsKey = true, IsRequired = true)]
+        public string FolderType
+        {
+            get { return ((string)(base["folderType"])); }
+            set { base["folderType"] = value; }
+        }
+
+        [ConfigurationProperty("path", DefaultValue = "", IsKey = false, IsRequired = false)]
+        public string Path
+        {
+            get { return ((string)(base["path"])); }
+            set { base["path"] = value; }
+        }
+    }
+    [ConfigurationCollection(typeof(FolderElement))]
+    public class FoldersCollection : ConfigurationElementCollection
+    {
+        protected override ConfigurationElement CreateNewElement()
+        {
+            return new FolderElement();
+        }
+
+        protected override object GetElementKey(ConfigurationElement element)
+        {
+            return ((FolderElement)(element)).FolderType;
+        }
+
+        public FolderElement this[int idx]
+        {
+            get { return (FolderElement)BaseGet(idx); }
+        }
+    }
+    public class StartupFoldersConfigSection : ConfigurationSection
+    {
+        [ConfigurationProperty("Folders")]
+        public FoldersCollection FolderItems
+        {
+            get { return ((FoldersCollection)(base["Folders"])); }
+        }
+    }
     [TestFixture]
     public class UserStorageTests
     {
@@ -19,6 +62,11 @@ namespace Task1.Tests
         public INumGenerator FakeNumGenerator { get; set; }
         public ValidatorBase<User> FakeValidator { get; set; }
         public IRepository<User> FakeRepository { get; set; }
+
+        private class EmptyUserValidator : ValidatorBase<User>
+        {
+            protected override IEnumerable<Rule> Rules => new List<Rule>();
+        }
 
         public UserStorageTests()
         {
@@ -31,10 +79,6 @@ namespace Task1.Tests
             // stab for repository
             moqRepository.Setup(r => r.Add(It.IsAny<User>()));
             FakeRepository = moqRepository.Object;
-
-            //var moqValidator = new Moq.Mock<ValidatorBase<User>>();
-            //moqValidator.Setup(v => v.Validate(It.IsAny<User>())).Returns(new List<string>());
-            //FakeValidator = moqValidator.Object;
         }
 
         [Test]
@@ -65,14 +109,14 @@ namespace Task1.Tests
                 LastName = "Ivanov",
                 BirthDate = DateTime.Now
             };
-            var userMemoryRepository = new MemoryRepository<User>();
+            var userMemoryRepository = new UserRepository();
 
             // stab for Num Generator
             // because we don't care what type of generator we will use in this test
             Storage = new UserStorage(FakeNumGenerator, validator, userMemoryRepository);
 
             int id = Storage.Add(validUser);
-            var sameUser = Storage.Get(id);
+            var sameUser = Storage.SearchForUser(u => u.Id == id);
 
             Assert.AreEqual(validUser, sameUser);
         }
@@ -82,7 +126,7 @@ namespace Task1.Tests
         {
             ValidatorBase<User> validator = new SimpleUserValidator();
             var numGenerator = new EvenIdGenerator();
-            var userMemoryRepository = new MemoryRepository<User>();
+            var userMemoryRepository = new UserRepository();
             int userCount = 5;
             Storage = new UserStorage(numGenerator, validator, userMemoryRepository);
             var receivedUsers = new List<User>();
@@ -97,7 +141,7 @@ namespace Task1.Tests
                 };
 
                 int userId = Storage.Add(validUser);
-                var storageUser = Storage.Get(userId);
+                var storageUser = Storage.SearchForUser(u => u.Id == userId);
                 Debug.WriteLine(storageUser.Id);
                 Debug.WriteLine(storageUser.FirstName + " " + storageUser.LastName + " " + storageUser.BirthDate);
                 receivedUsers.Add(storageUser);
@@ -109,7 +153,7 @@ namespace Task1.Tests
         [Test]
         public void Delete_DeleteUserAndCheckTheStorage_StorageReturnedNull()
         {
-            var userMemoryRepository = new MemoryRepository<User>();
+            var userMemoryRepository = new UserRepository();
             ValidatorBase<User> validator = new SimpleUserValidator();
             Storage = new UserStorage(FakeNumGenerator, validator, userMemoryRepository);
             var user = new User
@@ -121,7 +165,7 @@ namespace Task1.Tests
 
             int userId = Storage.Add(user);
             Storage.Delete(user);
-            user = Storage.Get(userId);
+            user = Storage.SearchForUser(u => u.Id == userId);
 
             Assert.IsNull(user);
         }
@@ -129,11 +173,78 @@ namespace Task1.Tests
         [Test]
         public void Delete_SendNullToDelete_IgnoreWithNoExceptions()
         {
-            var userMemoryRepository = new MemoryRepository<User>();
+            var userMemoryRepository = new UserRepository();
             ValidatorBase<User> validator = new SimpleUserValidator();
             Storage = new UserStorage(FakeNumGenerator, validator, userMemoryRepository);
             Storage.Delete(null);
 
+        }
+
+        [Test]
+        public void SearchForUser_SearchUserByLastNameAndPersonalId_UserIsFoundAndEqualToRequired()
+        {
+            var requiredUser = new User
+            {
+                FirstName = "Ivan",
+                LastName = "Ivanov",
+                PersonalId = "MP12345",             
+            };
+            var anotherUser = new User
+            {
+                FirstName = "NOT_Ivan",
+                LastName = "Ivanov",
+                PersonalId = "MP5678"
+            };
+            Storage = new UserStorage(new EvenIdGenerator(),  new EmptyUserValidator(), new UserRepository());
+            Storage.Add(requiredUser);
+            Storage.Add(anotherUser);
+
+            var searchUser = Storage.SearchForUser(u => u.LastName == "Ivanov" && u.PersonalId == "MP12345");
+            
+            Assert.AreEqual(requiredUser, searchUser);
+        }
+
+        [Test]
+        public void AddToXmlStorage_Test()
+        {
+            //var userXmlRepository = new XmlFileRepository();
+            //ValidatorBase<User> validator = new SimpleUserValidator();
+            //var user = new User
+            //{
+            //    FirstName = "AnotherUSer",
+            //    LastName = "Default",
+            //    BirthDate = DateTime.Now,
+            //    PersonalId = "test"
+            //};
+            //Storage = new UserStorage(new EvenIdGenerator(), validator, userXmlRepository);
+
+            //Storage.Add(user);
+            //StartupFoldersConfigSection section = (StartupFoldersConfigSection)ConfigurationManager.GetSection("StartupFolders");
+
+            var userMemoryRepository = new UserRepository();
+            ValidatorBase<User> validator = new SimpleUserValidator();
+            int lastId = 16;
+            Storage = new UserStorage(new EvenIdGenerator(lastId), validator, userMemoryRepository);
+            var firstUser = new User
+            {
+                FirstName = "Ivan",
+                LastName = "Ivanov",
+                PersonalId = "MP123",
+                BirthDate = DateTime.Now
+            };
+
+            var secondUser = new User
+            {
+                FirstName = "Ivan",
+                LastName = "Ivanov",
+                PersonalId = "MP123",
+                BirthDate = DateTime.Now
+            };
+            Storage.Add(secondUser);
+            //Storage.Add(firstUser);
+            var user = Storage.SearchForUser(u => u.FirstName == "Ivan" && u.LastName == "Ivanov");
+            if(user != null)
+                Debug.WriteLine(user.LastName + " " + user.Id);
         }
     }
 

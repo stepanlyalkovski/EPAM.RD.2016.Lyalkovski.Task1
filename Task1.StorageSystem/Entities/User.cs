@@ -4,6 +4,7 @@ using Task1.StorageSystem.Interfaces;
 
 namespace Task1.StorageSystem.Entities
 {
+    [Serializable]
     public class User : IEquatable<User>, IEntity
     {
         public int Id { get; set; }
@@ -14,7 +15,7 @@ namespace Task1.StorageSystem.Entities
 
         public Gender Gender { get; set; } = new Gender();
 
-        public IList<VisaRecord> VisaRecords { get; set; }
+        //public IList<VisaRecord> VisaRecords { get; set; }
 
 
 
@@ -66,7 +67,7 @@ namespace Task1.StorageSystem.Entities
         Female,
         Male
     }
-
+    [Serializable]
     public struct VisaRecord
     {
         public string Country { get; set; }

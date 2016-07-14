@@ -32,5 +32,19 @@ namespace Task1.Tests
 
             Assert.IsTrue(numbersAreUnique);
         }
+
+        [Test]
+        public void GenerateId_LastGeneratedIdIsSix_NextGeneratedIdIsEight()
+        {
+            int lastGeneratedId = 6;
+            int expectedId = 8;
+            EvenIdGenerator generator = new EvenIdGenerator(lastGeneratedId);
+
+            int id = generator.GenerateId();
+
+            Assert.AreEqual(expectedId, id);
+        }
+
+
     }
 }

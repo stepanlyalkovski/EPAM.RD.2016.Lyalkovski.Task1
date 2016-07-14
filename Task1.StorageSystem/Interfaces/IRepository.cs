@@ -6,9 +6,10 @@ namespace Task1.StorageSystem.Interfaces
 {
     public interface IRepository<TEntity>
     {
-        TEntity GetById(int id);
-        IEnumerable<TEntity> List(Expression<Func<TEntity, bool>> predicate);
-        void Add(TEntity entity);
+        //TEntity GetById(int id);
+        TEntity SearhByPredicate(Func<TEntity, bool> predicate);
+        void Add(TEntity user);
+        void SaveToXmlFile();
         void Delete(TEntity entity);
     }
 }

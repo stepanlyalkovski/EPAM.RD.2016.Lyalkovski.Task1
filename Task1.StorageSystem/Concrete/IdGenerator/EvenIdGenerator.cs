@@ -8,9 +8,11 @@ namespace Task1.StorageSystem.Concrete.IdGenerator
     {
         private readonly IEnumerator<int> _enumerator;
 
-        public EvenIdGenerator()
+        public EvenIdGenerator(int lastGeneratedId = -1)
         {
-            _enumerator = NumberGenerator.GetEvenNumbers().GetEnumerator();
+            //NumberGenerator is expecting startPosition, so we have to increment our lastId
+            int startPositionNumber = lastGeneratedId + 1;
+            _enumerator = NumberGenerator.GetEvenNumbers(startPositionNumber).GetEnumerator();
         } 
         public int GenerateId()
         {

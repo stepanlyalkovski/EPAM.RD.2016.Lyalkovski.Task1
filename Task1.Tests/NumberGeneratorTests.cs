@@ -66,5 +66,25 @@ namespace Task1.Tests
             int cout = 50;
             var numbers = NumberGenerator.GetEvenNumbers().Take(cout);
         }
+
+        [Test]
+        public void GetNumbers_StartNumberIsSix_ReturnSixAsFirstNumber()
+        {
+            int startNumber = 6;
+
+            var numbers = NumberGenerator.GetEvenNumbers(startNumber);
+
+            Assert.AreEqual(startNumber, numbers.First());
+        }
+
+        [Test]
+        public void GetNumbers_StartNumberIsNine_ReturnTenAsFirstNumber()
+        {
+            int startNumber = 9;
+            int expectedNumber = 10;
+            var numbers = NumberGenerator.GetEvenNumbers(startNumber);
+
+            Assert.AreEqual(expectedNumber, numbers.First());
+        }
     }
 }

@@ -4,25 +4,27 @@ namespace Task1.StorageSystem.Concrete.IdGenerator
 {
     public class NumberGenerator
     {
-        public static IEnumerable<int> GetEvenNumbers()
+        public static IEnumerable<int> GetEvenNumbers(int startNumber = 0)
         {
-            int number = 0;
-            int previous = -1;
+            if (startNumber%2 != 0)
+                startNumber++; // make it even
+
+            int previous = startNumber - 2;
             while (true)
             {
-                if (number > previous)
+                if (startNumber > previous)
                 {
-                    yield return number;
+                    yield return startNumber;
                 }
                 else
                 {
                     yield break;
                 }
 
-                previous = number;
+                previous = startNumber;
                 unchecked
                 {
-                    number += 2;
+                    startNumber += 2;
                 }
                 
             }

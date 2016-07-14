@@ -3,5 +3,6 @@
     public interface INumGenerator
     {
         int GenerateId();
+        
     }
 }
