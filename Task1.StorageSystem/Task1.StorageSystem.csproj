@@ -48,7 +48,6 @@
     <Compile Include="Concrete\Services\MasterUserService.cs" />
     <Compile Include="Concrete\UserRepository.cs" />
     <Compile Include="Concrete\IdGenerator\NumberGenerator.cs" />
-    <Compile Include="Concrete\UserService.cs" />
     <Compile Include="Concrete\UserXmlFileWorker.cs" />
     <Compile Include="Concrete\Validation\SimpleUserValidator.cs" />
     <Compile Include="Concrete\Validation\ValidatorBase.cs" />

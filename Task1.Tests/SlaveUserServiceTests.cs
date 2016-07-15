@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Configuration;
+using System.Diagnostics;
 using Moq;
 using NUnit.Framework;
 using Task1.StorageSystem.Concrete;
@@ -65,6 +67,16 @@ namespace Task1.Tests
             master.Delete(SimpleUser);
 
             Assert.AreEqual(eventsNumber, receivedEvents);
+        }
+
+
+
+        [Test]
+        public void BolleanSwitch_Test()
+        {
+
+            var value = ConfigurationManager.AppSettings["test"];
+            Debug.WriteLine(value);
         }
     }
 }

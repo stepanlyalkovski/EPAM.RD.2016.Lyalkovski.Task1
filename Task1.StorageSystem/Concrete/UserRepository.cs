@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -21,7 +22,7 @@ namespace Task1.StorageSystem.Concrete
         {
             _memoryCollection = new List<User>();
             _xmlWorker = worker;
-            this.filePath = filePath;
+            this.filePath = filePath ?? Directory.GetCurrentDirectory() + "testFile.xml";
         }
 
         public IEnumerable<int> SearhByPredicate(Func<User, bool>[] predicates)

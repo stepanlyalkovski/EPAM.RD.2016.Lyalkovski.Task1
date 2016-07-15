@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1.StorageSystem", "Task
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1.Tests", "Task1.Tests\Task1.Tests.csproj", "{F048EC4C-AA50-4D01-B30F-AC443700C6FC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConfigGenerator", "ConfigGenerator\ConfigGenerator.csproj", "{EEAC5FA5-1389-49E3-8D8D-F6048C588013}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesConfigurator", "ConfigGenerator\ServicesConfigurator.csproj", "{EEAC5FA5-1389-49E3-8D8D-F6048C588013}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
