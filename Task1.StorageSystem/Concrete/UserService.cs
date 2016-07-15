@@ -22,7 +22,6 @@ namespace Task1.StorageSystem.Concrete
             _numGenerator = numGenerator;
             Validator = validator;
             _repository = repository;
-            _repository.Initialize();
         }
 
         public int Add(User user)
@@ -54,7 +53,13 @@ namespace Task1.StorageSystem.Concrete
 
         public void Save()
         {
-            _repository.Save(LastGeneratedId);
+            _repository.Save(LastGeneratedId); 
+        }
+
+        public void Initialize()// get collection from xml file and get last generated Id
+        {
+            _repository.Initialize();
+            LastGeneratedId = _repository.GetState();
         }
     }
 }

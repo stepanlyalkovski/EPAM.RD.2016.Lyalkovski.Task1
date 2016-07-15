@@ -15,6 +15,7 @@ namespace Task1.StorageSystem.Concrete
         private IList<User> _memoryCollection;
         private IUserXmlFileWorker _xmlWorker;
         private string filePath;
+        private int _state; // we can add interface for State, but now it will be redundant
         public UserRepository(IUserXmlFileWorker worker, string filePath)
         {
             _memoryCollection = new List<User>();
@@ -33,9 +34,19 @@ namespace Task1.StorageSystem.Concrete
             _memoryCollection.Add(user);
         }
 
-        public void Save()
+        public void Save(int lastGeneratedId)
         {
-            SavetoXmlFile();
+            var userData = new SerializedUserData
+            {
+                Users = _memoryCollection.ToList(),
+                LastGeneratedId = lastGeneratedId
+            };
+            SavetoXmlFile(userData);
+        }
+
+        public int GetState()
+        {
+            return _state;
         }
 
         public void Delete(User entity)
@@ -49,17 +60,18 @@ namespace Task1.StorageSystem.Concrete
         }
 
         #region XMLworker
-        private void SavetoXmlFile()
+        private void SavetoXmlFile(SerializedUserData userData)
         {
-            _xmlWorker.Save(_memoryCollection.ToList(), filePath);
+            _xmlWorker.Save(userData, filePath);
         }
 
         private void InitializeFromXml()
         {
-            var xmlCollection = _xmlWorker.Load(filePath);
-
-            if (xmlCollection != null)
-                _memoryCollection = xmlCollection;
+            var xmlUsersCollection = _xmlWorker.Load(filePath);
+            var userData = new SerializedUserData();
+            if (xmlUsersCollection != null)
+               _memoryCollection = xmlUsersCollection.Users;
+            _state = xmlUsersCollection.LastGeneratedId;
         }
 #endregion
     }

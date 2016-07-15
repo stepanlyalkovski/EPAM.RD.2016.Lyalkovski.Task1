@@ -11,6 +11,8 @@ using Task1.StorageSystem.Entities;
 using Task1.StorageSystem.Interfaces;
 using System.Configuration;
 using System.IO;
+using System.Linq;
+using Castle.Core.Internal;
 using ConfigGenerator.FileConfigurator;
 using Task1.StorageSystem.Interfaces.Repository;
 
@@ -54,6 +56,13 @@ namespace Task1.Tests
         {
             protected override IEnumerable<Rule> Rules => new List<Rule>();
         }
+        public User SimpleUser { get; set;} = new User
+        {
+            FirstName = "Ivan2",
+            LastName = "Ivanov2",
+            PersonalId = "MP12345",
+            BirthDate = DateTime.Now,
+        };
 
         public UserStorageTests()
         {
@@ -212,7 +221,7 @@ namespace Task1.Tests
         //    ValidatorBase<User> validator = new SimpleUserValidator();
         //    int lastId = 16;
         //    Service = new UserService(new EvenIdGenerator(lastId), validator, userMemoryRepository);
-        //    var firstUser = new User
+        //    var SimpleUser = new User
         //    {
         //        FirstName = "Ivan",
         //        LastName = "Ivanov",
@@ -228,7 +237,7 @@ namespace Task1.Tests
         //        BirthDate = DateTime.Now
         //    };
         //    Service.Add(secondUser);
-        //    //Service.Add(firstUser);
+        //    //Service.Add(SimpleUser);
         //    var user = Service.SearchForUser(u => u.FirstName == "Ivan" && u.LastName == "Ivanov");
         //    if(user != null)
         //        Debug.WriteLine(user.LastName + " " + user.Id);
@@ -260,7 +269,47 @@ namespace Task1.Tests
             Service.Add(firstUser);
             Service.Save();
         }
+
+        [Test]
+        public void Initialize_GetUsersFromXmlWithLastGeneratedId_ReturnedProperId()
+        {
+            string filePath = "D://forTests.xml";
+            var userMemoryRepository = new UserRepository(new UserXmlFileWorker(), filePath);
+            ValidatorBase<User> validator = new SimpleUserValidator();
+            int lastId = 10;
+            int expectedId = 14; // not 12 because we will add one user
+            Service = new UserService(new EvenIdGenerator(lastId), validator, userMemoryRepository);
+            Service.Add(SimpleUser);
+            Service.Save();
+            var anotheruser = new User
+            {
+                FirstName = "Ivan",
+                LastName = "Ivanov",
+                PersonalId = "MP1",
+                BirthDate = DateTime.Now,
+            };
+
+            Service.Initialize();
+            int id = Service.Add(anotheruser);
+
+            Debug.WriteLine(id);
+            Assert.AreEqual(expectedId, id);
+        }
+
+        [Test]
+        public void Initialize_SaveUserAndThanInitilizeRepository_ReturnedEqualUserId()
+        {
+            string filePath = "D://forTests.xml";
+            var userMemoryRepository = new UserRepository(new UserXmlFileWorker(), filePath);
+            ValidatorBase<User> validator = new SimpleUserValidator();
+            Service = new UserService(new EvenIdGenerator(), validator, userMemoryRepository);
+            int expectedId = Service.Add(SimpleUser);
+            Service.Save();
+            Service.Initialize();
+            var predicates = new Func<User, bool>[] {p => p.PersonalId == SimpleUser.PersonalId };
+            var user = Service.SearchForUser(predicates).First();
+            Assert.AreEqual(expectedId, user);
+        }
     }
-    //Test.SimpleTest((StartupFilesConfigSection)ConfigurationManager.GetSection("StartupFiles"));
 
 }

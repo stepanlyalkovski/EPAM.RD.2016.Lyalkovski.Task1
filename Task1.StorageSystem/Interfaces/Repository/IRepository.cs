@@ -8,7 +8,8 @@ namespace Task1.StorageSystem.Interfaces.Repository
         IEnumerable<int> SearhByPredicate(Func<TEntity, bool>[] predicates);
         void Add(TEntity user);
         void Save(int lastGeneratedId);
-        void Initialize();
+        void Initialize(); 
+        int GetState();// for lastGeneratedId
         void Delete(TEntity entity);
     }
 }
