@@ -11,55 +11,55 @@ using Task1.StorageSystem.Interfaces.Repository;
 
 namespace Task1.StorageSystem.Concrete
 {
-    public class UserService
-    {
-        private INumGenerator _numGenerator;
-        private IRepository<User> _repository;
-        public int LastGeneratedId { get; private set; } //temp        
-        public ValidatorBase<User> Validator { get; set; }
-        public UserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository )
-        {
-            _numGenerator = numGenerator;
-            Validator = validator;
-            _repository = repository;
-        }
+    //public class UserService
+    //{
+    //    private INumGenerator _numGenerator;
+    //    private IRepository<User> _repository;
+    //    public int LastGeneratedId { get; private set; } //temp        
+    //    public ValidatorBase<User> Validator { get; set; }
+    //    public UserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository )
+    //    {
+    //        _numGenerator = numGenerator;
+    //        Validator = validator;
+    //        _repository = repository;
+    //    }
 
-        public int Add(User user)
-        {
-            var errorMessages = Validator.Validate(user).ToList();
+    //    public int Add(User user)
+    //    {
+    //        var errorMessages = Validator.Validate(user).ToList();
 
-            if (errorMessages.Any())
-            {
-                throw new ArgumentException("Entity is not valid:\n" + string.Join("\n", errorMessages));
-            }
+    //        if (errorMessages.Any())
+    //        {
+    //            throw new ArgumentException("Entity is not valid:\n" + string.Join("\n", errorMessages));
+    //        }
             
-            user.Id = _numGenerator.GenerateId();
-            LastGeneratedId = user.Id;
-            _repository.Add(user);
+    //        user.Id = _numGenerator.GenerateId();
+    //        LastGeneratedId = user.Id;
+    //        _repository.Add(user);
 
-            return user.Id;
-        }
+    //        return user.Id;
+    //    }
 
-        public void Delete(User user)
-        {
+    //    public void Delete(User user)
+    //    {
             
-            _repository.Delete(user);
-        }
+    //        _repository.Delete(user);
+    //    }
        
-        public IEnumerable<int> SearchForUser(Func<User, bool>[] predicates)
-        {
-            return _repository.SearhByPredicate(predicates).ToList();
-        }
+    //    public IEnumerable<int> SearchForUsers(Func<User, bool>[] predicates)
+    //    {
+    //        return _repository.SearhByPredicate(predicates).ToList();
+    //    }
 
-        public void Save()
-        {
-            _repository.Save(LastGeneratedId); 
-        }
+    //    public void Save()
+    //    {
+    //        _repository.Save(LastGeneratedId); 
+    //    }
 
-        public void Initialize()// get collection from xml file and get last generated Id
-        {
-            _repository.Initialize();
-            LastGeneratedId = _repository.GetState();
-        }
-    }
+    //    public void Initialize()// get collection from xml file and get last generated Id
+    //    {
+    //        _repository.Initialize();
+    //        LastGeneratedId = _repository.GetState();
+    //    }
+    //}
 }

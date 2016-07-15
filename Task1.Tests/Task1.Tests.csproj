@@ -55,10 +55,12 @@
   <ItemGroup>
     <Compile Include="EvenIdGeneratorTests.cs" />
     <Compile Include="NumberGeneratorTests.cs" />
-    <Compile Include="UserStorageTests.cs" />
+    <Compile Include="UserRepositoryTests.cs" />
+    <Compile Include="UserServiceTests.cs" />
     <Compile Include="UserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SimpleUserValidatorTests.cs" />
+    <Compile Include="UserXmlFileWorkerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
