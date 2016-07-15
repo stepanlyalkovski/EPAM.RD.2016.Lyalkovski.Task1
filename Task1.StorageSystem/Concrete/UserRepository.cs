@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using Task1.StorageSystem.Entities;
@@ -62,11 +63,17 @@ namespace Task1.StorageSystem.Concrete
         #region XMLworker
         private void SavetoXmlFile(SerializedUserData userData)
         {
+            if(_xmlWorker == null)
+                throw new InvalidOperationException("xmlWorker wasn't initialized");
+
             _xmlWorker.Save(userData, filePath);
         }
 
         private void InitializeFromXml()
         {
+            if (_xmlWorker == null)
+                throw new InvalidOperationException("xmlWorker wasn't initialized");
+
             var xmlUsersCollection = _xmlWorker.Load(filePath);
             var userData = new SerializedUserData();
             if (xmlUsersCollection != null)

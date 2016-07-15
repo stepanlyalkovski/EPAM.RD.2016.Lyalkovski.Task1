@@ -19,45 +19,17 @@ using Task1.StorageSystem.Interfaces.Repository;
 
 namespace Task1.Tests
 {
-//    #region test AppConfig
-
-//    [ConfigurationCollection(typeof(FileElement))]
-//    public class FoldersCollection : ConfigurationElementCollection
-//    {
-//        protected override ConfigurationElement CreateNewElement()
-//        {
-//            return new FileElement();
-//        }
-
-//        protected override object GetElementKey(ConfigurationElement element)
-//        {
-//            return ((FileElement)(element)).FileType;
-//        }
-
-//        public FileElement this[int idx] => (FileElement)BaseGet(idx);
-//    }
-//    public class StartupFoldersConfigSection : ConfigurationSection
-//    {
-//        [ConfigurationProperty("Folders")]
-//        public FoldersCollection FolderItems => (FoldersCollection)base["Folders"];
-//    }
-
-//#endregion
-
 
     [TestFixture]
     public class UserServiceTests
     {
-        public UserService Service { get; set; }
-        public INumGenerator FakeNumGenerator { get; set; }
-        public ValidatorBase<User> FakeValidator { get; set; }
-        public IRepository<User> FakeRepository { get; set; }
-
         private class EmptyUserValidator : ValidatorBase<User>
         {
             protected override IEnumerable<Rule> Rules => new List<Rule>();
         }
-        public User SimpleUser { get; set;} = new User
+
+        private UserService Service { get; set; }
+        public User SimpleUser { get; set; } = new User
         {
             FirstName = "Ivan2",
             LastName = "Ivanov2",
@@ -65,6 +37,10 @@ namespace Task1.Tests
             BirthDate = DateTime.Now,
         };
 
+        //Using Moq to create fake entities
+        private INumGenerator FakeNumGenerator { get; set; }
+        private IRepository<User> FakeRepository { get; set; }
+        private EmptyUserValidator FakeValidator { get; set; }
         public UserServiceTests()
         {
             int fakeId = 1;
@@ -76,241 +52,207 @@ namespace Task1.Tests
             // stab for repository
             moqRepository.Setup(r => r.Add(It.IsAny<User>()));
             FakeRepository = moqRepository.Object;
+            FakeValidator = new EmptyUserValidator();
         }
 
-        //[Test]
-        //[ExpectedException(typeof(ArgumentException))]
-        //public void Add_AddInvalidUser_ThrownArgumentExceptionWithValidationMessages()
-        //{
-        //    ValidatorBase<User> validator = new SimpleUserValidator();
-        //    Service = new UserService(FakeNumGenerator, validator, FakeRepository);
+        [Test]
+        [ExpectedException(typeof(ArgumentException))]
+        public void Add_AddInvalidUser_ThrownArgumentExceptionWithValidationMessages()
+        {
+            ValidatorBase<User> validator = new SimpleUserValidator();
+            Service = new MasterUserService(FakeNumGenerator, validator, FakeRepository);
 
-        //    var invalidUser = new User
-        //    {
-        //        FirstName = "Ivan",
-        //        LastName = null,
-        //        BirthDate = new DateTime()
-        //    };
+            var invalidUser = new User
+            {
+                FirstName = "Ivan",
+                LastName = null,
+                BirthDate = new DateTime()
+            };
 
-        //    Service.Add(invalidUser);
-        //}
+            Service.Add(invalidUser);
+        }
 
-        //[Test]
-        //public void Add_AddValidUserToMemoryRepositoryAndThanGetItByReceivedId_StorageReturnedCurrentUser()
-        //{
+        [Test]
+        public void Add_AddValidUserToMemoryRepositoryAndThanGetItBySearch_StorageReturnedCurrentUserId()
+        {
 
-        //    ValidatorBase<User> validator = new SimpleUserValidator();
-        //    var validUser = new User
-        //    {
-        //        FirstName = "Ivan",
-        //        LastName = "Ivanov",
-        //        BirthDate = DateTime.Now
-        //    };
-        //    var userMemoryRepository = new UserRepository();
+            ValidatorBase<User> validator = new SimpleUserValidator();
+            var validUser = new User
+            {
+                FirstName = "Ivan",
+                LastName = "Ivanov",
+                PersonalId = "MP123",
+                BirthDate = DateTime.Now
+            };
+            var userMemoryRepository = new UserRepository(null, null); // we don't need it
 
-        //    // stab for Num Generator
-        //    // because we don't care what type of generator we will use in this test
-        //    Service = new UserService(FakeNumGenerator, validator, userMemoryRepository);
+            // because we don't care what type of generator we will use in this test
+            Service = new MasterUserService(FakeNumGenerator, validator, userMemoryRepository);
 
-        //    int id = Service.Add(validUser);
-        //    var sameUser = Service.SearchForUsers(u => u.Id == id);
+            int id = Service.Add(validUser);
+            var recievedId = Service.SearchForUsers(new Func<User, bool> []
+            {
+                u => u.PersonalId == validUser.PersonalId
+            }).FirstOrDefault();
 
-        //    Assert.AreEqual(validUser, sameUser);
-        //}
+            Assert.AreEqual(id, recievedId);
+        }
 
-        //[Test]
-        //public void Add_AddFiveValidUsersToMemoryRepository_UsersExistInRepository()
-        //{
-        //    ValidatorBase<User> validator = new SimpleUserValidator();
-        //    var numGenerator = new EvenIdGenerator();
-        //    var userMemoryRepository = new UserRepository();
-        //    int userCount = 5;
-        //    Service = new UserService(numGenerator, validator, userMemoryRepository);
-        //    var receivedUsers = new List<User>();
+        [Test]
+        public void Add_AddFiveValidUsersToMemoryRepository_ThereAreFiveUsersInRepository()
+        {
+            ValidatorBase<User> validator = new SimpleUserValidator();
+            var numGenerator = new EvenIdGenerator();
+            var userMemoryRepository = new UserRepository(null,null);
+            int userCount = 5;
+            Service = new MasterUserService(numGenerator, validator, userMemoryRepository);
+            var receivedUsers = new List<User>();
 
-        //    for (int i = 0; i < userCount; i++)
-        //    {
-        //        var validUser = new User
-        //        {
-        //            FirstName = "generated",
-        //            LastName = $"User {i + 1}",
-        //            BirthDate = DateTime.Now
-        //        };
+            for (int i = 0; i < userCount; i++)
+            {
+                var validUser = new User
+                {
+                    FirstName = "generated",
+                    LastName = $"User {i + 1}",
+                    BirthDate = DateTime.Now
+                };
 
-        //        int userId = Service.Add(validUser);
-        //        var storageUser = Service.SearchForUsers(u => u.Id == userId);
-        //        Debug.WriteLine(storageUser.Id);
-        //        Debug.WriteLine(storageUser.FirstName + " " + storageUser.LastName + " " + storageUser.BirthDate);
-        //        receivedUsers.Add(storageUser);
-        //    }
+                int userId = Service.Add(validUser);
+            }
 
-        //    Assert.AreEqual(userCount, receivedUsers.Count);
-        //}
+            var storageUserCount = Service.SearchForUsers(new Func<User, bool>[]
+            {
+                u => !u.LastName.IsNullOrEmpty() // kind of GetAll -_-
+            }).Count();
 
-        //[Test]
-        //public void Delete_DeleteUserAndCheckTheStorage_StorageReturnedNull()
-        //{
-        //    var userMemoryRepository = new UserRepository();
-        //    ValidatorBase<User> validator = new SimpleUserValidator();
-        //    Service = new UserService(FakeNumGenerator, validator, userMemoryRepository);
-        //    var user = new User
-        //    {
-        //        FirstName = "Default",
-        //        LastName = "Default",
-        //        BirthDate = DateTime.Now
-        //    };
+            Assert.AreEqual(userCount, storageUserCount);
+        }
 
-        //    int userId = Service.Add(user);
-        //    Service.Delete(user);
-        //    user = Service.SearchForUsers(u => u.Id == userId);
+        [Test]
+        public void Delete_DeleteUserAndCheckTheStorage_StorageReturnedNull()
+        {
+            var userMemoryRepository = new UserRepository(null,null);
+            ValidatorBase<User> validator = new SimpleUserValidator();
+            Service = new MasterUserService(FakeNumGenerator, validator, userMemoryRepository);
+            var user = new User
+            {
+                FirstName = "Default",
+                LastName = "Default",
+                BirthDate = DateTime.Now
+            };
 
-        //    Assert.IsNull(user);
-        //}
+            int userId = Service.Add(user);
+            Service.Delete(user);
+            var users = Service.SearchForUsers(new Func<User, bool>[] {u => u.Id == userId});
 
-        //[Test]
-        //public void Delete_SendNullToDelete_IgnoreWithNoExceptions()
-        //{
-        //    var userMemoryRepository = new UserRepository();
-        //    ValidatorBase<User> validator = new SimpleUserValidator();
-        //    Service = new UserService(FakeNumGenerator, validator, userMemoryRepository);
-        //    Service.Delete(null);
+            Assert.IsEmpty(users);
+        }
 
-        //}
+        [Test]
+        public void Delete_SendNullToDelete_IgnoreWithNoExceptions()
+        {
+            var userMemoryRepository = new UserRepository(null,null);
+            ValidatorBase<User> validator = new SimpleUserValidator();
+            Service = new MasterUserService(FakeNumGenerator, validator, userMemoryRepository);
+            Service.Delete(null);
 
-        //[Test]
-        //public void SearchForUser_SearchUserByLastNameAndPersonalId_UserIsFoundAndEqualToRequired()
-        //{
-        //    var requiredUser = new User
-        //    {
-        //        FirstName = "Ivan",
-        //        LastName = "Ivanov",
-        //        PersonalId = "MP12345",             
-        //    };
-        //    var anotherUser = new User
-        //    {
-        //        FirstName = "NOT_Ivan",
-        //        LastName = "Ivanov",
-        //        PersonalId = "MP5678"
-        //    };
-        //    Service = new UserService(new EvenIdGenerator(),  new EmptyUserValidator(), new UserRepository());
-        //    Service.Add(requiredUser);
-        //    Service.Add(anotherUser);
+        }
 
-        //    var searchUser = Service.SearchForUsers(u => u.LastName == "Ivanov" && u.PersonalId == "MP12345");
-            
-        //    Assert.AreEqual(requiredUser, searchUser);
-        //}
+        [Test]
+        public void SearchForUser_SearchUserByLastNameAndPersonalId_UserIsFoundAndEqualToRequired()
+        {
+            var requiredUser = new User
+            {
+                FirstName = "Ivan",
+                LastName = "Ivanov",
+                PersonalId = "MP12345",
+            };
+            var anotherUser = new User
+            {
+                FirstName = "NOT_Ivan",
+                LastName = "Ivanov",
+                PersonalId = "MP5678"
+            };
+            Service = new MasterUserService(new EvenIdGenerator(), new EmptyUserValidator(), 
+                                                new UserRepository(null,null));
+            int requiredId = Service.Add(requiredUser);
+            Service.Add(anotherUser);
 
-        //[Test]
-        //public void AddToXmlStorage_Test()
-        //{
-        //    //var userXmlRepository = new XmlFileRepository();
-        //    //ValidatorBase<User> validator = new SimpleUserValidator();
-        //    //var user = new User
-        //    //{
-        //    //    FirstName = "AnotherUSer",
-        //    //    LastName = "Default",
-        //    //    BirthDate = DateTime.Now,
-        //    //    PersonalId = "test"
-        //    //};
-        //    //Service = new UserService(new EvenIdGenerator(), validator, userXmlRepository);
+            var searchUserId = Service.SearchForUsers(new Func<User, bool>[]
+            {
+                u => u.LastName == "Ivanov" && u.PersonalId == "MP12345"
+            }).FirstOrDefault();
 
-        //    //Service.Add(user);
-        //    //StartupFoldersConfigSection section = (StartupFoldersConfigSection)ConfigurationManager.GetSection("StartupFolders");
+            Assert.AreEqual(requiredId, searchUserId);
+        }
 
-        //    var userMemoryRepository = new UserRepository();
-        //    ValidatorBase<User> validator = new SimpleUserValidator();
-        //    int lastId = 16;
-        //    Service = new UserService(new EvenIdGenerator(lastId), validator, userMemoryRepository);
-        //    var SimpleUser = new User
-        //    {
-        //        FirstName = "Ivan",
-        //        LastName = "Ivanov",
-        //        PersonalId = "MP123",
-        //        BirthDate = DateTime.Now
-        //    };
+        [Test]
+        public void ConfigTest()
+        {
+            string filePath = TempFileInitializer.GetFilePath((StartupFilesConfigSection)ConfigurationManager.GetSection("StartupFiles"));
+            var userMemoryRepository = new UserRepository(new UserXmlFileWorker(), filePath);
+            ValidatorBase<User> validator = new SimpleUserValidator();
+            int lastId = 20;
+            Service = new MasterUserService(new EvenIdGenerator(lastId), validator, userMemoryRepository);
+            VisaRecord record = new VisaRecord
+            {
+                Country = "someCountry",
+                StartDate = DateTime.MinValue,
+                EndDate = DateTime.Now
+            };
+            var firstUser = new User
+            {
+                FirstName = "Ivan2",
+                LastName = "Ivanov2",
+                PersonalId = "MP12345",
+                BirthDate = DateTime.Now,
+                VisaRecords = new List<VisaRecord> { record }
+            };
 
-        //    var secondUser = new User
-        //    {
-        //        FirstName = "Ivan",
-        //        LastName = "Ivanov",
-        //        PersonalId = "MP123",
-        //        BirthDate = DateTime.Now
-        //    };
-        //    Service.Add(secondUser);
-        //    //Service.Add(SimpleUser);
-        //    var user = Service.SearchForUsers(u => u.FirstName == "Ivan" && u.LastName == "Ivanov");
-        //    if(user != null)
-        //        Debug.WriteLine(user.LastName + " " + user.Id);
-        //}
+            Service.Add(firstUser);
+            Service.Save();
+        }
 
-        //[Test]
-        //public void ConfigTest()
-        //{         
-        //    string filePath = TempFileInitializer.GetFilePath((StartupFilesConfigSection)ConfigurationManager.GetSection("StartupFiles"));
-        //    var userMemoryRepository = new UserRepository(new UserXmlFileWorker(), filePath);
-        //    ValidatorBase<User> validator = new SimpleUserValidator();
-        //    int lastId = 20;
-        //    Service = new UserService(new EvenIdGenerator(lastId), validator, userMemoryRepository);
-        //    VisaRecord record = new VisaRecord
-        //    {
-        //        Country = "someCountry",
-        //        StartDate = DateTime.MinValue,
-        //        EndDate = DateTime.Now
-        //    };
-        //    var firstUser = new User
-        //    {
-        //        FirstName = "Ivan2",
-        //        LastName = "Ivanov2",
-        //        PersonalId = "MP12345",
-        //        BirthDate = DateTime.Now,
-        //        VisaRecords = new List<VisaRecord> { record}               
-        //    };
+        [Test]
+        public void Initialize_GetUsersFromXmlWithLastGeneratedId_ReturnedProperId()
+        {
+            string filePath = "D://forTests.xml";
+            var userMemoryRepository = new UserRepository(new UserXmlFileWorker(), filePath);
+            ValidatorBase<User> validator = new SimpleUserValidator();
+            int lastId = 10;
+            int expectedId = 14; // not 12 because we will add one user
+            Service = new MasterUserService(new EvenIdGenerator(lastId), validator, userMemoryRepository);
+            Service.Add(SimpleUser);
+            Service.Save();
+            var anotheruser = new User
+            {
+                FirstName = "Ivan",
+                LastName = "Ivanov",
+                PersonalId = "MP1",
+                BirthDate = DateTime.Now,
+            };
 
-        //    Service.Add(firstUser);
-        //    Service.Save();
-        //}
+            Service.Initialize();
+            int id = Service.Add(anotheruser);
 
-        //[Test]
-        //public void Initialize_GetUsersFromXmlWithLastGeneratedId_ReturnedProperId()
-        //{
-        //    string filePath = "D://forTests.xml";
-        //    var userMemoryRepository = new UserRepository(new UserXmlFileWorker(), filePath);
-        //    ValidatorBase<User> validator = new SimpleUserValidator();
-        //    int lastId = 10;
-        //    int expectedId = 14; // not 12 because we will add one user
-        //    Service = new UserService(new EvenIdGenerator(lastId), validator, userMemoryRepository);
-        //    Service.Add(SimpleUser);
-        //    Service.Save();
-        //    var anotheruser = new User
-        //    {
-        //        FirstName = "Ivan",
-        //        LastName = "Ivanov",
-        //        PersonalId = "MP1",
-        //        BirthDate = DateTime.Now,
-        //    };
+            Debug.WriteLine(id);
+            Assert.AreEqual(expectedId, id);
+        }
 
-        //    Service.Initialize();
-        //    int id = Service.Add(anotheruser);
-
-        //    Debug.WriteLine(id);
-        //    Assert.AreEqual(expectedId, id);
-        //}
-
-        //[Test]
-        //public void Initialize_SaveUserAndThanInitilizeRepository_ReturnedEqualUserId()
-        //{
-        //    string filePath = "D://forTests.xml";
-        //    var userMemoryRepository = new UserRepository(new UserXmlFileWorker(), filePath);
-        //    ValidatorBase<User> validator = new SimpleUserValidator();
-        //    Service = new UserService(new EvenIdGenerator(), validator, userMemoryRepository);
-        //    int expectedId = Service.Add(SimpleUser);
-        //    Service.Save();
-        //    Service.Initialize();
-        //    var predicates = new Func<User, bool>[] {p => p.PersonalId == SimpleUser.PersonalId };
-        //    var user = Service.SearchForUsers(predicates).First();
-        //    Assert.AreEqual(expectedId, user);
-        //}
+        [Test]
+        public void Initialize_SaveUserAndThanInitilizeRepository_ReturnedEqualUserId()
+        {
+            string filePath = "D://forTests.xml";
+            var userMemoryRepository = new UserRepository(new UserXmlFileWorker(), filePath);
+            ValidatorBase<User> validator = new SimpleUserValidator();
+            Service = new MasterUserService(new EvenIdGenerator(), validator, userMemoryRepository);
+            int expectedId = Service.Add(SimpleUser);
+            Service.Save();
+            Service.Initialize();
+            var predicates = new Func<User, bool>[] { p => p.PersonalId == SimpleUser.PersonalId };
+            var user = Service.SearchForUsers(predicates).First();
+            Assert.AreEqual(expectedId, user);
+        }
     }
 
 }

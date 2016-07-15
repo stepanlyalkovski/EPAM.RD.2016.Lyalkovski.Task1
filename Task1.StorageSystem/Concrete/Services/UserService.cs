@@ -32,6 +32,5 @@ namespace Task1.StorageSystem.Concrete.Services
 
         public abstract void Save();
         public abstract void Initialize(); // get collection from xml file and get last generated Id
-
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Task1.StorageSystem.Entities;
 
 namespace Task1.StorageSystem.Interfaces.Repository
 {
