@@ -73,9 +73,9 @@
       <Project>{eeac5fa5-1389-49e3-8d8d-f6048c588013}</Project>
       <Name>ServicesConfigurator</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Task1.StorageSystem\Task1.StorageSystem.csproj">
+    <ProjectReference Include="..\Task1.StorageSystem\StorageSystem.csproj">
       <Project>{480892f4-86a3-43ae-b1f6-6bf9b8db434d}</Project>
-      <Name>Task1.StorageSystem</Name>
+      <Name>StorageSystem</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

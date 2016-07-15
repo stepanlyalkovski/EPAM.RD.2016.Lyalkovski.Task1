@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1.StorageSystem", "Task1.StorageSystem\Task1.StorageSystem.csproj", "{480892F4-86A3-43AE-B1F6-6BF9B8DB434D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageSystem", "Task1.StorageSystem\StorageSystem.csproj", "{480892F4-86A3-43AE-B1F6-6BF9B8DB434D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Task1.Tests", "Task1.Tests\Task1.Tests.csproj", "{F048EC4C-AA50-4D01-B30F-AC443700C6FC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageSystem.Tests", "Task1.Tests\StorageSystem.Tests.csproj", "{F048EC4C-AA50-4D01-B30F-AC443700C6FC}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServicesConfigurator", "ConfigGenerator\ServicesConfigurator.csproj", "{EEAC5FA5-1389-49E3-8D8D-F6048C588013}"
 EndProject
