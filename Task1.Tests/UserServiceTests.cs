@@ -19,14 +19,15 @@ using Task1.StorageSystem.Interfaces.Repository;
 
 namespace Task1.Tests
 {
+    public class EmptyUserValidator : ValidatorBase<User>
+    {
+        protected override IEnumerable<Rule> Rules => new List<Rule>();
+    }
+
 
     [TestFixture]
     public class UserServiceTests
     {
-        private class EmptyUserValidator : ValidatorBase<User>
-        {
-            protected override IEnumerable<Rule> Rules => new List<Rule>();
-        }
 
         private UserService Service { get; set; }
         public User SimpleUser { get; set; } = new User
@@ -90,7 +91,7 @@ namespace Task1.Tests
             Service = new MasterUserService(FakeNumGenerator, validator, userMemoryRepository);
 
             int id = Service.Add(validUser);
-            var recievedId = Service.SearchForUsers(new Func<User, bool> []
+            var recievedId = Service.SearchForUsers(new Func<User, bool>[]
             {
                 u => u.PersonalId == validUser.PersonalId
             }).FirstOrDefault();
@@ -103,7 +104,7 @@ namespace Task1.Tests
         {
             ValidatorBase<User> validator = new SimpleUserValidator();
             var numGenerator = new EvenIdGenerator();
-            var userMemoryRepository = new UserRepository(null,null);
+            var userMemoryRepository = new UserRepository(null, null);
             int userCount = 5;
             Service = new MasterUserService(numGenerator, validator, userMemoryRepository);
             var receivedUsers = new List<User>();
@@ -131,7 +132,7 @@ namespace Task1.Tests
         [Test]
         public void Delete_DeleteUserAndCheckTheStorage_StorageReturnedNull()
         {
-            var userMemoryRepository = new UserRepository(null,null);
+            var userMemoryRepository = new UserRepository(null, null);
             ValidatorBase<User> validator = new SimpleUserValidator();
             Service = new MasterUserService(FakeNumGenerator, validator, userMemoryRepository);
             var user = new User
@@ -143,7 +144,7 @@ namespace Task1.Tests
 
             int userId = Service.Add(user);
             Service.Delete(user);
-            var users = Service.SearchForUsers(new Func<User, bool>[] {u => u.Id == userId});
+            var users = Service.SearchForUsers(new Func<User, bool>[] { u => u.Id == userId });
 
             Assert.IsEmpty(users);
         }
@@ -151,7 +152,7 @@ namespace Task1.Tests
         [Test]
         public void Delete_SendNullToDelete_IgnoreWithNoExceptions()
         {
-            var userMemoryRepository = new UserRepository(null,null);
+            var userMemoryRepository = new UserRepository(null, null);
             ValidatorBase<User> validator = new SimpleUserValidator();
             Service = new MasterUserService(FakeNumGenerator, validator, userMemoryRepository);
             Service.Delete(null);
@@ -173,8 +174,8 @@ namespace Task1.Tests
                 LastName = "Ivanov",
                 PersonalId = "MP5678"
             };
-            Service = new MasterUserService(new EvenIdGenerator(), new EmptyUserValidator(), 
-                                                new UserRepository(null,null));
+            Service = new MasterUserService(new EvenIdGenerator(), new EmptyUserValidator(),
+                                                new UserRepository(null, null));
             int requiredId = Service.Add(requiredUser);
             Service.Add(anotherUser);
 
@@ -253,6 +254,7 @@ namespace Task1.Tests
             var user = Service.SearchForUsers(predicates).First();
             Assert.AreEqual(expectedId, user);
         }
+
     }
 
 }

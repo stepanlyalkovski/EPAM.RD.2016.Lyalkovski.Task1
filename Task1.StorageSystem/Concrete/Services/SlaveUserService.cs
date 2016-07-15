@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
 using Task1.StorageSystem.Interfaces;
@@ -30,6 +31,16 @@ namespace Task1.StorageSystem.Concrete.Services
         public override void Initialize()
         {
             throw new NotSupportedException();
+        }
+
+        private void UpdateData(object sender, EventArgs args)
+        {
+            Debug.WriteLine("Slave has received edit notification");
+        }
+
+        public void Subscribe(MasterUserService master)
+        {
+            master.WasEdited += UpdateData;
         }
     }
 }
