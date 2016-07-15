@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using Attributes;
 
@@ -8,7 +10,7 @@ namespace Reflection.User
 {
     public class UserReflection
     {
-        public static IEnumerable<Attributes.User> CreateInstances()
+        public static IEnumerable<Attributes.User> CreateUserInstances()
         {
             var type = typeof (Attributes.User);
             var users = new List<Attributes.User>();           
@@ -35,15 +37,7 @@ namespace Reflection.User
                             //search property
                             if (p.Name == ctorAttr.Property)
                             {
-                                foreach (Attribute attr in p.GetCustomAttributes(true))
-                                {
-                                    var valueAttribute = attr as DefaultValueAttribute;
-                                    if (valueAttribute != null)
-                                    {
-                                        DefaultValueAttribute dv = valueAttribute;
-                                        defaultValue = (int) dv.Value;
-                                    }
-                                }
+                                defaultValue = (int) GetPropertyDefaultValue(p);
                             }
                         }
 
@@ -57,28 +51,92 @@ namespace Reflection.User
                     {
                         userInstance = (Attributes.User) Activator.CreateInstance(type,attribute.Id);
                     }
-
-                    var properties = type.GetProperties();
-                    foreach (var propertyInfo in properties)
-                    {
-                        if (propertyInfo.Name == "LastName")
-                        {
-                            propertyInfo.SetValue(userInstance, attribute.LastName);
-                        }
-                        if (propertyInfo.Name == "FirstName")
-                        {
-                            propertyInfo.SetValue(userInstance, attribute.FirstName);
-                        }
-                        
-                    }
+                    InitializeUserProperties(userInstance, attribute);
                     users.Add(userInstance);
-                    //Debug.WriteLine(userInstance.FirstName + " " + userInstance.LastName + " " + userInstance.Id);
-
                 } 
                              
             }
             return users;
         }
 
+        public static AdvancedUser CreateAdvancedUser()
+        {
+            var assembly = typeof (AdvancedUser).Assembly;
+            var userType = typeof (AdvancedUser);
+            int id = 0;
+            int externalId = 0;
+
+            var userAttribute = (InstantiateAdvancedUserAttribute)assembly.GetCustomAttribute(typeof (InstantiateAdvancedUserAttribute));
+            var ctor = userType.GetConstructor(new[] {typeof (int), typeof (int)});
+            var ctorMatchAttributes = ctor.GetCustomAttributes().Select(a => a as MatchParameterWithPropertyAttribute).ToList();
+            //pretend that we know argument's names and positions
+            
+            if (userAttribute.Id == null) //some temp copy paste
+            {
+                foreach (var ctorMatchAttribute in ctorMatchAttributes)
+                {
+                    var propertyInfo = userType.GetProperty(ctorMatchAttribute.Property);
+                    var deafultValue = (int)GetPropertyDefaultValue(propertyInfo);
+                    if (propertyInfo.Name == "Id")
+                        id = deafultValue;
+                }
+            }
+            else
+            {
+                id = userAttribute.Id.Value;
+            }
+            //if (userAttribute.ExternalId == 0)
+            //{
+            //    foreach (var ctorMatchAttribute in ctorMatchAttributes)
+            //    {
+            //        var propertyInfo = userType.GetProperty(ctorMatchAttribute.Property);
+            //        var deafultValue = (int)GetPropertyDefaultValue(propertyInfo);
+            //        if (propertyInfo.Name == "ExternalId" && userAttribute.ExternalId == null)
+            //            externalId = deafultValue;
+            //    }
+            //}
+            //else
+            //{
+            //    externalId = userAttribute.ExternalId.Value;
+            //}
+            externalId = userAttribute.ExternalId;
+            var userInstance = (AdvancedUser)Activator.CreateInstance(userType, id, externalId);
+            InitializeUserProperties(userInstance, userAttribute);
+            Debug.WriteLine(userAttribute.FirstName + " " + userAttribute.LastName + " " + userAttribute.Id + " " + userAttribute.ExternalId);
+            
+            return userInstance;
+        }
+
+        private static object GetPropertyDefaultValue(PropertyInfo propertyInfo)
+        {
+            foreach (Attribute attr in propertyInfo.GetCustomAttributes(true))
+            {
+                var valueAttribute = attr as DefaultValueAttribute;
+                if (valueAttribute == null) continue;
+
+                DefaultValueAttribute dv = valueAttribute;
+                return dv.Value;
+            }
+            //temp
+            return null;
+        }
+
+        private static void InitializeUserProperties(Attributes.User userInstance, InstantiateUserAttribute instanceAttribute)
+        {
+            var userType = typeof (Attributes.User);
+            var properties = userType.GetProperties();
+            foreach (var propertyInfo in properties)
+            {
+                if (propertyInfo.Name == "LastName")
+                {
+                    propertyInfo.SetValue(userInstance, instanceAttribute.LastName);
+                }
+                if (propertyInfo.Name == "FirstName")
+                {
+                    propertyInfo.SetValue(userInstance, instanceAttribute.FirstName);
+                }
+
+            }
+        }
     }
 }

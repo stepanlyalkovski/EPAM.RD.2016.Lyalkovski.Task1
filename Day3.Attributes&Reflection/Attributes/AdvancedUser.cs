@@ -21,5 +21,19 @@ namespace Attributes
         {
             _externalId = externalId;
         }
+
+        public override bool Equals(object obj)
+        {
+            var other = obj as AdvancedUser;
+            if (other == null)
+                return false;
+
+            var isEqual =  other.FirstName == this.FirstName
+                   && other.LastName == this.LastName
+                   && other.Id == this.Id
+                   && other.ExternalId == this.ExternalId;
+
+            return isEqual;
+        }
     }
 }
