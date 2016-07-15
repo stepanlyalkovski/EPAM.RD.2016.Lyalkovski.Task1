@@ -46,6 +46,13 @@
     <Compile Include="FileConfigurator\StartupFilesConfigSection.cs" />
     <Compile Include="FileConfigurator\TempFileInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UserServiceConfigurator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Task1.StorageSystem\StorageSystem.csproj">
+      <Project>{480892f4-86a3-43ae-b1f6-6bf9b8db434d}</Project>
+      <Name>StorageSystem</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

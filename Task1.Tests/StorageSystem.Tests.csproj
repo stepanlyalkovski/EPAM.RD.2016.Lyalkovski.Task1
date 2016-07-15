@@ -69,9 +69,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConfigGenerator\ServicesConfigurator.csproj">
+    <ProjectReference Include="..\ConfigGenerator\ServiceConfigurator.csproj">
       <Project>{eeac5fa5-1389-49e3-8d8d-f6048c588013}</Project>
-      <Name>ServicesConfigurator</Name>
+      <Name>ServiceConfigurator</Name>
     </ProjectReference>
     <ProjectReference Include="..\Task1.StorageSystem\StorageSystem.csproj">
       <Project>{480892f4-86a3-43ae-b1f6-6bf9b8db434d}</Project>
