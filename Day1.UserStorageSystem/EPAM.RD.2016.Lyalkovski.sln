@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceConfigurator", "Serv
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceConfigurator.Tests", "ServiceConfigurator.Tests\ServiceConfigurator.Tests.csproj", "{3B792A3C-089B-4282-AA8D-8C2454C07BA9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleUI", "ConsoleUI\ConsoleUI.csproj", "{739C109B-7978-43D2-8E3A-B4B5F096DE0E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{3B792A3C-089B-4282-AA8D-8C2454C07BA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B792A3C-089B-4282-AA8D-8C2454C07BA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B792A3C-089B-4282-AA8D-8C2454C07BA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{739C109B-7978-43D2-8E3A-B4B5F096DE0E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{739C109B-7978-43D2-8E3A-B4B5F096DE0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{739C109B-7978-43D2-8E3A-B4B5F096DE0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{739C109B-7978-43D2-8E3A-B4B5F096DE0E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
