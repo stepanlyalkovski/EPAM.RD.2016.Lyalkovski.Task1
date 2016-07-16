@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ConfigGenerator.FileConfigurator
+﻿namespace ConfigGenerator.CustomSections.Files
 {
     public class TempFileInitializer
     {

@@ -9,7 +9,9 @@ namespace Task1.StorageSystem.Concrete.Services
 {
     public class MasterUserService : UserService
     {
-        public event EventHandler<EventArgs> WasEdited;
+        public event EventHandler<UserDataApdatedEventArgs> Deleted;
+        public event EventHandler<UserDataApdatedEventArgs> Added;
+
         public MasterUserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository) : base(numGenerator, validator, repository)
         {
 
@@ -27,14 +29,14 @@ namespace Task1.StorageSystem.Concrete.Services
             user.Id = NumGenerator.GenerateId();
             LastGeneratedId = user.Id;
             Repository.Add(user);
-            OnCollectionEdited(this, EventArgs.Empty);
+            OnUserAdded(this, new UserDataApdatedEventArgs {User = user});
             return user.Id;
         }
 
         public override void Delete(User user)
         {
             Repository.Delete(user);
-            OnCollectionEdited(this, EventArgs.Empty);
+            OnUserDeleted(this, new UserDataApdatedEventArgs { User = user });
         }
 
         public override void Save()
@@ -48,9 +50,14 @@ namespace Task1.StorageSystem.Concrete.Services
             LastGeneratedId = Repository.GetState();
         }
 
-        protected virtual void OnCollectionEdited(object sender, EventArgs args)
+        protected virtual void OnUserDeleted(object sender, UserDataApdatedEventArgs args)
         {
-            WasEdited?.Invoke(sender, args);
+            Deleted?.Invoke(sender, args);
+        }
+
+        protected virtual void OnUserAdded(object sender, UserDataApdatedEventArgs args)
+        {
+            Added?.Invoke(sender, args);
         }
     }
 }

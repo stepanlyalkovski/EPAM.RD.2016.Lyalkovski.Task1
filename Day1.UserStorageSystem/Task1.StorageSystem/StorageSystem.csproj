@@ -44,6 +44,7 @@
   <ItemGroup>
     <Compile Include="Concrete\IdGenerator\EvenIdGenerator.cs" />
     <Compile Include="Concrete\Services\SlaveUserService.cs" />
+    <Compile Include="Concrete\Services\UserDataApdatedEventArgs.cs" />
     <Compile Include="Concrete\Services\UserService.cs" />
     <Compile Include="Concrete\Services\MasterUserService.cs" />
     <Compile Include="Concrete\UserRepository.cs" />
@@ -51,6 +52,7 @@
     <Compile Include="Concrete\UserXmlFileWorker.cs" />
     <Compile Include="Concrete\Validation\SimpleUserValidator.cs" />
     <Compile Include="Concrete\Validation\ValidatorBase.cs" />
+    <Compile Include="CloneUtility.cs" />
     <Compile Include="Entities\SerializedUserData.cs" />
     <Compile Include="Interfaces\INumGenerator.cs" />
     <Compile Include="Interfaces\Repository\IRepository.cs" />

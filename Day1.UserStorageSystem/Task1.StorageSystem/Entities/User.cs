@@ -5,7 +5,7 @@ using Task1.StorageSystem.Interfaces;
 namespace Task1.StorageSystem.Entities
 {
     [Serializable]
-    public class User : IEquatable<User>
+    public class User : IEquatable<User>, ICloneable
     {
         public int Id { get; set; }
         public string PersonalId { get; set; }
@@ -61,6 +61,16 @@ namespace Task1.StorageSystem.Entities
             hash = (hash * 7) + PersonalId.GetHashCode();
 
             return hash;
+        }
+
+        object ICloneable.Clone()
+        {
+            return Clone();
+        }
+
+        public User Clone()
+        {
+            return CloneUtility.DeepClone(this);
         }
     }
 

@@ -41,10 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="FileConfigurator\FileElement.cs" />
-    <Compile Include="FileConfigurator\FilesCollection.cs" />
-    <Compile Include="FileConfigurator\StartupFilesConfigSection.cs" />
-    <Compile Include="FileConfigurator\TempFileInitializer.cs" />
+    <Compile Include="CustomSections\Files\FileElement.cs" />
+    <Compile Include="CustomSections\Files\FilesCollection.cs" />
+    <Compile Include="CustomSections\Files\StartupFilesConfigSection.cs" />
+    <Compile Include="CustomSections\Files\TempFileInitializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UserServiceConfigurator.cs" />
   </ItemGroup>
@@ -53,6 +53,9 @@
       <Project>{480892f4-86a3-43ae-b1f6-6bf9b8db434d}</Project>
       <Name>StorageSystem</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="CustomSections\Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

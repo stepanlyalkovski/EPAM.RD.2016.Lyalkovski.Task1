@@ -33,7 +33,8 @@ namespace Task1.StorageSystem.Concrete
 
         public void Add(User user)
         {
-            _memoryCollection.Add(user);
+            var newUser = user.Clone();
+            _memoryCollection.Add(newUser);
         }
 
         public void Save(int lastGeneratedId)
@@ -49,6 +50,11 @@ namespace Task1.StorageSystem.Concrete
         public int GetState()
         {
             return _state;
+        }
+
+        public User GetById(int id)
+        {
+            return _memoryCollection.FirstOrDefault(u => u.Id == id);
         }
 
         public void Delete(User entity)

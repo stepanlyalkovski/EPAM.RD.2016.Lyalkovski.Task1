@@ -58,8 +58,7 @@ namespace Task1.Tests
             int eventsNumber = 2;
             int receivedEvents = 0;
 
-            master.WasEdited += delegate (object sender, EventArgs e)
-            {
+            master.Deleted += delegate {
                 receivedEvents++;
             };
 
@@ -69,14 +68,26 @@ namespace Task1.Tests
             Assert.AreEqual(eventsNumber, receivedEvents);
         }
 
+        [Test]
+        public void OnAdded_AddUserToMasterService_UserAddedToSubscribedSlave()
+        {
+            var masterRepository = new UserRepository(null, null);
+            var slaveRepository = new UserRepository(null, null);
+            var master = new MasterUserService(FakeNumGenerator, FakeValidator, masterRepository);
+            var slave = new SlaveUserService(FakeNumGenerator, FakeValidator, slaveRepository);
+            slave.Subscribe(master);
+            int userId = master.Add(SimpleUser);
+            SimpleUser.FirstName = "ChangedName!";
 
+
+        }
 
         [Test]
         public void BolleanSwitch_Test()
         {
 
             var value = ConfigurationManager.AppSettings["test"];
-            Debug.WriteLine(value);
+            Debug.WriteLine(value);            
         }
     }
 }

@@ -13,7 +13,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using Castle.Core.Internal;
-using ConfigGenerator.FileConfigurator;
+using ConfigGenerator.CustomSections.Files;
 using Task1.StorageSystem.Concrete.Services;
 using Task1.StorageSystem.Interfaces.Repository;
 
@@ -255,6 +255,24 @@ namespace Task1.Tests
             Assert.AreEqual(expectedId, user);
         }
 
+        // Trying to find way to test Deep Clone
+        [Test]
+        public void Add_EditAddedUser_UserInRepositoryWasNotEdited()
+        {
+            var userRepository = new UserRepository(null, null);
+            ValidatorBase<User> validator = new SimpleUserValidator();
+            Service = new MasterUserService(new EvenIdGenerator(), validator, userRepository);
+            int id = Service.Add(SimpleUser);
+
+            SimpleUser.Id = id + 1; // change User ID in local object
+
+            int userRepositoryId = userRepository.SearhByPredicate(new Func<User, bool>[]
+            {
+                u => u.PersonalId == SimpleUser.PersonalId
+            }).First();
+            Debug.WriteLine("UserRepositoryId:" + userRepositoryId);
+            Assert.AreNotEqual(SimpleUser.Id, userRepositoryId);
+        }
     }
 
 }

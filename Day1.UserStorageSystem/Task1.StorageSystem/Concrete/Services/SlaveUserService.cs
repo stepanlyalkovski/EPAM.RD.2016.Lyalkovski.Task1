@@ -33,14 +33,20 @@ namespace Task1.StorageSystem.Concrete.Services
             throw new NotSupportedException();
         }
 
-        private void UpdateData(object sender, EventArgs args)
+        private void OnAdded(object sender, UserDataApdatedEventArgs args)
         {
-            Debug.WriteLine("Slave has received edit notification");
+            Repository.Add(args.User);
+        }
+
+        private void OnDeleted(object sender, UserDataApdatedEventArgs args)
+        {
+            Repository.Delete(args.User);
         }
 
         public void Subscribe(MasterUserService master)
         {
-            master.WasEdited += UpdateData;
+            master.Deleted += OnDeleted;
+            master.Added += OnAdded;
         }
     }
 }
