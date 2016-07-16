@@ -13,7 +13,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using Castle.Core.Internal;
-using ConfigGenerator.CustomSections.Files;
+using ServiceConfigurator.CustomSections.Files;
 using Task1.StorageSystem.Concrete.Services;
 using Task1.StorageSystem.Interfaces.Repository;
 

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
+using System.Linq;
 using Moq;
 using NUnit.Framework;
 using Task1.StorageSystem.Concrete;
@@ -57,8 +58,10 @@ namespace Task1.Tests
             slave.Subscribe(master);
             int eventsNumber = 2;
             int receivedEvents = 0;
-
             master.Deleted += delegate {
+                receivedEvents++;
+            };
+            master.Added += delegate {
                 receivedEvents++;
             };
 
@@ -69,17 +72,41 @@ namespace Task1.Tests
         }
 
         [Test]
-        public void OnAdded_AddUserToMasterService_UserAddedToSubscribedSlave()
+        public void OnAdded_AddUserToMasterService_UserWasAddedAndExistsInSlaveService()
         {
             var masterRepository = new UserRepository(null, null);
             var slaveRepository = new UserRepository(null, null);
             var master = new MasterUserService(FakeNumGenerator, FakeValidator, masterRepository);
             var slave = new SlaveUserService(FakeNumGenerator, FakeValidator, slaveRepository);
             slave.Subscribe(master);
-            int userId = master.Add(SimpleUser);
-            SimpleUser.FirstName = "ChangedName!";
+            int userIdFromMaster = master.Add(SimpleUser);
+            int userIdFromSlave = slave.SearchForUsers(new Func<User, bool>[]
+            {
+                u => u.PersonalId == SimpleUser.PersonalId
+            }).First();
 
+            Assert.AreEqual(userIdFromMaster, userIdFromSlave);
 
+        }
+
+        [Test]
+        public void OnDeleted_DeletedUserFromMasterService_UserWasDeletedAndDoesNotExistInSlaveService()
+        {
+            var masterRepository = new UserRepository(null, null);
+            var slaveRepository = new UserRepository(null, null);
+            var master = new MasterUserService(FakeNumGenerator, FakeValidator, masterRepository);
+            var slave = new SlaveUserService(FakeNumGenerator, FakeValidator, slaveRepository);
+            slave.Subscribe(master);
+            int userIdFromMaster = master.Add(SimpleUser);
+
+            master.Delete(SimpleUser);
+            var searchResults = slave.SearchForUsers(new Func<User, bool>[]
+            {
+                u => u.PersonalId == SimpleUser.PersonalId
+                      && u.Id == SimpleUser.Id
+            }).ToList();
+
+            Assert.IsEmpty(searchResults);
         }
 
         [Test]

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Task1.StorageSystem.Concrete.Services;
-namespace ConfigGenerator
+namespace ServiceConfigurator
 {
     public class UserServiceConfigurator
     {

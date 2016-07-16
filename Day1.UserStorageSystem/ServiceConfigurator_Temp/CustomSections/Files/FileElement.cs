@@ -19,4 +19,5 @@ namespace ServiceConfigurator.CustomSections.Files
             set { base["path"] = value; }
         }
     }
+
 }

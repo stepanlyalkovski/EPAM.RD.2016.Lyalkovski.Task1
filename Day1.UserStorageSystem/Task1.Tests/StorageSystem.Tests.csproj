@@ -57,7 +57,6 @@
     <Compile Include="LogTests.cs" />
     <Compile Include="NumberGeneratorTests.cs" />
     <Compile Include="SlaveUserServiceTests.cs" />
-    <Compile Include="UserRepositoryTests.cs" />
     <Compile Include="UserServiceTests.cs" />
     <Compile Include="UserTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -69,8 +68,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ConfigGenerator\ServiceConfigurator.csproj">
-      <Project>{eeac5fa5-1389-49e3-8d8d-f6048c588013}</Project>
+    <ProjectReference Include="..\ServiceConfigurator\ServiceConfigurator.csproj">
+      <Project>{c9518bd0-50a0-47ab-8280-20d0b0f724a4}</Project>
       <Name>ServiceConfigurator</Name>
     </ProjectReference>
     <ProjectReference Include="..\Task1.StorageSystem\StorageSystem.csproj">

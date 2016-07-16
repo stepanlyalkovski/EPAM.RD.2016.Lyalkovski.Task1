@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace ConfigGenerator.CustomSections.Files
+namespace ServiceConfigurator.CustomSections.Files
 {
     [ConfigurationCollection(typeof(FileElement))]
     public class FilesCollection : ConfigurationElementCollection
