@@ -36,6 +36,7 @@ namespace Task1.StorageSystem.Concrete.Services
         private void OnAdded(object sender, UserDataApdatedEventArgs args)
         {
             Repository.Add(args.User);
+            LastGeneratedId = args.User.Id;
         }
 
         private void OnDeleted(object sender, UserDataApdatedEventArgs args)

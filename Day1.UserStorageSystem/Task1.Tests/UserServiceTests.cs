@@ -13,6 +13,7 @@ using System.Configuration;
 using System.IO;
 using System.Linq;
 using Castle.Core.Internal;
+using ServiceConfigurator;
 using ServiceConfigurator.CustomSections.Files;
 using Task1.StorageSystem.Concrete.Services;
 using Task1.StorageSystem.Interfaces.Repository;
@@ -190,7 +191,7 @@ namespace Task1.Tests
         [Test]
         public void ConfigTest()
         {
-            string filePath = TempFileInitializer.GetFilePath((StartupFilesConfigSection)ConfigurationManager.GetSection("StartupFiles"));
+            string filePath = FileInitializer.GetFilePath();
             var userMemoryRepository = new UserRepository(new UserXmlFileWorker(), filePath);
             ValidatorBase<User> validator = new SimpleUserValidator();
             int lastId = 20;

@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StorageSystem.Tests", "Task
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceConfigurator", "ServiceConfigurator\ServiceConfigurator.csproj", "{C9518BD0-50A0-47AB-8280-20D0B0F724A4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceConfigurator.Tests", "ServiceConfigurator.Tests\ServiceConfigurator.Tests.csproj", "{3B792A3C-089B-4282-AA8D-8C2454C07BA9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{C9518BD0-50A0-47AB-8280-20D0B0F724A4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9518BD0-50A0-47AB-8280-20D0B0F724A4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9518BD0-50A0-47AB-8280-20D0B0F724A4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B792A3C-089B-4282-AA8D-8C2454C07BA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B792A3C-089B-4282-AA8D-8C2454C07BA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B792A3C-089B-4282-AA8D-8C2454C07BA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B792A3C-089B-4282-AA8D-8C2454C07BA9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
