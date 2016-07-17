@@ -46,7 +46,6 @@
     <Compile Include="IntValidatorAttribute.cs" />
     <Compile Include="MatchParameterAttribute.cs" />
     <Compile Include="StringValidatorAttribute.cs" />
-    <Compile Include="Reflection\UserReflection.cs" />
     <Compile Include="User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

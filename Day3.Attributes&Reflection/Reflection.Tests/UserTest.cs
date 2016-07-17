@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using Attributes;
-using Attributes.Reflection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Reflection.User;
 
 namespace Reflection.Tests
 {
@@ -24,7 +24,7 @@ namespace Reflection.Tests
         public void InstanceAttribute_ThreeAttributes_ThreeObjects()
         {
             int count = 3;
-            var users = UserReflection.CreateInstances();
+            var users = UserReflection.CreateUserInstances();
             Assert.AreEqual(count, users.Count());
         }
 
@@ -42,7 +42,7 @@ namespace Reflection.Tests
                  new Attributes.User(3) {FirstName = "Petr" , LastName = "Petrov" }
              };
             
-            var resultUsers = UserReflection.CreateInstances().ToList();
+            var resultUsers = UserReflection.CreateUserInstances().ToList();
 
             foreach (var resultUser in resultUsers)
             {

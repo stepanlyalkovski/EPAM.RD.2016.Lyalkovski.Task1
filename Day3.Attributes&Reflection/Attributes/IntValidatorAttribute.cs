@@ -5,9 +5,13 @@ namespace Attributes
     // Should be applied to properties and fields.
     public class IntValidatorAttribute : Attribute
     {
-        public IntValidatorAttribute(int l ,int h)
+        public int LowerBound { get; set; }
+        public int UpperBound { get; set; }
+
+        public IntValidatorAttribute(int lowerBound, int upperBound)
         {
-            
+            LowerBound = lowerBound;
+            UpperBound = upperBound;
         }
     }
 }

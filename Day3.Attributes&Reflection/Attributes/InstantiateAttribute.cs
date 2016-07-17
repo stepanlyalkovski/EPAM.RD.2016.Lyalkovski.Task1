@@ -25,9 +25,9 @@ namespace Attributes
             LastName = lastName;
         }
 
-        public InstantiateUserAttribute(int num1, string str1, string str2, int num2)
-        {
+        //public InstantiateUserAttribute(int num1, string str1, string str2, int num2)
+        //{
            
-        }
+        //}
     }
 }

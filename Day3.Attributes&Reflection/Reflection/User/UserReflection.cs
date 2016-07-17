@@ -85,20 +85,7 @@ namespace Reflection.User
             {
                 id = userAttribute.Id.Value;
             }
-            //if (userAttribute.ExternalId == 0)
-            //{
-            //    foreach (var ctorMatchAttribute in ctorMatchAttributes)
-            //    {
-            //        var propertyInfo = userType.GetProperty(ctorMatchAttribute.Property);
-            //        var deafultValue = (int)GetPropertyDefaultValue(propertyInfo);
-            //        if (propertyInfo.Name == "ExternalId" && userAttribute.ExternalId == null)
-            //            externalId = deafultValue;
-            //    }
-            //}
-            //else
-            //{
-            //    externalId = userAttribute.ExternalId.Value;
-            //}
+
             externalId = userAttribute.ExternalId;
             var userInstance = (AdvancedUser)Activator.CreateInstance(userType, id, externalId);
             InitializeUserProperties(userInstance, userAttribute);
