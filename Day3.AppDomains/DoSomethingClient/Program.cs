@@ -4,7 +4,7 @@ using System.IO;
 using System.Reflection;
 using System.Threading;
 using MyInterfaces;
-using MyLibrary;
+//using MyLibrary;
 
 namespace DoSomethingClient
 {
@@ -45,6 +45,7 @@ namespace DoSomethingClient
         {
             // Create a domain with name MyDomain.
             AppDomain domain = AppDomain.CreateDomain("MyDomain");
+            
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"MyDomain\MyLibrary.dll");
             var loader = (DomainAssemblyLoader)domain.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(DomainAssemblyLoader).FullName);
 
