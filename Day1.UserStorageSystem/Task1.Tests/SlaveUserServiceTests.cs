@@ -112,7 +112,6 @@ namespace Task1.Tests
         [Test]
         public void BolleanSwitch_Test()
         {
-
             var value = ConfigurationManager.AppSettings["test"];
             Debug.WriteLine(value);            
         }

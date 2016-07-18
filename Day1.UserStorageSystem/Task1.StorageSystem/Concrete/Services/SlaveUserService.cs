@@ -9,10 +9,14 @@ namespace Task1.StorageSystem.Concrete.Services
 {
     public class SlaveUserService : UserService
     {
-        public SlaveUserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository) : base(numGenerator, validator, repository)
+        public SlaveUserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository) 
+            : this(numGenerator, validator, repository, false)
         {
         }
-
+        public SlaveUserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository, bool loggingEnabled) 
+                        : base(numGenerator, validator, repository, loggingEnabled)
+        {
+        }
         public override int Add(User user)
         {
             throw new NotSupportedException();

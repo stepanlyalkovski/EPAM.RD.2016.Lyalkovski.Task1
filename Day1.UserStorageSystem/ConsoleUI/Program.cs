@@ -5,15 +5,24 @@ using System.Text;
 using System.Threading.Tasks;
 using ServiceConfigurator;
 using Task1.StorageSystem.Concrete.Services;
+using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
 
 namespace ConsoleUI
 {
     class Program
     {
+        public static User SimpleUser { get; set; } = new User
+        {
+            FirstName = "Ivan2",
+            LastName = "Ivanov2",
+            PersonalId = "MP12345",
+            BirthDate = DateTime.Now,
+        };
         static void Main(string[] args)
         {
             IList<UserService> services = ServiceInitializer.InitializeServices().ToList();
+            services.First().Add(SimpleUser);
             string cmd = String.Empty;
             int requiredNumber = 0;
             while (cmd != "exit")

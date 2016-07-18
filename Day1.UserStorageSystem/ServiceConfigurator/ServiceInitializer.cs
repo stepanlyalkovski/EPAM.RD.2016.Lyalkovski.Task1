@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace ServiceConfigurator
             bool masterExist = false;
             IList<UserService> services = new List<UserService>();
             string filePath = FileInitializer.GetXmlFilePath();
+            BooleanSwitch loggingSwitch = new BooleanSwitch("loggingSwitch", "Switch in config file");
 
             if (filePath != null)
             {
@@ -48,7 +50,7 @@ namespace ServiceConfigurator
                     }
 
                     masterExist = true;
-                    services.Add(new MasterUserService(generator, validator, repository));
+                    services.Add(new MasterUserService(generator, validator, repository, loggingSwitch.Enabled));
 
                 }
 
@@ -56,7 +58,7 @@ namespace ServiceConfigurator
                 {
                     for (int j = 0; j < serviceCount; j++)
                     {
-                        services.Add(new SlaveUserService(generator, validator, repository));
+                        services.Add(new SlaveUserService(generator, validator, repository, loggingSwitch.Enabled));
                     }
                 }
             }
