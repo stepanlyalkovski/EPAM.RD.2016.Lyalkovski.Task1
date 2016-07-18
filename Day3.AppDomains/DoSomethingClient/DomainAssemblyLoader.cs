@@ -46,12 +46,23 @@ namespace DoSomethingClient
 
             var assembly = Assembly.LoadFile(path);
             var types = assembly.GetTypes();
+            Type type = null;
+            foreach (var typeElement in types)
+            {
+                if (Attribute.IsDefined(typeElement, typeof(DoSomethingAttribute)) && typeElement.GetInterface("IDoSomething") == null)
+                {
+                    var doSmthAttribute = (DoSomethingAttribute)typeElement.GetCustomAttribute(typeof(DoSomethingAttribute));
 
-            Type type = null; // TODO: Find first type that has DoSomething attribute and don't implement IDoSomething.
+                    type = typeElement; //Find first type that has DoSomething attribute and don't implement IDoSomething.
+                }
+
+            }
+            var instance = Activator.CreateInstance(type);
+
             // TODO: MethodInfo mi = type.GetMethod("DoSomething");
-            Result result = null;
+            MethodInfo mi = type.GetMethod("DoSomething");
             // TODO: result = mi.Invoke();
-
+            Result result = (Result)mi.Invoke(instance, new object[] { data });
             return result;
         }
 
@@ -59,12 +70,25 @@ namespace DoSomethingClient
         public Result LoadFrom(string fileName, Input data)
         {
             var assembly = Assembly.LoadFrom(fileName);
-            var type = assembly.GetTypes();
+            var types = assembly.GetTypes();
 
             // TODO: Find first type that has DoSomething attribute and implements IDoSomething.
+            IDoSomething tempInstance = null;
+            Console.WriteLine("Current Domain Name: " + Thread.GetDomain().FriendlyName);
+            // Find first type that has DoSomething attribute and implements IDoSomething.
+            foreach (var typeElement in types)
+            {
+                if (Attribute.IsDefined(typeElement, typeof(DoSomethingAttribute)) && typeElement.GetInterface("IDoSomething") != null)
+                {
+                    var doSmthAttribute = (DoSomethingAttribute)typeElement.GetCustomAttribute(typeof(DoSomethingAttribute));
+                    // Create an instance of this type.
+                    tempInstance = (IDoSomething)Activator.CreateInstance(typeElement);
+                }
+
+            }
             // TODO: Create an instance of this type.
 
-            IDoSomething doSomethingService = null; // TODO Save instance to variable.
+            IDoSomething doSomethingService = tempInstance; // TODO Save instance to variable.
             return doSomethingService.DoSomething(data);
         }
     }

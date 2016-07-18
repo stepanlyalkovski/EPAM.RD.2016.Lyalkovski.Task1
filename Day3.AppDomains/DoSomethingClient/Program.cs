@@ -45,11 +45,12 @@ namespace DoSomethingClient
         {
             // Create a domain with name MyDomain.
             AppDomain domain = AppDomain.CreateDomain("MyDomain");
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"MyDomain\MyLibrary.dll");
             var loader = (DomainAssemblyLoader)domain.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(DomainAssemblyLoader).FullName);
 
             try
             {
-                Result result = loader.Load("MyLibrary, Version=1.2.3.4, Culture=neutral, PublicKeyToken=f46a87b3d9a80705", input); // TODO: Use loader here.
+                Result result = loader.LoadFile(path, input); // TODO: Use loader here.
 
                 Console.WriteLine("Method1: {0}", result.Value);
             }
@@ -71,13 +72,13 @@ namespace DoSomethingClient
             };
 
             // TODO: Create a domain with name MyDomain and setup from appDomainSetup.
-            AppDomain domain = null;
+            AppDomain domain = AppDomain.CreateDomain("MyDomain", null, appDomainSetup);
 
             var loader = (DomainAssemblyLoader)domain.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(DomainAssemblyLoader).FullName);
-
+            var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"MyDomain\MyLibrary.dll");
             try
             {
-                Result result = null; // TODO: Use loader here.
+                Result result = loader.LoadFrom(path, input); // TODO: Use loader here.
 
                 Console.WriteLine("Method2: {0}", result.Value);
             }
@@ -86,7 +87,7 @@ namespace DoSomethingClient
                 Console.WriteLine("Exception: {0}", e.Message);
             }
 
-            // TODO: Unload domain
+            AppDomain.Unload(domain);
         }
     }
 }
