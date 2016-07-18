@@ -274,6 +274,17 @@ namespace Task1.Tests
             Debug.WriteLine("UserRepositoryId:" + userRepositoryId);
             Assert.AreNotEqual(SimpleUser.Id, userRepositoryId);
         }
+
+        [Test]
+        public void Logging_Test()
+        {
+            var userMemoryRepository = new UserRepository(null, null);
+            ValidatorBase<User> validator = new SimpleUserValidator();
+            BooleanSwitch loggingSwitch = new BooleanSwitch("loggingSwitch", "Switch in config file");
+            Service = new MasterUserService(FakeNumGenerator, FakeValidator, userMemoryRepository, loggingSwitch.Enabled);
+            Service.Add(SimpleUser);
+
+    }
     }
 
 }
