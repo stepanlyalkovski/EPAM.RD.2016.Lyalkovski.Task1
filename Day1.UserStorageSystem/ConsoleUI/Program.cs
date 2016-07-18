@@ -22,7 +22,9 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             IList<UserService> services = ServiceInitializer.InitializeServices().ToList();
+            services.First().Initialize();
             services.First().Add(SimpleUser);
+            services.First().Delete(SimpleUser);
             string cmd = String.Empty;
             int requiredNumber = 0;
             while (cmd != "exit")

@@ -17,12 +17,12 @@ namespace Task1.StorageSystem.Concrete.Services
                         : base(numGenerator, validator, repository, loggingEnabled)
         {
         }
-        public override int Add(User user)
+        protected override int AddStrategy(User user)
         {
             throw new NotSupportedException();
         }
 
-        public override void Delete(User user)
+        protected override void DeleteStrategy(User user)
         {
             throw new NotSupportedException();
         }

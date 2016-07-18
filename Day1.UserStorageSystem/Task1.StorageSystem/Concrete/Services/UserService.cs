@@ -37,8 +37,26 @@ namespace Task1.StorageSystem.Concrete.Services
 
         }
 
-        public abstract int Add(User user);
-        public abstract void Delete(User user);
+        public  int Add(User user)
+        {
+            var errorMessages = Validator.Validate(user).ToList();
+            TraceSource.Listeners.Add(new ConsoleTraceListener());
+            if (LoggingEnabled)
+                TraceSource.TraceEvent(TraceEventType.Information, 0, $"Adding User: {user.LastName} {user.PersonalId}");
+
+            return AddStrategy(user);
+        }
+
+        public void Delete(User user)
+        {
+            if (LoggingEnabled)
+                TraceSource.TraceEvent(TraceEventType.Information, 0, $"Deleting User: {user.LastName} {user.PersonalId}");
+
+            DeleteStrategy(user);
+        }
+
+        protected abstract int AddStrategy(User user);
+        protected abstract void DeleteStrategy(User user);
 
         public virtual IEnumerable<int> SearchForUsers(Func<User, bool>[] predicates)
         {

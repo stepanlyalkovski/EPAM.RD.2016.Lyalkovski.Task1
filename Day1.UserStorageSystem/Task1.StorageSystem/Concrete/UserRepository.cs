@@ -22,7 +22,7 @@ namespace Task1.StorageSystem.Concrete
         {
             _memoryCollection = new List<User>();
             _xmlWorker = worker;
-            this.filePath = filePath ?? Directory.GetCurrentDirectory() + "testFile.xml";
+            this.filePath = filePath ?? Path.Combine(Directory.GetCurrentDirectory(),"testFile.xml");
         }
 
         public IEnumerable<int> SearhByPredicate(Func<User, bool>[] predicates)

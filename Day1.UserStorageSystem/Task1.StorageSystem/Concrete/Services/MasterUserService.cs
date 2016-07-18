@@ -24,30 +24,15 @@ namespace Task1.StorageSystem.Concrete.Services
         {
             
         }
-        public override int Add(User user)
+        protected override int AddStrategy(User user)
         {
-            var errorMessages = Validator.Validate(user).ToList();
-
-            if (errorMessages.Any())
-            {
-                if (LoggingEnabled)
-                    TraceSource.TraceEvent(TraceEventType.Error, 0, $"Invalid User. Validation messages: {string.Join("\n", errorMessages)}");
-                throw new ArgumentException("Entity is not valid:\n" + string.Join("\n", errorMessages));
-
-            }
-
-            user.Id = NumGenerator.GenerateId();
-            LastGeneratedId = user.Id;
-            TraceSource.Listeners.Add(new ConsoleTraceListener());
-            if (LoggingEnabled)
-                TraceSource.TraceEvent(TraceEventType.Information, 0, $"Adding User: {user.LastName} {user.PersonalId}");
 
             Repository.Add(user);
             OnUserAdded(this, new UserDataApdatedEventArgs {User = user});
             return user.Id;
         }
 
-        public override void Delete(User user)
+        protected override void DeleteStrategy(User user)
         {
             if (LoggingEnabled)
                 TraceSource.TraceEvent(TraceEventType.Information, 0, $"Deleting User: {user.LastName} {user.PersonalId}");
