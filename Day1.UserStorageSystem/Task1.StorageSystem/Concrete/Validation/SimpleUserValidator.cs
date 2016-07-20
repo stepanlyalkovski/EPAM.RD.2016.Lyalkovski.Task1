@@ -4,6 +4,7 @@ using Task1.StorageSystem.Entities;
 
 namespace Task1.StorageSystem.Concrete.Validation
 {
+    [Serializable]
     public class SimpleUserValidator : ValidatorBase<User>
     {
         protected override IEnumerable<Rule> Rules

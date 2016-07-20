@@ -26,17 +26,18 @@ namespace Task1.StorageSystem.Concrete.Services
         }
         protected override int AddStrategy(User user)
         {
-
+            Console.WriteLine(AppDomain.CurrentDomain.FriendlyName);
+            //var errorMessages = Validator.Validate(user).ToList();
+            //if (errorMessages.Any())
+            //    throw new ArgumentException();
             Repository.Add(user);
+            user.Id = NumGenerator.GenerateId();
             OnUserAdded(this, new UserDataApdatedEventArgs {User = user});
             return user.Id;
         }
 
         protected override void DeleteStrategy(User user)
         {
-            if (LoggingEnabled)
-                TraceSource.TraceEvent(TraceEventType.Information, 0, $"Deleting User: {user.LastName} {user.PersonalId}");
-
             Repository.Delete(user);
             OnUserDeleted(this, new UserDataApdatedEventArgs { User = user });
         }

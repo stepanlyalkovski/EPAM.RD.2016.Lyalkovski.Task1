@@ -12,7 +12,8 @@ using Task1.StorageSystem.Interfaces.Repository;
 
 namespace Task1.StorageSystem.Concrete
 {
-    public class UserRepository : IRepository<User>
+    [Serializable]
+    public class UserRepository : MarshalByRefObject, IRepository<User>
     {
         private IList<User> _memoryCollection;
         private IUserXmlFileWorker _xmlWorker;
@@ -27,12 +28,14 @@ namespace Task1.StorageSystem.Concrete
 
         public IEnumerable<int> SearhByPredicate(Func<User, bool>[] predicates)
         {
+            Console.WriteLine(AppDomain.CurrentDomain.FriendlyName);
             HashSet<int> ids = new HashSet<int>();
             return _memoryCollection.Where(p => predicates.Any(pr => pr(p))).Select(u => u.Id);
         }
 
         public void Add(User user)
         {
+            Console.WriteLine(AppDomain.CurrentDomain.FriendlyName);
             var newUser = user.Clone();
             _memoryCollection.Add(newUser);
         }

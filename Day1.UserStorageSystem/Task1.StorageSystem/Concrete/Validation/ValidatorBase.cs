@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 
 namespace Task1.StorageSystem.Concrete.Validation
 {
-    public abstract class ValidatorBase<T>
+    [Serializable]
+    public abstract class ValidatorBase<T> : MarshalByRefObject
     {
         public class Rule
         {

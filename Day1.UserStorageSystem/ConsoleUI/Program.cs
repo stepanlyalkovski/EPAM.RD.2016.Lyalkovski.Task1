@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
 using ServiceConfigurator;
@@ -22,7 +23,8 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             IList<UserService> services = ServiceInitializer.InitializeServices().ToList();
-            services.First().Initialize();
+            var master = services.FirstOrDefault(s => s is MasterUserService);
+            //master.Initialize();
             services.First().Add(SimpleUser);
             services.First().Delete(SimpleUser);
             string cmd = String.Empty;

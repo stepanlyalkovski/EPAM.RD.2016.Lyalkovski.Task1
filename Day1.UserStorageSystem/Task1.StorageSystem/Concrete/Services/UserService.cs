@@ -10,7 +10,7 @@ using Task1.StorageSystem.Interfaces.Repository;
 
 namespace Task1.StorageSystem.Concrete.Services
 {
-    public abstract class UserService
+    public abstract class UserService : MarshalByRefObject
     {
         protected INumGenerator NumGenerator;
         protected IRepository<User> Repository;
@@ -34,13 +34,11 @@ namespace Task1.StorageSystem.Concrete.Services
             TraceSource = new TraceSource("StorageSystem");
 
             LoggingEnabled = loggingEnabled;
-
+            Debug.WriteLine($"Initializing UserService:\nDomain: {AppDomain.CurrentDomain.FriendlyName}");
         }
 
         public  int Add(User user)
         {
-            var errorMessages = Validator.Validate(user).ToList();
-            TraceSource.Listeners.Add(new ConsoleTraceListener());
             if (LoggingEnabled)
                 TraceSource.TraceEvent(TraceEventType.Information, 0, $"Adding User: {user.LastName} {user.PersonalId}");
 
@@ -58,8 +56,9 @@ namespace Task1.StorageSystem.Concrete.Services
         protected abstract int AddStrategy(User user);
         protected abstract void DeleteStrategy(User user);
 
-        public virtual IEnumerable<int> SearchForUsers(Func<User, bool>[] predicates)
+        public virtual List<int> SearchForUsers(Func<User, bool>[] predicates)
         {
+            Console.WriteLine(AppDomain.CurrentDomain.FriendlyName);
             return Repository.SearhByPredicate(predicates).ToList();
         }
 

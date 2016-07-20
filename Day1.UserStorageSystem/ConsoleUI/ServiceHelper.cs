@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Task1.StorageSystem.Concrete.Services;
+using Task1.StorageSystem.Entities;
 
 namespace ConsoleUI
 {
@@ -21,6 +22,9 @@ namespace ConsoleUI
                 {
                     Console.WriteLine("Slave");
                 }
+                Console.WriteLine("Current Domain: " + AppDomain.CurrentDomain.FriendlyName);
+                var predicates = new Func<User, bool>[] { p => p.LastName != null };
+                Console.WriteLine("Users: " + service.SearchForUsers(predicates));
                 Console.WriteLine(string.Concat(Enumerable.Repeat("=", 30)));
             }
         }

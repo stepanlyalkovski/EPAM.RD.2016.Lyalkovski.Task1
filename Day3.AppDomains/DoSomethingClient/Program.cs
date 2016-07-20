@@ -2,6 +2,7 @@
 using System.Globalization;
 using System.IO;
 using System.Reflection;
+using System.Runtime.Remoting;
 using System.Threading;
 using MyInterfaces;
 //using MyLibrary;
@@ -48,10 +49,11 @@ namespace DoSomethingClient
             
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"MyDomain\MyLibrary.dll");
             var loader = (DomainAssemblyLoader)domain.CreateInstanceAndUnwrap(Assembly.GetExecutingAssembly().FullName, typeof(DomainAssemblyLoader).FullName);
+            Console.WriteLine(RemotingServices.IsTransparentProxy(loader));
 
             try
             {
-                Result result = loader.LoadFile(path, input); // TODO: Use loader here.
+                Result result = loader.Load(path, input); // TODO: Use loader here.
 
                 Console.WriteLine("Method1: {0}", result.Value);
             }

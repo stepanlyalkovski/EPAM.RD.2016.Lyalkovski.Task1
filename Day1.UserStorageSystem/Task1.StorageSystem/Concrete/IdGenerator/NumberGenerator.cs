@@ -1,8 +1,9 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace Task1.StorageSystem.Concrete.IdGenerator
 {
-    public class NumberGenerator
+    public static class NumberGenerator
     {
         public static IEnumerable<int> GetEvenNumbers(int startNumber = 0)
         {
