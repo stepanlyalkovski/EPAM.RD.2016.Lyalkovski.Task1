@@ -1,8 +1,12 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading;
+using ServiceConfigurator.Entities;
 using Task1.StorageSystem.Concrete;
+using Task1.StorageSystem.Concrete.IdGenerator;
 using Task1.StorageSystem.Concrete.Services;
 using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
@@ -13,16 +17,31 @@ namespace ServiceConfigurator
 {
     public class DomainServiceLoader : MarshalByRefObject
     {
-        public T LoadService<T>(string assemblyString,INumGenerator numGenerator, 
-            ValidatorBase<User> validator, IRepository<User> repository, bool loggingEnabled) where T: UserService
+        public UserService LoadService(string assemblyString, ServiceConfiguration configuration)
         {
-            var assembly = Assembly.LoadFrom(assemblyString);
-            var types = assembly.GetTypes();
-            Console.WriteLine("Current Domain Name: " + Thread.GetDomain().FriendlyName);
-            var serviceType = typeof (T);
-            object[] ctorArgs = { numGenerator, validator, repository, loggingEnabled };
-            var service = (T)Activator.CreateInstance(serviceType, ctorArgs);
-            return service;
+            //var assembly = Assembly.LoadFrom(assemblyString);
+
+            //temporary way to initialize components
+            INumGenerator generator = new EvenIdGenerator();
+            ValidatorBase<User> validator = new SimpleUserValidator();
+            IUserXmlFileWorker worker = null;
+            if (configuration.FilePath != null)
+            {
+                worker = new UserXmlFileWorker();
+            }
+            IRepository<User> repository = new UserRepository(worker, configuration.FilePath);
+
+            switch (configuration.Type)
+            {
+                    case ServiceType.Master: return new MasterUserService(generator, validator, 
+                                                                repository, configuration.LoggingEnabled);
+                    case ServiceType.Slave: return new SlaveUserService(generator, validator, 
+                                                                repository, configuration.LoggingEnabled);
+                default:
+                    return null;
+            }
         }
+
+
     }
 }

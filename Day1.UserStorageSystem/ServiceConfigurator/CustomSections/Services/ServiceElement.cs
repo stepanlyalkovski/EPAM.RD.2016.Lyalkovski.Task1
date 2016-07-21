@@ -9,18 +9,18 @@ namespace ServiceConfigurator.CustomSections.Services
 {
     public class ServiceElement : ConfigurationElement
     {
-        [ConfigurationProperty("type", DefaultValue = "", IsKey = true, IsRequired = true)]
+        [ConfigurationProperty("type", DefaultValue = "", IsKey = false, IsRequired = false)]
         public string ServiceType
         {
             get { return (string)base["type"]; }
             set { base["type"] = value; }
         }
 
-        [ConfigurationProperty("count", DefaultValue = "", IsKey = false, IsRequired = false)]
-        public string Count
+        [ConfigurationProperty("name", DefaultValue = "", IsKey = true, IsRequired = true)]
+        public string ServiceName
         {
-            get { return (string)base["count"]; }
-            set { base["count"] = value; }
+            get { return (string)base["name"]; }
+            set { base["name"] = value; }
         }
     }
 }

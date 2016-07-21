@@ -39,6 +39,7 @@ namespace Task1.StorageSystem.Concrete.Services
 
         private void OnAdded(object sender, UserDataApdatedEventArgs args)
         {
+            Debug.WriteLine("On Added! " + AppDomain.CurrentDomain.FriendlyName);
             Repository.Add(args.User);
             LastGeneratedId = args.User.Id;
         }

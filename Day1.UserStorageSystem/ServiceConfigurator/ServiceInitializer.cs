@@ -8,7 +8,7 @@ using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
 using ServiceConfigurator.CustomSections.Services;
-using ServiceConfigurator.ServiceFactory;
+using ServiceConfigurator.Entities;
 using Task1.StorageSystem.Concrete;
 using Task1.StorageSystem.Concrete.IdGenerator;
 using Task1.StorageSystem.Concrete.Services;
@@ -23,62 +23,51 @@ namespace ServiceConfigurator
     {
         //TODO create interface with Settings so you'll be able to test creator
         public static IEnumerable<UserService> InitializeServices()
-        {
-            var serviceSection = GetServiceSection();           
-            INumGenerator generator = new EvenIdGenerator();
-            ValidatorBase<User> validator = new SimpleUserValidator();
-            IRepository<User> repository;
-            IUserXmlFileWorker worker = null;
-            MasterUserService master = null;
-            IList<SlaveUserService> slaves = new List<SlaveUserService>();
+        {           
+            var serviceConfigurations = ParseAppConfig();
             IList<UserService> services = new List<UserService>();
-            string filePath = FileInitializer.GetXmlFilePath();
-            BooleanSwitch loggingSwitch = new BooleanSwitch("loggingSwitch", "Switch in config file");
-
-            if (filePath != null)
+            foreach (var serviceConfiguration in serviceConfigurations)
             {
-                worker = new UserXmlFileWorker();
+                var service = UserServiceCreator.CreateService(serviceConfiguration);
+                Console.WriteLine("-----Services has been created");
+                services.Add(service);
             }
-            repository = new UserRepository(worker, filePath);
-
-            for (int i = 0; i < serviceSection.FileItems.Count; i++)
-            {
-                var serviceType = serviceSection.FileItems[i].ServiceType;
-                var serviceCount = Int32.Parse(serviceSection.FileItems[i].Count);
-
-                if (serviceType == "master")
-                {
-                    if (master != null || serviceCount > 1)
-                    {
-                        throw new ConfigurationErrorsException("Not allowed to create more than one master");
-                    }
-
-                    master = UserServiceCreator.CreateService<MasterUserService>("master_domain", generator, 
-                        validator, repository, loggingSwitch.Enabled);
-                    services.Add(master);
-                    Console.WriteLine(RemotingServices.IsTransparentProxy(master));
-                }
-
-                if (serviceType == "slave")
-                {
-                    for (int j = 0; j < serviceCount; j++)
-                    {
-                        var service = UserServiceCreator.CreateService<SlaveUserService>($"Slave_{j}_Domain", generator,
-                            validator, repository, loggingSwitch.Enabled);
-                        services.Add(service);
-                    }
-                }
-
-            }
+            var master = (MasterUserService)services.FirstOrDefault(s => s is MasterUserService);
 
             if (master == null)
             {
                 throw new ConfigurationErrorsException("Master is not exist");
             }
 
+            var slaves = services.OfType<SlaveUserService>();
             SubscribeServices(master, slaves);
+            return services;     
+        }
 
-            return services;         
+        private static IEnumerable<ServiceConfiguration> ParseAppConfig()
+        {
+            var serviceSection = GetServiceSection();
+            IList<ServiceConfiguration> serviceConfigurations = 
+                    new List<ServiceConfiguration>(serviceSection.FileItems.Count);
+
+            for (int i = 0; i < serviceSection.FileItems.Count; i++)
+            {
+                var serviceType = serviceSection.FileItems[i].ServiceType;
+                ServiceType type = serviceType.ToLower() == "master" ? ServiceType.Master : ServiceType.Slave;
+                var serviceName = serviceSection.FileItems[i].ServiceName;
+                string filePath = FileInitializer.GetXmlFilePath();
+                BooleanSwitch loggingSwitch = new BooleanSwitch("loggingSwitch", "Switch in config file");
+
+                serviceConfigurations.Add(new ServiceConfiguration
+                {
+                    Name = serviceName,
+                    Type = type,
+                    FilePath = filePath,
+                    LoggingEnabled = loggingSwitch.Enabled
+                });
+            }
+
+            return serviceConfigurations;
         }
 
         private static UserServicesConfigSection GetServiceSection()

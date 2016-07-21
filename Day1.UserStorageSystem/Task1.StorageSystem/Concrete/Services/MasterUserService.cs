@@ -26,12 +26,17 @@ namespace Task1.StorageSystem.Concrete.Services
         }
         protected override int AddStrategy(User user)
         {
-            Console.WriteLine(AppDomain.CurrentDomain.FriendlyName);
-            //var errorMessages = Validator.Validate(user).ToList();
-            //if (errorMessages.Any())
-            //    throw new ArgumentException();
-            Repository.Add(user);
+            Console.WriteLine("AddStrategy: " + AppDomain.CurrentDomain.FriendlyName);
+
+            var errorMessages = Validator.Validate(user).ToList();
+            if (errorMessages.Any())
+            {
+                TraceSource.TraceEvent(TraceEventType.Error, 0, $"Validation ERROR on User: {user.LastName} {user.PersonalId}\n " +
+                                                                "ValidationMessages: " + string.Join("\n",errorMessages));
+                throw new ArgumentException("Validation error! User is not valid\nValidationMessages: " + string.Join("\n", errorMessages));
+            }
             user.Id = NumGenerator.GenerateId();
+            Repository.Add(user);
             OnUserAdded(this, new UserDataApdatedEventArgs {User = user});
             return user.Id;
         }

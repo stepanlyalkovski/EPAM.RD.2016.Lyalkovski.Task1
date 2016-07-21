@@ -24,9 +24,11 @@ namespace ConsoleUI
         {
             IList<UserService> services = ServiceInitializer.InitializeServices().ToList();
             var master = services.FirstOrDefault(s => s is MasterUserService);
+            Console.Clear();
+            Console.WriteLine("=========== Welcome to Console App ===========");
             //master.Initialize();
             services.First().Add(SimpleUser);
-            services.First().Delete(SimpleUser);
+            //services.First().Delete(SimpleUser);
             string cmd = String.Empty;
             int requiredNumber = 0;
             while (cmd != "exit")

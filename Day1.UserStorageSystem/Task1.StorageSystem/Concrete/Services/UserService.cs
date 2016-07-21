@@ -58,7 +58,6 @@ namespace Task1.StorageSystem.Concrete.Services
 
         public virtual List<int> SearchForUsers(Func<User, bool>[] predicates)
         {
-            Console.WriteLine(AppDomain.CurrentDomain.FriendlyName);
             return Repository.SearhByPredicate(predicates).ToList();
         }
 

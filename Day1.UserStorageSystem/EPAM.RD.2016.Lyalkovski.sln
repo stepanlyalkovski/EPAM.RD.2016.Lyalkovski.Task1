@@ -13,8 +13,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceConfigurator.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleUI", "ConsoleUI\ConsoleUI.csproj", "{739C109B-7978-43D2-8E3A-B4B5F096DE0E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DependencyResolver", "DependencyResolver\DependencyResolver.csproj", "{88051FE9-96CE-4211-BEF4-BC4B6B5814D9}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,10 +39,6 @@ Global
 		{739C109B-7978-43D2-8E3A-B4B5F096DE0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{739C109B-7978-43D2-8E3A-B4B5F096DE0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{739C109B-7978-43D2-8E3A-B4B5F096DE0E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88051FE9-96CE-4211-BEF4-BC4B6B5814D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88051FE9-96CE-4211-BEF4-BC4B6B5814D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88051FE9-96CE-4211-BEF4-BC4B6B5814D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88051FE9-96CE-4211-BEF4-BC4B6B5814D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

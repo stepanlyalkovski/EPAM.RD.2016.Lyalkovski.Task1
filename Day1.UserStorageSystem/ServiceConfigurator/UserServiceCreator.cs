@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Runtime.Remoting;
 using System.Text;
 using System.Threading.Tasks;
+using ServiceConfigurator.Entities;
 using Task1.StorageSystem.Concrete.Services;
 using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
@@ -16,20 +17,16 @@ namespace ServiceConfigurator
 {
     public static class UserServiceCreator
     {
-        //TODO user IoC container
-        public static T CreateService<T>(string domainName, INumGenerator numGenerator, ValidatorBase<User> validator,
-                                IRepository<User> repository, bool loggingEnabled) where T : UserService
+        public static UserService CreateService(ServiceConfiguration configuration)
         {
-            var domain = AppDomain.CreateDomain(domainName, null, null);
+
+            var domain = AppDomain.CreateDomain(configuration.Name, null, null);
             var type = typeof(DomainServiceLoader);
             var loader = (DomainServiceLoader)domain.CreateInstanceAndUnwrap(Assembly.GetAssembly(type).FullName, type.FullName);
-            Console.WriteLine(RemotingServices.IsTransparentProxy(loader));
+            Console.WriteLine("Creating service " + configuration.Name);
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Task1.StorageSystem.dll");
 
-            var service = loader.LoadService<T>(path, numGenerator, validator, repository, loggingEnabled);
-
-            Console.WriteLine(RemotingServices.IsTransparentProxy(service));
-            return service;
+            return loader.LoadService(path, configuration);
         }
     }
 }

@@ -12,15 +12,15 @@ namespace Task1.Tests
     [TestFixture]
     public class LogTests
     {
-        private static BooleanSwitch boolSwitch = new BooleanSwitch("logging",
-                                                                    "Enabling/disabling logging");
-        [Test]
-        public void BolleanSwitch_SetLogginInAppConfigAndGetValue_EnableLogging()
-        {
-            Debug.WriteLine("Boolean switch {0} configured as {1}",
-            boolSwitch.DisplayName, boolSwitch.Enabled.ToString());
+        //private static BooleanSwitch boolSwitch = new BooleanSwitch("logging",
+        //                                                            "Enabling/disabling logging");
+        //[Test]
+        //public void BolleanSwitch_SetLogginInAppConfigAndGetValue_EnableLogging()
+        //{
+        //    Debug.WriteLine("Boolean switch {0} configured as {1}",
+        //    boolSwitch.DisplayName, boolSwitch.Enabled.ToString());
 
-            Assert.IsTrue(boolSwitch.Enabled);
-        }
+        //    Assert.IsTrue(boolSwitch.Enabled);
+        //}
     }
 }

@@ -18,7 +18,7 @@ namespace ServiceConfigurator.CustomSections.Services
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((ServiceElement) element).ServiceType;
+            return ((ServiceElement) element).ServiceName;
         }
 
         public ServiceElement this[int idx] => (ServiceElement) BaseGet(idx);

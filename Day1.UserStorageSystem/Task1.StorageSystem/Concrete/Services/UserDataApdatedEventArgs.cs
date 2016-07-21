@@ -7,6 +7,7 @@ using Task1.StorageSystem.Entities;
 
 namespace Task1.StorageSystem.Concrete.Services
 {
+    [Serializable]
     public class UserDataApdatedEventArgs : EventArgs
     {
         public User User { get; set; }

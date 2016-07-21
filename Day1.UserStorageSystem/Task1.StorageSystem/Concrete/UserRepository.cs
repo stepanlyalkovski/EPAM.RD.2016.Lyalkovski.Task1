@@ -28,8 +28,6 @@ namespace Task1.StorageSystem.Concrete
 
         public IEnumerable<int> SearhByPredicate(Func<User, bool>[] predicates)
         {
-            Console.WriteLine(AppDomain.CurrentDomain.FriendlyName);
-            HashSet<int> ids = new HashSet<int>();
             return _memoryCollection.Where(p => predicates.Any(pr => pr(p))).Select(u => u.Id);
         }
 
