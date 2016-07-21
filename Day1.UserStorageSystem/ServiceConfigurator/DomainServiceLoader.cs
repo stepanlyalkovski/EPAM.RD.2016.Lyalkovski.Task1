@@ -19,8 +19,14 @@ namespace ServiceConfigurator
     {
         public UserService LoadService(string assemblyString, ServiceConfiguration configuration)
         {
-            //var assembly = Assembly.LoadFrom(assemblyString);
-
+            //ServiceConfigurator includes Service dll so we don't need to Load in explicitly
+            //var assembly = Assembly.LoadFrom(assemblyString); 
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies();
+            Console.WriteLine("Assemblies: ");
+            foreach (var assembly in assemblies)
+            {
+                Console.WriteLine(assembly.FullName);
+            }
             //temporary way to initialize components
             INumGenerator generator = new EvenIdGenerator();
             ValidatorBase<User> validator = new SimpleUserValidator();
