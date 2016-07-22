@@ -13,6 +13,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServiceConfigurator.Tests",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleUI", "ConsoleUI\ConsoleUI.csproj", "{739C109B-7978-43D2-8E3A-B4B5F096DE0E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkServiceCommunication", "NetworkServiceCommunication\NetworkServiceCommunication.csproj", "{F9D9CE94-9CA5-4224-A53B-4A4080DA3423}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NetworkServiceCommunication.Tests", "NetworkServiceCommunication.Tests\NetworkServiceCommunication.Tests.csproj", "{ADB43D52-B05A-4340-B469-14F8195F3642}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +43,14 @@ Global
 		{739C109B-7978-43D2-8E3A-B4B5F096DE0E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{739C109B-7978-43D2-8E3A-B4B5F096DE0E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{739C109B-7978-43D2-8E3A-B4B5F096DE0E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F9D9CE94-9CA5-4224-A53B-4A4080DA3423}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F9D9CE94-9CA5-4224-A53B-4A4080DA3423}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F9D9CE94-9CA5-4224-A53B-4A4080DA3423}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F9D9CE94-9CA5-4224-A53B-4A4080DA3423}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADB43D52-B05A-4340-B469-14F8195F3642}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADB43D52-B05A-4340-B469-14F8195F3642}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADB43D52-B05A-4340-B469-14F8195F3642}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADB43D52-B05A-4340-B469-14F8195F3642}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

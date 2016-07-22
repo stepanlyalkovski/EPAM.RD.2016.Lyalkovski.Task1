@@ -25,7 +25,6 @@ namespace Task1.StorageSystem.Concrete.IdGenerator
 
         public int GenerateId()
         {
-            Console.WriteLine("GenerateID Domain: "+  AppDomain.CurrentDomain.FriendlyName);
             if (_enumerator.MoveNext())
             {
                 return _enumerator.Current;

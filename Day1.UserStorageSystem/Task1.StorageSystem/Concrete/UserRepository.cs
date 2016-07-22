@@ -33,7 +33,6 @@ namespace Task1.StorageSystem.Concrete
 
         public void Add(User user)
         {
-            Console.WriteLine(AppDomain.CurrentDomain.FriendlyName);
             var newUser = user.Clone();
             _memoryCollection.Add(newUser);
         }

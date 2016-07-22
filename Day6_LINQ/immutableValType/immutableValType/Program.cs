@@ -1,9 +1,15 @@
 ﻿using System;
+using System.Linq;
 
 namespace immutableValType
 {
+    public interface IChangeable
+    {
+        void Change(int x, int y);
+    }
+
     // Point  размерный тип.
-    internal struct Point
+    internal struct Point : IChangeable
     {
         private int _x, _y;
         public Point(int x, int y)
@@ -24,15 +30,7 @@ namespace immutableValType
     {
         public static void Main()
         {
-            Point p = new Point(1, 1);
-            Console.WriteLine(p);
-            p.Change(2, 2);
-            Console.WriteLine(p);
-            object o = p;
-            Console.WriteLine(o);
-            ((Point)o).Change(3, 3);
-            Console.WriteLine(o);
-            Console.ReadLine();
+           var list1 = Enumerable.T
         }
     }
 }

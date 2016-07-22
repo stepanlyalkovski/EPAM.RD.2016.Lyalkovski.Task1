@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using NetworkServiceCommunication;
 using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
 using Task1.StorageSystem.Interfaces;
@@ -12,7 +13,6 @@ namespace Task1.StorageSystem.Concrete.Services
     {
         public event EventHandler<UserDataApdatedEventArgs> Deleted;
         public event EventHandler<UserDataApdatedEventArgs> Added;
-
         public MasterUserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository)
             :this(numGenerator, validator, repository, false)
         {
@@ -24,6 +24,7 @@ namespace Task1.StorageSystem.Concrete.Services
         {
             
         }
+
         protected override int AddStrategy(User user)
         {
             Console.WriteLine("AddStrategy: " + AppDomain.CurrentDomain.FriendlyName);
@@ -34,6 +35,10 @@ namespace Task1.StorageSystem.Concrete.Services
                 TraceSource.TraceEvent(TraceEventType.Error, 0, $"Validation ERROR on User: {user.LastName} {user.PersonalId}\n " +
                                                                 "ValidationMessages: " + string.Join("\n",errorMessages));
                 throw new ArgumentException("Validation error! User is not valid\nValidationMessages: " + string.Join("\n", errorMessages));
+            }
+            if (UserExists(user))
+            {
+                throw new ArgumentException("That User was added before!");
             }
             user.Id = NumGenerator.GenerateId();
             Repository.Add(user);
@@ -68,7 +73,7 @@ namespace Task1.StorageSystem.Concrete.Services
         {
             if (LoggingEnabled)
                 TraceSource.TraceEvent(TraceEventType.Information, 0, $"User {args.User.LastName} {args.User.PersonalId} was deleted");
-
+            Communicator.SendDelete(args);
             Deleted?.Invoke(sender, args);
         }
 
@@ -76,8 +81,16 @@ namespace Task1.StorageSystem.Concrete.Services
         {
             if (LoggingEnabled)
                 TraceSource.TraceEvent(TraceEventType.Information, 0, $"User {args.User.LastName} {args.User.PersonalId} was added");
-
+            Communicator.SendAdd(args);
             Added?.Invoke(sender, args);
+        }
+
+        private bool UserExists(User user)
+        {
+            return Repository.SearhByPredicate(new Func<User, bool>[]
+            {
+                u => u.PersonalId == user.PersonalId
+            }).Any();
         }
     }
 }

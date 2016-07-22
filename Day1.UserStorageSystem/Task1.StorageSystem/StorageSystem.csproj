@@ -47,6 +47,7 @@
     <Compile Include="Concrete\Services\UserDataApdatedEventArgs.cs" />
     <Compile Include="Concrete\Services\UserService.cs" />
     <Compile Include="Concrete\Services\MasterUserService.cs" />
+    <Compile Include="Concrete\Services\UserServiceCommunicator.cs" />
     <Compile Include="Concrete\UserRepository.cs" />
     <Compile Include="Concrete\IdGenerator\NumberGenerator.cs" />
     <Compile Include="Concrete\UserXmlFileWorker.cs" />
@@ -60,7 +61,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Entities\User.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\NetworkServiceCommunication\NetworkServiceCommunication.csproj">
+      <Project>{f9d9ce94-9ca5-4224-a53b-4a4080da3423}</Project>
+      <Name>NetworkServiceCommunication</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

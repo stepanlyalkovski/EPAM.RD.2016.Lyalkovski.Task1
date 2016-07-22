@@ -13,7 +13,6 @@ namespace ServiceConfigurator.Tests
     public class FileInitializerTests
     {
 
-
         [Test]
         public void GetFilePath_Test()
         {

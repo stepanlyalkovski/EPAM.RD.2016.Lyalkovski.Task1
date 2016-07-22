@@ -20,6 +20,22 @@ namespace ConsoleUI
             PersonalId = "MP12345",
             BirthDate = DateTime.Now,
         };
+
+        public static User AnotherUser { get; set; } = new User
+        {
+            FirstName = "Bob",
+            LastName = "Smith",
+            PersonalId = "MP9999",
+            BirthDate = DateTime.Now,
+        };
+        public static User AnotherUser2 { get; set; } = new User
+        {
+            FirstName = "Jack",
+            LastName = "Smith",
+            PersonalId = "MP3423",
+            BirthDate = DateTime.Now,
+        };
+
         static void Main(string[] args)
         {
             IList<UserService> services = ServiceInitializer.InitializeServices().ToList();
@@ -38,6 +54,10 @@ namespace ConsoleUI
                 cmd = Console.ReadLine();
                 var words = cmd.Split();
                 bool parsed = false;
+                if (cmd == "Add")
+                {
+                    master.Add(AnotherUser);
+                }
                 if (words.Length > 1)
                 {
                     parsed = Int32.TryParse(words.Skip(1).First(), out requiredNumber);

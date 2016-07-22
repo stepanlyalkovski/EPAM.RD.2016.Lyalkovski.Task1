@@ -339,25 +339,38 @@ namespace UnitTestProject1
         }
 
         [TestMethod]
-        public void JoinAnon()
+        public void JoinWithAnonymousType()
         {
-            int iterations = 100000;
-            StringBuilder builder = new StringBuilder();
-            
-            string str = "";
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            for (int i = 0; i < iterations; i++)
+            var NameInfo = new[]
             {
-                builder.Append("a");
-            }
-            Console.WriteLine(stopwatch.Elapsed);
-            Console.WriteLine("for string");
-            stopwatch = Stopwatch.StartNew();
-            for (int i = 0; i < iterations; i++)
+                new {name = "Max", Info = "info about Max"},
+                new {name = "Alan", Info = "About Alan"},
+                new {name = "Alex", Info = "About Alex"}
+            }.ToList();
+
+            var expectedList = new[]
             {
-                str += "a";
-            }
-            Console.WriteLine(stopwatch.Elapsed);
+                new {Name = "Max", Info = "info about Max", Age = 18, Salary = 19000M},
+                new {Name = "Alex", Info = "About Alex", Age = 45, Salary = 54000M}
+            }.ToList();
+
+            var result = NameInfo.Join(userListFirst, a => a.name, u => u.Name, (a, u) =>
+                new
+                {
+                    Name = u.Name,
+                    Info = a.Info,
+                    Age = u.Age,
+                    Salary = u.Salary
+                }
+                ).ToList();
+            var first = result.First();
+            Console.WriteLine(first.Name + " " + first.Info + " " + first.Age + " " + first.Salary);
+            //foreach (var ent in result)
+            //{
+            //    Console.WriteLine(ent.Name + " " + ent.Info + " " + ent.Age + " " + ent.Salary);
+            //}
+            Console.WriteLine(expectedList.First().Equals(result.First()));
+            CollectionAssert.AreEqual(expectedList, result);
         }
     }
 }

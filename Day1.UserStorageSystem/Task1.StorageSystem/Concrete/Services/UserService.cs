@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Threading;
 using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
 using Task1.StorageSystem.Interfaces;
@@ -18,7 +19,8 @@ namespace Task1.StorageSystem.Concrete.Services
         public ValidatorBase<User> Validator { get; set; }
         protected TraceSource TraceSource;
         protected bool LoggingEnabled;
-
+        protected UserServiceCommunicator Communicator;
+        public string Name { get; set; }
         protected UserService(INumGenerator numGenerator, ValidatorBase<User> validator,
             IRepository<User> repository) : this(numGenerator, validator, repository, false)
         {
@@ -37,8 +39,10 @@ namespace Task1.StorageSystem.Concrete.Services
             Debug.WriteLine($"Initializing UserService:\nDomain: {AppDomain.CurrentDomain.FriendlyName}");
         }
 
-        public  int Add(User user)
+        public int Add(User user)
         {
+            bool lockTaken = false;
+
             if (LoggingEnabled)
                 TraceSource.TraceEvent(TraceEventType.Information, 0, $"Adding User: {user.LastName} {user.PersonalId}");
 

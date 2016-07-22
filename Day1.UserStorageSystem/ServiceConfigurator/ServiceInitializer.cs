@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Remoting;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ServiceConfigurator.CustomSections.Services;
 using ServiceConfigurator.Entities;
@@ -26,12 +27,14 @@ namespace ServiceConfigurator
         {           
             var serviceConfigurations = ParseAppConfig();
             IList<UserService> services = new List<UserService>();
+
             foreach (var serviceConfiguration in serviceConfigurations)
             {
                 var service = UserServiceCreator.CreateService(serviceConfiguration);
                 Console.WriteLine("-----Services has been created");
                 services.Add(service);
             }
+
             var master = (MasterUserService)services.FirstOrDefault(s => s is MasterUserService);
 
             if (master == null)
@@ -39,8 +42,10 @@ namespace ServiceConfigurator
                 throw new ConfigurationErrorsException("Master is not exist");
             }
 
-            var slaves = services.OfType<SlaveUserService>();
+            var slaves = services.OfType<SlaveUserService>().ToList();
             SubscribeServices(master, slaves);
+            ThreadInitializer.InitializeThreads(master, slaves);
+
             return services;     
         }
 
@@ -82,6 +87,7 @@ namespace ServiceConfigurator
                 slave.Subscribe(master);
             }
         }
+
 
         private static void WrapInDomains(MasterUserService master, IEnumerable<SlaveUserService> slaves)
         {

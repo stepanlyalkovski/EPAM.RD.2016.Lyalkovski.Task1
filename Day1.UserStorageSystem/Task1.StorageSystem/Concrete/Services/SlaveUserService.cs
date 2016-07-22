@@ -16,6 +16,8 @@ namespace Task1.StorageSystem.Concrete.Services
         public SlaveUserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository, bool loggingEnabled) 
                         : base(numGenerator, validator, repository, loggingEnabled)
         {
+            Communicator.UserAdded += OnAdded;
+            Communicator.UserDeleted += OnDeleted;
         }
         protected override int AddStrategy(User user)
         {
@@ -39,9 +41,10 @@ namespace Task1.StorageSystem.Concrete.Services
 
         private void OnAdded(object sender, UserDataApdatedEventArgs args)
         {
-            Debug.WriteLine("On Added! " + AppDomain.CurrentDomain.FriendlyName);
-            Repository.Add(args.User);
-            LastGeneratedId = args.User.Id;
+
+                Debug.WriteLine("On Added! " + AppDomain.CurrentDomain.FriendlyName);
+                Repository.Add(args.User);
+                LastGeneratedId = args.User.Id;
         }
 
         private void OnDeleted(object sender, UserDataApdatedEventArgs args)
@@ -54,5 +57,7 @@ namespace Task1.StorageSystem.Concrete.Services
             master.Deleted += OnDeleted;
             master.Added += OnAdded;
         }
+
+
     }
 }

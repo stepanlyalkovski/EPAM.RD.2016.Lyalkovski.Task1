@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Reflection;
-using System.Threading;
 using ServiceConfigurator.Entities;
 using Task1.StorageSystem.Concrete;
 using Task1.StorageSystem.Concrete.IdGenerator;
@@ -13,7 +8,7 @@ using Task1.StorageSystem.Entities;
 using Task1.StorageSystem.Interfaces;
 using Task1.StorageSystem.Interfaces.Repository;
 
-namespace ServiceConfigurator
+namespace ServiceConfigurator.DomainServiceLoading
 {
     public class DomainServiceLoader : MarshalByRefObject
     {
@@ -36,18 +31,27 @@ namespace ServiceConfigurator
                 worker = new UserXmlFileWorker();
             }
             IRepository<User> repository = new UserRepository(worker, configuration.FilePath);
-
+            UserService result = null;
             switch (configuration.Type)
             {
-                    case ServiceType.Master: return new MasterUserService(generator, validator, 
+                    case ServiceType.Master:
+                    result = new MasterUserService(generator, validator, 
                                                                 repository, configuration.LoggingEnabled);
-                    case ServiceType.Slave: return new SlaveUserService(generator, validator, 
-                                                                repository, configuration.LoggingEnabled);
-                default:
-                    return null;
+                    break;
+                    case ServiceType.Slave:
+                        result = new SlaveUserService(generator, validator,
+                                                               repository, configuration.LoggingEnabled);
+                    break;
             }
+
+            if (result != null)
+            {
+                result.Name = AppDomain.CurrentDomain.FriendlyName;
+            }
+
+            return result;
         }
+     }
 
 
-    }
 }

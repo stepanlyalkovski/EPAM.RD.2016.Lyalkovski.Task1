@@ -15,13 +15,12 @@ namespace Test
         public delegate void Mydelegate2(string str);
         static void Main(string[] args)
         {
-            MyDelegate del = x => { Console.WriteLine("First"); };
-            MyDelegate del2 = x => { Console.WriteLine("Second"); };
-            del2 += x => { Console.WriteLine("Another"); };
-            Console.WriteLine(del.GetHashCode() == del2.GetHashCode());
-
-            Mydelegate2 delegate2 = x => { Console.WriteLine(x); };
-            Console.WriteLine(delegate2.GetHashCode() == del.GetHashCode());
+            int[] nums = {1, 2, 3, 4, 5};
+            var strings = nums.MyCustomSelect(n => "number " + n.ToString());
+            foreach (var s in strings)
+            {
+                Console.WriteLine(s);
+            }
         }
 
 
