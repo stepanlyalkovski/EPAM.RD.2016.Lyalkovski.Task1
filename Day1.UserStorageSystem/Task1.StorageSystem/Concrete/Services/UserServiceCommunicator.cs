@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Net;
 using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,26 +10,42 @@ using Task1.StorageSystem.Entities;
 
 namespace Task1.StorageSystem.Concrete.Services
 {
-    public class UserServiceCommunicator
+    [Serializable]
+    public class UserServiceCommunicator : IDisposable
     {
         public event EventHandler<UserDataApdatedEventArgs> UserAdded;
         public event EventHandler<UserDataApdatedEventArgs> UserDeleted;
         private Sender<User> _sender;
         private Task recieverTask;
-        private CancellationTokenSource tokeSource;
+        private CancellationTokenSource tokenSource;
         private Receiver<User> _receiver;
+
+        public UserServiceCommunicator(Sender<User> sender, Receiver<User> receiver)
+        {
+            _sender = sender;
+            _receiver = receiver;
+        }
+
+        public UserServiceCommunicator(Sender<User> sender) : this(sender, null) { }
+        public UserServiceCommunicator(Receiver<User> receiver) : this(null, receiver) { }
 
         public void RunReceiver()
         {
-            var tokenSource = new CancellationTokenSource();
-            recieverTask = Task.Run((Action)ReceiveMessages, tokeSource.Token);
+            if(_receiver == null) return;
+            tokenSource = new CancellationTokenSource();
+            recieverTask = Task.Run((Action)ReceiveMessages, tokenSource.Token);
+        }
+
+        public void Connect(IEnumerable<IPEndPoint> endPoints)
+        {
+            _sender.Connect(endPoints);
         }
 
         public void StopReceiver()
         {
-            if (tokeSource.Token.CanBeCanceled)
+            if (tokenSource.Token.CanBeCanceled)
             {
-                tokeSource.Cancel();
+                tokenSource.Cancel();
             }
         }
 
@@ -35,6 +53,7 @@ namespace Task1.StorageSystem.Concrete.Services
         {
             while (true)
             {
+                if(tokenSource.IsCancellationRequested) return;
                 var message = _receiver.Receive();
                 var args = new UserDataApdatedEventArgs
                 {
@@ -50,6 +69,8 @@ namespace Task1.StorageSystem.Concrete.Services
 
         public void SendAdd(UserDataApdatedEventArgs args)
         {
+            if (_sender == null) return;
+
             Send(new ServiceMessage<User>
             {
                 Entity = args.User,
@@ -58,6 +79,8 @@ namespace Task1.StorageSystem.Concrete.Services
         }
         public void SendDelete(UserDataApdatedEventArgs args)
         {
+            if (_sender == null) return;
+
             Send(new ServiceMessage<User>
             {
                 Entity = args.User,
@@ -78,6 +101,12 @@ namespace Task1.StorageSystem.Concrete.Services
         protected virtual void OnUserAdded(object sender, UserDataApdatedEventArgs args)
         {
             UserAdded?.Invoke(sender, args);
+        }
+
+        public void Dispose()
+        {
+            _receiver?.Dispose();
+            _sender?.Dispose();
         }
     }
 }

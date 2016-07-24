@@ -1,4 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.Remoting;
+using System.Threading.Tasks;
+using NetworkServiceCommunication;
 using ServiceConfigurator.Entities;
 using Task1.StorageSystem.Concrete;
 using Task1.StorageSystem.Concrete.IdGenerator;
@@ -32,26 +37,45 @@ namespace ServiceConfigurator.DomainServiceLoading
             }
             IRepository<User> repository = new UserRepository(worker, configuration.FilePath);
             UserService result = null;
+            UserServiceCommunicator communicator = null;
             switch (configuration.Type)
             {
                     case ServiceType.Master:
-                    result = new MasterUserService(generator, validator, 
-                                                                repository, configuration.LoggingEnabled);
+                    {
+                        Sender<User> sender = new Sender<User>();
+                        communicator = new UserServiceCommunicator(sender);
+                        result = new MasterUserService(generator, validator,
+                            repository, configuration.LoggingEnabled);
+                    }
+                    
                     break;
                     case ServiceType.Slave:
-                        result = new SlaveUserService(generator, validator,
-                                                               repository, configuration.LoggingEnabled);
-                    break;
+                    {
+                        Receiver<User> receiver = new Receiver<User>(configuration.IpEndPoint.Address, 
+                                                                        configuration.IpEndPoint.Port);
+                       
+                        communicator = new UserServiceCommunicator(receiver);
+                        result = new SlaveUserService(generator, validator, repository, configuration.LoggingEnabled);
+                        Task task = receiver.AcceptConnection();
+                        task.ContinueWith((t) => communicator.RunReceiver());
+                    }    break;
+                default: throw new ArgumentException("Unknown ServiceType");
             }
+            result.AddCommunicator(communicator);
 
-            if (result != null)
-            {
-                result.Name = AppDomain.CurrentDomain.FriendlyName;
-            }
+            result.Name = AppDomain.CurrentDomain.FriendlyName;
 
             return result;
         }
-     }
+
+        public void ConnectMaster(MasterUserService master, IEnumerable<ServiceConfiguration> slaveConfigurations)
+        {
+            Console.WriteLine(RemotingServices.IsTransparentProxy(master));
+            master.Communicator.Connect(slaveConfigurations.Where(c => c.IpEndPoint != null)
+                                                           .Select(c => c.IpEndPoint));
+
+        }
+    }
 
 
 }

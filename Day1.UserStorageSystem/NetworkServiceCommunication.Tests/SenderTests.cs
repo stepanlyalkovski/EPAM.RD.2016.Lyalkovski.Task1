@@ -33,7 +33,7 @@ namespace NetworkServiceCommunication.Tests
 
             var receiver = new Receiver<User>(receiverAddress, receiverPort1);
             var receiver2 = new Receiver<User>(receiverAddress, receiverPort2);
-            var sender = new Sender<User>(receiverAddress, 999);
+            var sender = new Sender<User>();
             var task1 = StartReceiver(receiver);
             var task2 = StartReceiver(receiver2);
             var point1 = new IPEndPoint(receiverAddress, receiverPort1);
@@ -58,11 +58,10 @@ namespace NetworkServiceCommunication.Tests
             return Task.Run(() =>
             {
                 Console.WriteLine("Wait for connection");
-                receiver.WaitConnection();
+                receiver.AcceptConnection();
                 Console.WriteLine("Sender connected to receiver");
-                //receiver.Added += (sender, args) => Console.WriteLine("Event generated! Args: " 
-                //                                                        + args.Entity.LastName);
-                //receiver.RunReceiver();
+                var message = receiver.Receive();
+                Console.WriteLine(message.Entity.LastName);
             });
         }
     }

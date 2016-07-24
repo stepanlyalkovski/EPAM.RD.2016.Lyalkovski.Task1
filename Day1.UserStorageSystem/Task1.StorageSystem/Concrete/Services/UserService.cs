@@ -19,7 +19,7 @@ namespace Task1.StorageSystem.Concrete.Services
         public ValidatorBase<User> Validator { get; set; }
         protected TraceSource TraceSource;
         protected bool LoggingEnabled;
-        protected UserServiceCommunicator Communicator;
+        public UserServiceCommunicator Communicator { get; set; }
         public string Name { get; set; }
         protected UserService(INumGenerator numGenerator, ValidatorBase<User> validator,
             IRepository<User> repository) : this(numGenerator, validator, repository, false)
@@ -63,6 +63,12 @@ namespace Task1.StorageSystem.Concrete.Services
         public virtual List<int> SearchForUsers(Func<User, bool>[] predicates)
         {
             return Repository.SearhByPredicate(predicates).ToList();
+        }
+
+        public virtual void AddCommunicator(UserServiceCommunicator communicator)
+        {
+            if (communicator == null) return;
+            Communicator = communicator;
         }
 
         public abstract void Save();

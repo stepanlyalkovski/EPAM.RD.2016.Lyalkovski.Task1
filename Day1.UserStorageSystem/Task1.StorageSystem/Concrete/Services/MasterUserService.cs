@@ -73,7 +73,7 @@ namespace Task1.StorageSystem.Concrete.Services
         {
             if (LoggingEnabled)
                 TraceSource.TraceEvent(TraceEventType.Information, 0, $"User {args.User.LastName} {args.User.PersonalId} was deleted");
-            Communicator.SendDelete(args);
+            Communicator?.SendDelete(args);
             Deleted?.Invoke(sender, args);
         }
 
@@ -81,7 +81,7 @@ namespace Task1.StorageSystem.Concrete.Services
         {
             if (LoggingEnabled)
                 TraceSource.TraceEvent(TraceEventType.Information, 0, $"User {args.User.LastName} {args.User.PersonalId} was added");
-            Communicator.SendAdd(args);
+            Communicator?.SendAdd(args);
             Added?.Invoke(sender, args);
         }
 

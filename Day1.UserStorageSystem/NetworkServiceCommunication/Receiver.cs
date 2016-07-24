@@ -3,9 +3,11 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Threading.Tasks;
 using NetworkServiceCommunication.Entities; 
 namespace NetworkServiceCommunication
 {
+    [Serializable]
     public class Receiver<TEntity> : IDisposable
     {
         private Socket listener;
@@ -20,21 +22,25 @@ namespace NetworkServiceCommunication
             listener.Listen(1);
         }
 
-        public void WaitConnection()
+        public Task AcceptConnection()
         {
-            Console.WriteLine("Wait Connection");         
-            reciever = listener.Accept();
-            Console.WriteLine("Connection accepted");
+            return Task.Run(() =>
+            {
+                Console.WriteLine("Wait Connection");
+                reciever = listener.Accept();
+                Console.WriteLine("Connection accepted");
+            });
+
         }
 
         public ServiceMessage<TEntity> Receive()
         {
             BinaryFormatter formatter = new BinaryFormatter();
-            Console.WriteLine("Connection has been established");
             ServiceMessage<TEntity> message;
 
             using (var networkStream = new NetworkStream(reciever, false))
             {
+
                 message = (ServiceMessage<TEntity>)formatter.Deserialize(networkStream);
             }
             Console.WriteLine("Message received!");

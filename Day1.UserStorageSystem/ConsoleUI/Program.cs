@@ -13,28 +13,28 @@ namespace ConsoleUI
 {
     class Program
     {
-        public static User SimpleUser { get; set; } = new User
-        {
-            FirstName = "Ivan2",
-            LastName = "Ivanov2",
-            PersonalId = "MP12345",
-            BirthDate = DateTime.Now,
-        };
+        //public static User SimpleUser { get; set; } = new User
+        //{
+        //    FirstName = "Ivan2",
+        //    LastName = "Ivanov2",
+        //    PersonalId = "MP12345",
+        //    BirthDate = DateTime.Now,
+        //};
 
-        public static User AnotherUser { get; set; } = new User
-        {
-            FirstName = "Bob",
-            LastName = "Smith",
-            PersonalId = "MP9999",
-            BirthDate = DateTime.Now,
-        };
-        public static User AnotherUser2 { get; set; } = new User
-        {
-            FirstName = "Jack",
-            LastName = "Smith",
-            PersonalId = "MP3423",
-            BirthDate = DateTime.Now,
-        };
+        //public static User AnotherUser { get; set; } = new User
+        //{
+        //    FirstName = "Bob",
+        //    LastName = "Smith",
+        //    PersonalId = "MP9999",
+        //    BirthDate = DateTime.Now,
+        //};
+        //public static User AnotherUser2 { get; set; } = new User
+        //{
+        //    FirstName = "Jack",
+        //    LastName = "Smith",
+        //    PersonalId = "MP3423",
+        //    BirthDate = DateTime.Now,
+        //};
 
         static void Main(string[] args)
         {
@@ -43,7 +43,6 @@ namespace ConsoleUI
             Console.Clear();
             Console.WriteLine("=========== Welcome to Console App ===========");
             //master.Initialize();
-            services.First().Add(SimpleUser);
             //services.First().Delete(SimpleUser);
             string cmd = String.Empty;
             int requiredNumber = 0;
@@ -56,7 +55,7 @@ namespace ConsoleUI
                 bool parsed = false;
                 if (cmd == "Add")
                 {
-                    master.Add(AnotherUser);
+                    //master.Add(AnotherUser);
                 }
                 if (words.Length > 1)
                 {

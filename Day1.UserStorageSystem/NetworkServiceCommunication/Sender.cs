@@ -8,15 +8,10 @@ using NetworkServiceCommunication.Entities;
 
 namespace NetworkServiceCommunication
 {
+    [Serializable]
     public class Sender<TEntity> : IDisposable
     {
         private IList<Socket> sockets = new List<Socket>();
-        private IPEndPoint _ipEndPoint;
-        public Sender(IPAddress address, int port)
-        {
-            IPAddress ipAddr = address;
-            _ipEndPoint = new IPEndPoint(ipAddr, port);
-        }
 
         public void Connect(IEnumerable<IPEndPoint> ipEndPoints)
         {
@@ -28,6 +23,14 @@ namespace NetworkServiceCommunication
             }
 
         }
+
+        public void Connect(IPEndPoint ipEndPoint)
+        {
+            var socket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
+            socket.Connect(ipEndPoint);
+            sockets.Add(socket);
+        }
+
         public void Send(ServiceMessage<TEntity> message)
         {
             foreach (var socket in sockets)

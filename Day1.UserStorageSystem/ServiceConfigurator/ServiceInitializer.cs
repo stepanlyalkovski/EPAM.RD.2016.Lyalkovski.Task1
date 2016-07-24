@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Runtime.Remoting;
 using System.Text;
 using System.Threading;
@@ -27,25 +29,18 @@ namespace ServiceConfigurator
         {           
             var serviceConfigurations = ParseAppConfig();
             IList<UserService> services = new List<UserService>();
-
-            foreach (var serviceConfiguration in serviceConfigurations)
-            {
-                var service = UserServiceCreator.CreateService(serviceConfiguration);
-                Console.WriteLine("-----Services has been created");
-                services.Add(service);
-            }
-
+            var configurations = serviceConfigurations as ServiceConfiguration[] ?? serviceConfigurations.ToArray();
+            services = UserServiceCreator.CreateServices(configurations).ToList();
+            
             var master = (MasterUserService)services.FirstOrDefault(s => s is MasterUserService);
 
             if (master == null)
             {
                 throw new ConfigurationErrorsException("Master is not exist");
             }
-
             var slaves = services.OfType<SlaveUserService>().ToList();
-            SubscribeServices(master, slaves);
+            //SubscribeServices(master, slaves);
             ThreadInitializer.InitializeThreads(master, slaves);
-
             return services;     
         }
 
@@ -63,12 +58,23 @@ namespace ServiceConfigurator
                 string filePath = FileInitializer.GetXmlFilePath();
                 BooleanSwitch loggingSwitch = new BooleanSwitch("loggingSwitch", "Switch in config file");
 
+                var address = serviceSection.FileItems[i].IpAddress;
+                int port = serviceSection.FileItems[i].Port;
+                IPAddress ipAddress;
+                bool parsed = IPAddress.TryParse(address, out ipAddress);
+                IPEndPoint endPoint = null;
+                if (parsed)
+                {
+                    endPoint = new IPEndPoint(IPAddress.Parse(address), port);
+                }
+                
                 serviceConfigurations.Add(new ServiceConfiguration
                 {
                     Name = serviceName,
                     Type = type,
                     FilePath = filePath,
-                    LoggingEnabled = loggingSwitch.Enabled
+                    LoggingEnabled = loggingSwitch.Enabled,
+                    IpEndPoint = endPoint
                 });
             }
 
@@ -86,14 +92,6 @@ namespace ServiceConfigurator
             {
                 slave.Subscribe(master);
             }
-        }
-
-
-        private static void WrapInDomains(MasterUserService master, IEnumerable<SlaveUserService> slaves)
-        {
-            //var domain = AppDomain.CreateDomain($"Service_{j}", null, null);
-            //services.Add(service);
-
         }
     }
 }

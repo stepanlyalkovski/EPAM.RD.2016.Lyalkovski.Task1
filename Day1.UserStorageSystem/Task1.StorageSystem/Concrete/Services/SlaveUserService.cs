@@ -16,8 +16,7 @@ namespace Task1.StorageSystem.Concrete.Services
         public SlaveUserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository, bool loggingEnabled) 
                         : base(numGenerator, validator, repository, loggingEnabled)
         {
-            Communicator.UserAdded += OnAdded;
-            Communicator.UserDeleted += OnDeleted;
+
         }
         protected override int AddStrategy(User user)
         {
@@ -58,6 +57,12 @@ namespace Task1.StorageSystem.Concrete.Services
             master.Added += OnAdded;
         }
 
+        public override void AddCommunicator(UserServiceCommunicator communicator)
+        {
+            base.AddCommunicator(communicator);
 
+            Communicator.UserAdded += OnAdded;
+            Communicator.UserDeleted += OnDeleted;
+        }
     }
 }
