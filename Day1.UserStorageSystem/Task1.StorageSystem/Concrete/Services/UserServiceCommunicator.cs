@@ -11,7 +11,7 @@ using Task1.StorageSystem.Entities;
 namespace Task1.StorageSystem.Concrete.Services
 {
     [Serializable]
-    public class UserServiceCommunicator : IDisposable
+    public class UserServiceCommunicator : MarshalByRefObject,IDisposable
     {
         public event EventHandler<UserDataApdatedEventArgs> UserAdded;
         public event EventHandler<UserDataApdatedEventArgs> UserDeleted;
@@ -29,9 +29,10 @@ namespace Task1.StorageSystem.Concrete.Services
         public UserServiceCommunicator(Sender<User> sender) : this(sender, null) { }
         public UserServiceCommunicator(Receiver<User> receiver) : this(null, receiver) { }
 
-        public void RunReceiver()
+        public async void RunReceiver()
         {
-            if(_receiver == null) return;
+            await _receiver.AcceptConnection();
+            if (_receiver == null) return;
             tokenSource = new CancellationTokenSource();
             recieverTask = Task.Run((Action)ReceiveMessages, tokenSource.Token);
         }

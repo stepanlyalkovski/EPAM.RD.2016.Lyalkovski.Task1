@@ -35,7 +35,7 @@ namespace ServiceConfigurator.Tests
         //{
         //    int serviceCount = 3;
 
-        //    var service = ServiceInitializer.InitializeServices().First();
+        //    var service = UserServiceInitializer.InitializeServices().First();
 
         //    Assert.IsTrue(RemotingServices.IsTransparentProxy(service));
         //}

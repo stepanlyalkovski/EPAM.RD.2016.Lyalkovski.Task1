@@ -17,7 +17,7 @@ namespace ServiceConfigurator.DomainServiceLoading
 {
     public class DomainServiceLoader : MarshalByRefObject
     {
-        public UserService LoadService(string assemblyString, ServiceConfiguration configuration)
+        public UserService LoadDomainService(string assemblyString, ServiceConfiguration configuration)
         {
             //ServiceConfigurator includes Service dll so we don't need to Load in explicitly
             //var assembly = Assembly.LoadFrom(assemblyString); 
@@ -36,43 +36,52 @@ namespace ServiceConfigurator.DomainServiceLoading
                 worker = new UserXmlFileWorker();
             }
             IRepository<User> repository = new UserRepository(worker, configuration.FilePath);
-            UserService result = null;
-            UserServiceCommunicator communicator = null;
+            UserService domainService;
+            UserServiceCommunicator communicator;
             switch (configuration.Type)
             {
                     case ServiceType.Master:
                     {
-                        Sender<User> sender = new Sender<User>();
-                        communicator = new UserServiceCommunicator(sender);
-                        result = new MasterUserService(generator, validator,
+                        domainService = new MasterUserService(generator, validator,
                             repository, configuration.LoggingEnabled);
-                    }
-                    
+
+                        communicator = GetMasterCommunicator();                        
+                    }      
                     break;
+
                     case ServiceType.Slave:
                     {
+                        domainService = new SlaveUserService(generator, validator, repository,
+                                                                    configuration.LoggingEnabled);
+
                         Receiver<User> receiver = new Receiver<User>(configuration.IpEndPoint.Address, 
                                                                         configuration.IpEndPoint.Port);
                        
                         communicator = new UserServiceCommunicator(receiver);
-                        result = new SlaveUserService(generator, validator, repository, configuration.LoggingEnabled);
-                        Task task = receiver.AcceptConnection();
-                        task.ContinueWith((t) => communicator.RunReceiver());
+                        
+                        //Task task = receiver.AcceptConnection();
+                        //task.ContinueWith((t) => communicator.RunReceiver());
                     }    break;
+
                 default: throw new ArgumentException("Unknown ServiceType");
             }
-            result.AddCommunicator(communicator);
+            domainService.AddCommunicator(communicator);
 
-            result.Name = AppDomain.CurrentDomain.FriendlyName;
+            domainService.Name = AppDomain.CurrentDomain.FriendlyName;
 
-            return result;
+            return domainService;
         }
 
-        public void ConnectMaster(MasterUserService master, IEnumerable<ServiceConfiguration> slaveConfigurations)
-        {
-            master.Communicator.Connect(slaveConfigurations.Where(c => c.IpEndPoint != null)
-                                                           .Select(c => c.IpEndPoint));
+        //public void ConnectMaster(MasterUserService master, IEnumerable<ServiceConfiguration> slaveConfigurations)
+        //{
+        //    master.Communicator.Connect(slaveConfigurations.Where(c => c.IpEndPoint != null)
+        //                                                   .Select(c => c.IpEndPoint));
+        //}
 
+        private UserServiceCommunicator GetMasterCommunicator()
+        {
+            var sender = new Sender<User>();
+            return new UserServiceCommunicator(sender);
         }
     }
 

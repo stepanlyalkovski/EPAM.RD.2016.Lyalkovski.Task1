@@ -38,7 +38,7 @@ namespace ConsoleUI
 
         static void Main(string[] args)
         {
-            IList<UserService> services = ServiceInitializer.InitializeServices().ToList();
+            IList<UserService> services = UserServiceInitializer.InitializeServices().ToList();
             var master = services.FirstOrDefault(s => s is MasterUserService);
             Console.Clear();
             Console.WriteLine("=========== Welcome to Console App ===========");

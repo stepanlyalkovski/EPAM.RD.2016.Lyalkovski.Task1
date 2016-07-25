@@ -26,9 +26,9 @@ namespace NetworkServiceCommunication
         {
             return Task.Run(() =>
             {
-                Console.WriteLine("Wait Connection");
+                Debug.WriteLine("Wait Connection");
                 reciever = listener.Accept();
-                Console.WriteLine("Connection accepted");
+                Debug.WriteLine("Connection accepted");
             });
 
         }
@@ -43,7 +43,7 @@ namespace NetworkServiceCommunication
 
                 message = (ServiceMessage<TEntity>)formatter.Deserialize(networkStream);
             }
-            Console.WriteLine("Message received!");
+            Debug.WriteLine("Message received!");
             return message;
         }
 
