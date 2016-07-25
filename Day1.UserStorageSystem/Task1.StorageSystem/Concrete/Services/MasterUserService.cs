@@ -27,8 +27,6 @@ namespace Task1.StorageSystem.Concrete.Services
 
         protected override int AddStrategy(User user)
         {
-            Console.WriteLine("AddStrategy: " + AppDomain.CurrentDomain.FriendlyName);
-
             var errorMessages = Validator.Validate(user).ToList();
             if (errorMessages.Any())
             {

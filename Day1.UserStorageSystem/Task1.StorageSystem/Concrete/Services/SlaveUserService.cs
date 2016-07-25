@@ -40,15 +40,32 @@ namespace Task1.StorageSystem.Concrete.Services
 
         private void OnAdded(object sender, UserDataApdatedEventArgs args)
         {
-
+            storageLock.EnterWriteLock();
+            try
+            {
                 Debug.WriteLine("On Added! " + AppDomain.CurrentDomain.FriendlyName);
                 Repository.Add(args.User);
                 LastGeneratedId = args.User.Id;
+            }
+            finally
+            {
+                storageLock.ExitWriteLock();
+            }
+                
         }
 
         private void OnDeleted(object sender, UserDataApdatedEventArgs args)
         {
-            Repository.Delete(args.User);
+            storageLock.EnterWriteLock();
+            try
+            {
+                Repository.Delete(args.User);
+            }
+            finally
+            {
+                storageLock.ExitWriteLock();
+            }
+            
         }
 
         public void Subscribe(MasterUserService master)

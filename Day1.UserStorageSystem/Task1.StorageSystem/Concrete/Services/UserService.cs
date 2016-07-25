@@ -14,12 +14,13 @@ namespace Task1.StorageSystem.Concrete.Services
     public abstract class UserService : MarshalByRefObject
     {
         protected INumGenerator NumGenerator;
-        protected IRepository<User> Repository;
-        public int LastGeneratedId { get; protected set; } //temp        
-        public ValidatorBase<User> Validator { get; set; }
+        protected IRepository<User> Repository;                    
         protected TraceSource TraceSource;
         protected bool LoggingEnabled;
+        protected ReaderWriterLockSlim storageLock = new ReaderWriterLockSlim();
+        public ValidatorBase<User> Validator { get; set; }
         public UserServiceCommunicator Communicator { get; set; }
+        public int LastGeneratedId { get; protected set; } //temp
         public string Name { get; set; }
         protected UserService(INumGenerator numGenerator, ValidatorBase<User> validator,
             IRepository<User> repository) : this(numGenerator, validator, repository, false)
@@ -41,20 +42,36 @@ namespace Task1.StorageSystem.Concrete.Services
 
         public int Add(User user)
         {
-            bool lockTaken = false;
+            storageLock.EnterWriteLock();
+            try
+            {
+                if (LoggingEnabled)
+                    TraceSource.TraceEvent(TraceEventType.Information, 0, $"Adding User: {user.LastName} {user.PersonalId}");
 
-            if (LoggingEnabled)
-                TraceSource.TraceEvent(TraceEventType.Information, 0, $"Adding User: {user.LastName} {user.PersonalId}");
-
-            return AddStrategy(user);
+                return AddStrategy(user);
+            }
+            finally
+            {
+                storageLock.ExitWriteLock();
+            }
+            
         }
 
         public void Delete(User user)
         {
-            if (LoggingEnabled)
-                TraceSource.TraceEvent(TraceEventType.Information, 0, $"Deleting User: {user.LastName} {user.PersonalId}");
+            storageLock.EnterWriteLock();
+            try
+            {
+                if (LoggingEnabled)
+                    TraceSource.TraceEvent(TraceEventType.Information, 0, $"Deleting User: {user.LastName} {user.PersonalId}");
 
-            DeleteStrategy(user);
+                DeleteStrategy(user);
+            }
+            finally
+            {
+                storageLock.ExitWriteLock();
+            }
+            
         }
 
         protected abstract int AddStrategy(User user);
@@ -62,7 +79,16 @@ namespace Task1.StorageSystem.Concrete.Services
 
         public virtual List<int> SearchForUsers(Func<User, bool>[] predicates)
         {
-            return Repository.SearhByPredicate(predicates).ToList();
+            storageLock.EnterReadLock();
+            try
+            {
+                return Repository.SearhByPredicate(predicates).ToList();
+            }
+            finally
+            {
+                storageLock.ExitReadLock();
+            }
+            
         }
 
         public virtual void AddCommunicator(UserServiceCommunicator communicator)

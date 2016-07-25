@@ -39,6 +39,7 @@ namespace ServiceConfigurator
                 throw new ConfigurationErrorsException("Master is not exist");
             }
             var slaves = services.OfType<SlaveUserService>().ToList();
+
             //SubscribeServices(master, slaves);
             ThreadInitializer.InitializeThreads(master, slaves);
             return services;     

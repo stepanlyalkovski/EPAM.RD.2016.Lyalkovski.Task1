@@ -70,7 +70,6 @@ namespace ServiceConfigurator.DomainServiceLoading
 
         public void ConnectMaster(MasterUserService master, IEnumerable<ServiceConfiguration> slaveConfigurations)
         {
-            Console.WriteLine(RemotingServices.IsTransparentProxy(master));
             master.Communicator.Connect(slaveConfigurations.Where(c => c.IpEndPoint != null)
                                                            .Select(c => c.IpEndPoint));
 

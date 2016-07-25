@@ -12,6 +12,7 @@ using Task1.StorageSystem.Interfaces;
 using System.Configuration;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using Castle.Core.Internal;
 using ServiceConfigurator;
 using ServiceConfigurator.CustomSections.Files;
@@ -275,16 +276,67 @@ namespace Task1.Tests
             Assert.AreNotEqual(SimpleUser.Id, userRepositoryId);
         }
 
-    //    [Test]
-    //    public void Logging_Test()
-    //    {
-    //        var userMemoryRepository = new UserRepository(null, null);
-    //        ValidatorBase<User> validator = new SimpleUserValidator();
-    //        BooleanSwitch loggingSwitch = new BooleanSwitch("loggingSwitch", "Switch in config file");
-    //        Service = new MasterUserService(FakeNumGenerator, FakeValidator, userMemoryRepository, loggingSwitch.Enabled);
-    //        Service.Add(SimpleUser);
+        [Test]
+        public void ThreadSynchronization_Test()
+        {
+            Random random = new Random();
+            var userRepository = new UserRepository(null, null);
+            ValidatorBase<User> validator = new EmptyUserValidator();
+            Service = new MasterUserService(new EvenIdGenerator(), validator, userRepository);
+            int threadsCount = 5;
+            int iterationCount = 10;
+            IList<Thread> threads = new List<Thread>(threadsCount);
+            var readThread = new Thread(() =>
+            {
+                int iterations = iterationCount;
+                while (iterations-- > 0)
+                {
+                    var usersIds = Service.SearchForUsers(new Func<User, bool>[]
+                    {
+                        u => u.PersonalId != null
+                    });
+                    Console.WriteLine("Users ID: ");
+                    foreach (var userId in usersIds)
+                    {
+                        Console.Write(userId + " ");
+                    }
+                    Console.WriteLine();
+                    Thread.Sleep(2500);
+                }
+            });
+            readThread.Start();
+            for (int i = 0; i < threadsCount; i++)
+            {
+                var user = new User
+                {
+                    PersonalId = $"MP{i}"
+                };
+                var thread = new Thread(() =>
+                {
+                    int iterations = iterationCount;
+                    while (iterations-- > 0)
+                    {
+                        Service.Add(user);
+                        Console.WriteLine("User added " + user.PersonalId);
+                        Thread.Sleep((int)(random.NextDouble() * 10000));
+                        Service.Delete(user);
+                        Console.WriteLine("User deleted " + user.PersonalId);
+                        Thread.Sleep((int)(random.NextDouble() * 10000));
+                    }
+                });
+                threads.Add(thread);
+            }
+            foreach (var thread in threads)
+            {
+                thread.Start();
+            }
 
-    //}
+            foreach (var thread in threads)
+            {
+                thread.Join();
+            }
+        }
+
     }
 
 }
