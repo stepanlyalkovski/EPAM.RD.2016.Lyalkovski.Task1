@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Remoting;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using ServiceConfigurator;
 using Task1.StorageSystem.Concrete.Services;
@@ -40,6 +41,30 @@ namespace ConsoleUI
         {
             IList<UserService> services = UserServiceInitializer.InitializeServices().ToList();
             var master = services.FirstOrDefault(s => s is MasterUserService);
+            Random rand = new Random();
+            ThreadStart masterSearch = () =>
+            {
+                
+                while (true)
+                {
+                    var serachresult = master.SearchForUsers(new Func<User, bool>[]
+                    {
+                        u => u.PersonalId != null
+                    });
+                    Console.Write("Another master thread search result: ");
+                    foreach (var result in serachresult)
+                    {
+                        Console.Write(result + " ");
+                    }
+                    Console.WriteLine();
+                    Thread.Sleep((int)(rand.NextDouble()*5000));
+                }
+
+            };
+            Thread masterSearchThread = new Thread(masterSearch);
+            Thread masterSearchThread2 = new Thread(masterSearch);
+            masterSearchThread.Start();
+            masterSearchThread2.Start();
             Console.Clear();
             Console.WriteLine("=========== Welcome to Console App ===========");
             //master.Initialize();

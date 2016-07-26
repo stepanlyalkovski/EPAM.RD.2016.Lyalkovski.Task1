@@ -190,33 +190,6 @@ namespace Task1.Tests
         }
 
         [Test]
-        public void ConfigTest()
-        {
-            string filePath = FileInitializer.GetFilePath();
-            var userMemoryRepository = new UserRepository(new UserXmlFileWorker(), filePath);
-            ValidatorBase<User> validator = new SimpleUserValidator();
-            int lastId = 20;
-            Service = new MasterUserService(new EvenIdGenerator(lastId), validator, userMemoryRepository);
-            VisaRecord record = new VisaRecord
-            {
-                Country = "someCountry",
-                StartDate = DateTime.MinValue,
-                EndDate = DateTime.Now
-            };
-            var firstUser = new User
-            {
-                FirstName = "Ivan2",
-                LastName = "Ivanov2",
-                PersonalId = "MP12345",
-                BirthDate = DateTime.Now,
-                VisaRecords = new List<VisaRecord> { record }
-            };
-
-            Service.Add(firstUser);
-            Service.Save();
-        }
-
-        [Test]
         public void Initialize_GetUsersFromXmlWithLastGeneratedId_ReturnedProperId()
         {
             string filePath = "D://forTests.xml";
@@ -284,7 +257,7 @@ namespace Task1.Tests
             ValidatorBase<User> validator = new EmptyUserValidator();
             Service = new MasterUserService(new EvenIdGenerator(), validator, userRepository);
             int threadsCount = 5;
-            int iterationCount = 10;
+            int iterationCount = 3;
             IList<Thread> threads = new List<Thread>(threadsCount);
             var readThread = new Thread(() =>
             {
@@ -301,7 +274,7 @@ namespace Task1.Tests
                         Console.Write(userId + " ");
                     }
                     Console.WriteLine();
-                    Thread.Sleep(2500);
+                    Thread.Sleep(2000);
                 }
             });
             readThread.Start();
@@ -318,10 +291,10 @@ namespace Task1.Tests
                     {
                         Service.Add(user);
                         Console.WriteLine("User added " + user.PersonalId);
-                        Thread.Sleep((int)(random.NextDouble() * 10000));
+                        Thread.Sleep((int)(random.NextDouble() * 1000));
                         Service.Delete(user);
                         Console.WriteLine("User deleted " + user.PersonalId);
-                        Thread.Sleep((int)(random.NextDouble() * 10000));
+                        Thread.Sleep((int)(random.NextDouble() * 1000));
                     }
                 });
                 threads.Add(thread);

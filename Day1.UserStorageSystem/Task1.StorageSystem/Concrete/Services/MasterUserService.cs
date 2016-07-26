@@ -34,10 +34,10 @@ namespace Task1.StorageSystem.Concrete.Services
                                                                 "ValidationMessages: " + string.Join("\n",errorMessages));
                 throw new ArgumentException("Validation error! User is not valid\nValidationMessages: " + string.Join("\n", errorMessages));
             }
-            if (UserExists(user))
-            {
-                throw new ArgumentException("That User was added before!");
-            }
+            //if (UserExists(user))
+            //{
+            //    throw new ArgumentException("That User was added before!");
+            //}
             user.Id = NumGenerator.GenerateId();
             Repository.Add(user);
             OnUserAdded(this, new UserDataApdatedEventArgs {User = user});

@@ -33,12 +33,10 @@ namespace Task1.Tests
             Sender<User> sender = new Sender<User>();
             Receiver<User> slaveReceiver1 = new Receiver<User>(receiverAddress, receiverPort1);
             Receiver<User> slaveReceiver2 = new Receiver<User>(receiverAddress, receiverPort2);
-            sender.Connect(new List<IPEndPoint> {slaveReceiver1.IpEndPoint, slaveReceiver2.IpEndPoint});
-            slaveReceiver1.AcceptConnection();
-            slaveReceiver2.AcceptConnection();
             UserServiceCommunicator masterCommunicator = new UserServiceCommunicator(sender);
             UserServiceCommunicator slaveCommunicator1 = new UserServiceCommunicator(slaveReceiver1);
             UserServiceCommunicator slaveCommunicator2 = new UserServiceCommunicator(slaveReceiver2);
+            masterCommunicator.Connect(new []{slaveReceiver1.IpEndPoint, slaveReceiver2.IpEndPoint});
             slaveCommunicator1.RunReceiver();
             slaveCommunicator2.RunReceiver();
             slaveCommunicator1.UserAdded += (o, args) => Console.WriteLine("Event Generated in Slave 1! " + args.User.LastName);
