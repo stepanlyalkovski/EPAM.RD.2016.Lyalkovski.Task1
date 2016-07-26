@@ -58,9 +58,6 @@ namespace ServiceConfigurator.DomainServiceLoading
                                                                         configuration.IpEndPoint.Port);
                        
                         communicator = new UserServiceCommunicator(receiver);
-                        
-                        //Task task = receiver.AcceptConnection();
-                        //task.ContinueWith((t) => communicator.RunReceiver());
                     }    break;
 
                 default: throw new ArgumentException("Unknown ServiceType");
@@ -71,12 +68,6 @@ namespace ServiceConfigurator.DomainServiceLoading
 
             return domainService;
         }
-
-        //public void ConnectMaster(MasterUserService master, IEnumerable<ServiceConfiguration> slaveConfigurations)
-        //{
-        //    master.Communicator.Connect(slaveConfigurations.Where(c => c.IpEndPoint != null)
-        //                                                   .Select(c => c.IpEndPoint));
-        //}
 
         private UserServiceCommunicator GetMasterCommunicator()
         {

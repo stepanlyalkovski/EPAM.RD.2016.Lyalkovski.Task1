@@ -98,6 +98,7 @@ namespace ServiceConfigurator
                     }
 
                 });
+                slaveThread.IsBackground = true;
                 slaveThread.Start();
                 slaveThread.IsBackground = true;
                 threads.Add(slaveThread);

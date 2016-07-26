@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -22,11 +23,22 @@ namespace ServiceConfigurator
     {
         public static IEnumerable<UserService> CreateServices(IEnumerable<ServiceConfiguration> configurations)
         {
-            return configurations.Select(CreateService).ToList();
+            var serviceConfigurations = configurations as ServiceConfiguration[] ?? configurations.ToArray();
+
+            bool namesAreUnique = CheckUniqueName(serviceConfigurations);
+            if(!namesAreUnique)
+                throw new ConfigurationErrorsException("Service's names must be unique!");
+
+            bool validNetworkConfiguration = CheckNetworkConfiguration(serviceConfigurations);
+            if(!validNetworkConfiguration)
+                throw new ConfigurationErrorsException("Some of services don't have ip Address");
+
+            return serviceConfigurations.Select(CreateService).ToList();
         }
 
         private static UserService CreateService(ServiceConfiguration configuration)
         {
+            
             var domain = AppDomain.CreateDomain(configuration.Name, null, null);
             var type = typeof(DomainServiceLoader);
             var loader = (DomainServiceLoader)domain.CreateInstanceAndUnwrap(Assembly.GetAssembly(type).FullName, type.FullName);
@@ -42,6 +54,18 @@ namespace ServiceConfigurator
             return loader.LoadDomainService(path, configuration);
         }
 
+        private static bool CheckNetworkConfiguration(IEnumerable<ServiceConfiguration> configuration)
+        {
+            var slavesConfig = configuration.Where(c => c.Type == ServiceType.Slave).ToList();
+            return slavesConfig.All(serviceConfiguration => serviceConfiguration.IpEndPoint?.Address != null);
+        }
+
+        private static bool CheckUniqueName(IEnumerable<ServiceConfiguration> configurations)
+        {
+            var configurationNames = configurations.Select(c => c.Name).ToList();
+
+            return configurationNames.Distinct().Count() == configurationNames.Count;
+        }
 
     }
 }
