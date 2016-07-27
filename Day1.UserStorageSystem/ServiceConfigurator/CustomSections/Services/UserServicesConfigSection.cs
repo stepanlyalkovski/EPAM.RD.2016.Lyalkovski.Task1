@@ -9,7 +9,8 @@ namespace ServiceConfigurator.CustomSections.Services
 {
     public class UserServicesConfigSection : ConfigurationSection
     {
+        
         [ConfigurationProperty("Services")]
-        public UserServicesCollection FileItems => (UserServicesCollection)base["Services"];
+        public UserServicesCollection ServiceItems => (UserServicesCollection)base["Services"];
     }
 }

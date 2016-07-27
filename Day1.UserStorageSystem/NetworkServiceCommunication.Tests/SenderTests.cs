@@ -38,7 +38,7 @@ namespace NetworkServiceCommunication.Tests
             var task2 = StartReceiver(receiver2);
             var point1 = new IPEndPoint(receiverAddress, receiverPort1);
             var point2 = new IPEndPoint(receiverAddress, receiverPort2);
-            sender.Connect(new List<IPEndPoint> {point1, point2});
+            sender.ConnectGroup(new List<IPEndPoint> {point1, point2});
             Console.WriteLine("Connected!");
             Thread.Sleep(3000);
             sender.Send(new ServiceMessage<User>

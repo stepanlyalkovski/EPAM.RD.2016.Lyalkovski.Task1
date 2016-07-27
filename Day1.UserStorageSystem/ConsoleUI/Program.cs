@@ -40,14 +40,14 @@ namespace ConsoleUI
         static void Main(string[] args)
         {
             IList<UserService> services = UserServiceInitializer.InitializeServices().ToList();
-
-
             Console.Clear();
             Console.WriteLine("=========== Welcome to Console App ===========");
             //master.Initialize();
-            
-            AddSomeMasterThreads((MasterUserService)services.First(s => s is MasterUserService));
-
+            var master = services.FirstOrDefault(s => s is MasterUserService);
+            if (master != null)
+            {
+                AddSomeMasterThreads((MasterUserService)master);
+            }
             string cmd = String.Empty;
             int requiredNumber = 0;
             while (cmd != "exit")

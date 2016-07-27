@@ -36,7 +36,7 @@ namespace Task1.Tests
             UserServiceCommunicator masterCommunicator = new UserServiceCommunicator(sender);
             UserServiceCommunicator slaveCommunicator1 = new UserServiceCommunicator(slaveReceiver1);
             UserServiceCommunicator slaveCommunicator2 = new UserServiceCommunicator(slaveReceiver2);
-            masterCommunicator.Connect(new []{slaveReceiver1.IpEndPoint, slaveReceiver2.IpEndPoint});
+            masterCommunicator.ConnectGroup(new []{slaveReceiver1.IpEndPoint, slaveReceiver2.IpEndPoint});
             slaveCommunicator1.RunReceiver();
             slaveCommunicator2.RunReceiver();
             slaveCommunicator1.UserAdded += (o, args) => Console.WriteLine("Event Generated in Slave 1! " + args.User.LastName);

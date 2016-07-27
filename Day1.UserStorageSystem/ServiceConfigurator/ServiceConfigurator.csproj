@@ -42,10 +42,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConfigParser.cs" />
+    <Compile Include="CustomSections\Dependencies\DependencyConfigSection.cs" />
+    <Compile Include="CustomSections\Dependencies\DependencyElement.cs" />
+    <Compile Include="CustomSections\Dependencies\MasterServiceCollection.cs" />
     <Compile Include="CustomSections\Files\FileCollection.cs" />
     <Compile Include="CustomSections\Files\FileElement.cs" />
     <Compile Include="CustomSections\Files\StartupFilesConfigSection.cs" />
+    <Compile Include="DependencyInitializer.cs" />
     <Compile Include="DomainServiceLoading\DomainServiceLoader.cs" />
+    <Compile Include="Entities\DependencyConfiguration.cs" />
     <Compile Include="Entities\ServiceConfiguration.cs" />
     <Compile Include="CustomSections\Services\ServiceElement.cs" />
     <Compile Include="CustomSections\Services\UserServicesCollection.cs" />
@@ -65,6 +70,7 @@
       <Name>StorageSystem</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

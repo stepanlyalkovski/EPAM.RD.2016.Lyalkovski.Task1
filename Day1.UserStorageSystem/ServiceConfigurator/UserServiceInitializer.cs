@@ -27,28 +27,28 @@ namespace ServiceConfigurator
         //TODO create interface with Settings so you'll be able to test creator
         public static IEnumerable<UserService> InitializeServices()
         {           
-            var serviceConfigurations = ConfigParser.ParseAppConfig();
-
+            var serviceConfigurations = ConfigParser.ParseServiceConfigSection();
+            var dependencyConfugiration = ConfigParser.ParseDependencyConfiguration();
             var configurations = serviceConfigurations as IList<ServiceConfiguration> ?? serviceConfigurations.ToList();
 
             IList<UserService> services = UserServiceCreator.CreateServices(configurations).ToList();
 
-            InitializeComponents(services, configurations);
+            InitializeComponents(services, configurations, dependencyConfugiration);
 
             return services;     
         }
 
         private static void InitializeComponents(IEnumerable<UserService> services,
-            IEnumerable<ServiceConfiguration> configurations)
+            IEnumerable<ServiceConfiguration> configurations, DependencyConfiguration dependencyConfiguration)
         {
             var userServices = services as IList<UserService> ?? services.ToList();
 
             var master = (MasterUserService)userServices.FirstOrDefault(s => s is MasterUserService);
 
-            if (master == null)
-            {
-                throw new ConfigurationErrorsException("Master is not exist");
-            }
+            //if (master == null)
+            //{
+            //    throw new ConfigurationErrorsException("Master is not exist");
+            //}
 
             var slaves = userServices.OfType<SlaveUserService>().ToList();
 
@@ -56,7 +56,8 @@ namespace ServiceConfigurator
                                                 .Select(c => c.IpEndPoint)
                                                 .ToList();
 
-            master.Communicator.Connect(slavesAddresses);
+            //master.Communicator.ConnectGroup(slavesAddresses);
+            DependencyInitializer.InitalizeDependencies(master, dependencyConfiguration);
             foreach (var slaveUserService in slaves)
             {
                 slaveUserService.Communicator.RunReceiver();

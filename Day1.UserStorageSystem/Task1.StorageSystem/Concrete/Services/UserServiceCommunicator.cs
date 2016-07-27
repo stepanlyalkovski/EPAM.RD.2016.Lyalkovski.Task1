@@ -37,10 +37,11 @@ namespace Task1.StorageSystem.Concrete.Services
             recieverTask = Task.Run((Action)ReceiveMessages, tokenSource.Token);
         }
 
-        public void Connect(IEnumerable<IPEndPoint> endPoints)
+        public void ConnectGroup(IEnumerable<IPEndPoint> endPoints)
         {
-            _sender.Connect(endPoints);
+            _sender.ConnectGroup(endPoints);
         }
+       
 
         public void StopReceiver()
         {

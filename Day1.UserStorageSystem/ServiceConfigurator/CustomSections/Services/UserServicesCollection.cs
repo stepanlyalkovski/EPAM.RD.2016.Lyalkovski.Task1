@@ -8,7 +8,7 @@ using ServiceConfigurator.CustomSections.Files;
 
 namespace ServiceConfigurator.CustomSections.Services
 {
-    [ConfigurationCollection(typeof(FileElement))]
+    [ConfigurationCollection(typeof(ServiceElement))]
     public class UserServicesCollection : ConfigurationElementCollection
     {
         protected override ConfigurationElement CreateNewElement()

@@ -13,7 +13,7 @@ namespace NetworkServiceCommunication
     {
         private IList<Socket> sockets = new List<Socket>();
 
-        public void Connect(IEnumerable<IPEndPoint> ipEndPoints)
+        public void ConnectGroup(IEnumerable<IPEndPoint> ipEndPoints)
         {
             foreach (var ipEndPoint in ipEndPoints)
             {
@@ -23,7 +23,6 @@ namespace NetworkServiceCommunication
             }
 
         }
-
         public void Connect(IPEndPoint ipEndPoint)
         {
             var socket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -35,6 +34,7 @@ namespace NetworkServiceCommunication
         {
             foreach (var socket in sockets)
             {
+                //TODO Make xml formatter
                 BinaryFormatter formatter = new BinaryFormatter();
                 using (NetworkStream networkStream = new NetworkStream(socket, false))
                 {

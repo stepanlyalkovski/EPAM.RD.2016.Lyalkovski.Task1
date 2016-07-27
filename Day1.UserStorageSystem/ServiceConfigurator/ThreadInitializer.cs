@@ -47,35 +47,39 @@ namespace ServiceConfigurator
         public static IEnumerable<Thread> InitializeThreads(MasterUserService master, IEnumerable<SlaveUserService> slaves)
         {
             IList<Thread> threads = new List<Thread>();
-            var masterThread = new Thread(() =>
+
+            if (master != null)
             {
-                User previousUser = null;
-                while (true)
+                var masterThread = new Thread(() =>
                 {
-                    foreach (var user in _userTestCollection)
+                    User previousUser = null;
+                    while (true)
                     {
-                        master.Add(user);
-                        Thread.Sleep(6000);
-                        if (previousUser != null)
+                        foreach (var user in _userTestCollection)
                         {
-                            master.Delete(previousUser);
+                            master.Add(user);
+                            Thread.Sleep(6000);
+                            if (previousUser != null)
+                            {
+                                master.Delete(previousUser);
+                            }
+                            previousUser = user;
+                            Thread.Sleep(6000);
+                            Console.WriteLine(lines + "\n" + "Master Search: ");
+                            var userIds = master.SearchForUsers(new[] { _searchFoAllUserPredicate });
+                            Console.Write("User's IDs: ");
+                            foreach (var userId in userIds)
+                            {
+                                Console.Write(userId + " ");
+                            }
+                            Console.WriteLine("\n" + lines + "\n");
                         }
-                        previousUser = user;
-                        Thread.Sleep(6000);
-                        Console.WriteLine(lines + "\n" + "Master Search: ");
-                        var userIds = master.SearchForUsers(new[] { _searchFoAllUserPredicate });
-                        Console.Write("User's IDs: ");
-                        foreach (var userId in userIds)
-                        {
-                            Console.Write(userId + " ");
-                        }
-                        Console.WriteLine("\n" + lines + "\n");
                     }
-                }
-            });
-            masterThread.IsBackground = true;
-            masterThread.Start();
-            threads.Add(masterThread);
+                });
+                masterThread.IsBackground = true;
+                masterThread.Start();
+                threads.Add(masterThread);
+            }
 
             foreach (var slave in slaves)
             {
