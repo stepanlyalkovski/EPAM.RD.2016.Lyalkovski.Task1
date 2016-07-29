@@ -11,8 +11,8 @@ namespace ConsoleClient
     {
         static void Main(string[] args)
         {
-            UserServiceContractClient client = new UserServiceContractClient();
-            
+            var master = new UserServiceContractClient("master");
+            //var slave = new UserServiceContractClient("slave_1");
             User user = new User
             {
                 FirstNamek__BackingField = "first_Name",
@@ -20,11 +20,14 @@ namespace ConsoleClient
                 BirthDatek__BackingField = DateTime.Now,
                 PersonalIdk__BackingField = "MP1987"
             };
+            
             Console.WriteLine("ready");
             Console.ReadLine();
-            client.Add(user);
+            master.Add(user);
             Console.ReadLine();
-            client.Delete(user);
+            master.Delete(user);
+            Console.ReadLine();
+            //slave.Add(user);
         }
     }
 }

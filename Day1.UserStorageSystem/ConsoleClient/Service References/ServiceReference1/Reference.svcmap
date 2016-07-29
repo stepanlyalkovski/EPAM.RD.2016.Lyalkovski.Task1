@@ -19,16 +19,16 @@
     <ServiceContractMappings />
   </ClientOptions>
   <MetadataSources>
-    <MetadataSource Address="http://localhost:8080/MasterUserService" Protocol="http" SourceId="1" />
+    <MetadataSource Address="http://localhost:8080/UserService/Master_Service" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="MasterUserService.disco" MetadataType="Disco" ID="65da85dc-a02b-4331-8a15-2d2fbdb55510" SourceId="1" SourceUrl="http://localhost:8080/MasterUserService?disco" />
-    <MetadataFile FileName="MasterUserService.xsd" MetadataType="Schema" ID="616f4c51-c919-4a35-be2a-ff15ac369faf" SourceId="1" SourceUrl="http://localhost:8080/MasterUserService?xsd=xsd0" />
-    <MetadataFile FileName="MasterUserService.wsdl" MetadataType="Wsdl" ID="07ddcbe0-c88c-4f0f-8c31-18c3fd00b2bb" SourceId="1" SourceUrl="http://localhost:8080/MasterUserService?wsdl" />
-    <MetadataFile FileName="MasterUserService1.xsd" MetadataType="Schema" ID="2ebf545a-de5e-4950-94b1-d635eaa00598" SourceId="1" SourceUrl="http://localhost:8080/MasterUserService?xsd=xsd2" />
-    <MetadataFile FileName="MasterUserService2.xsd" MetadataType="Schema" ID="0bf5b9ea-c4a8-43af-822a-59545ac1533c" SourceId="1" SourceUrl="http://localhost:8080/MasterUserService?xsd=xsd3" />
-    <MetadataFile FileName="MasterUserService3.xsd" MetadataType="Schema" ID="aac994c5-6e51-46de-bdf4-e2d8bd5406a9" SourceId="1" SourceUrl="http://localhost:8080/MasterUserService?xsd=xsd4" />
-    <MetadataFile FileName="MasterUserService4.xsd" MetadataType="Schema" ID="5b49962e-fc85-40ab-b8cc-64587309c124" SourceId="1" SourceUrl="http://localhost:8080/MasterUserService?xsd=xsd1" />
+    <MetadataFile FileName="Master_Service.xsd" MetadataType="Schema" ID="cc69f0e8-d630-4de4-b0c3-3d5ee9ed7bd6" SourceId="1" SourceUrl="http://localhost:8080/UserService/Master_Service?xsd=xsd2" />
+    <MetadataFile FileName="Master_Service.disco" MetadataType="Disco" ID="c21a018b-dd28-4bc0-9839-67d55bdf3e6f" SourceId="1" SourceUrl="http://localhost:8080/UserService/Master_Service?disco" />
+    <MetadataFile FileName="Master_Service1.xsd" MetadataType="Schema" ID="58c25036-8120-4c87-b75a-881b2e22bec5" SourceId="1" SourceUrl="http://localhost:8080/UserService/Master_Service?xsd=xsd3" />
+    <MetadataFile FileName="Master_Service2.xsd" MetadataType="Schema" ID="fd4ed77e-eb50-46dc-8062-a2fb5b09c262" SourceId="1" SourceUrl="http://localhost:8080/UserService/Master_Service?xsd=xsd0" />
+    <MetadataFile FileName="Master_Service3.xsd" MetadataType="Schema" ID="4694864e-ad8c-4eeb-a059-7e35196a22ea" SourceId="1" SourceUrl="http://localhost:8080/UserService/Master_Service?xsd=xsd1" />
+    <MetadataFile FileName="Master_Service4.xsd" MetadataType="Schema" ID="b2b07c84-1124-41e6-b33a-25c6f855c6cf" SourceId="1" SourceUrl="http://localhost:8080/UserService/Master_Service?xsd=xsd4" />
+    <MetadataFile FileName="MasterUserService1.wsdl" MetadataType="Wsdl" ID="63e7aa8a-8b04-452d-8928-a6dea3839c2b" SourceId="1" SourceUrl="http://localhost:8080/UserService/Master_Service?wsdl" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -55,20 +55,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Service References\ServiceReference1\MasterUserService.wsdl" />
-    <None Include="Service References\ServiceReference1\MasterUserService.xsd">
+    <None Include="Service References\ServiceReference1\MasterUserService1.wsdl" />
+    <None Include="Service References\ServiceReference1\Master_Service.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceReference1\MasterUserService1.xsd">
+    <None Include="Service References\ServiceReference1\Master_Service1.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceReference1\MasterUserService2.xsd">
+    <None Include="Service References\ServiceReference1\Master_Service2.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceReference1\MasterUserService3.xsd">
+    <None Include="Service References\ServiceReference1\Master_Service3.xsd">
       <SubType>Designer</SubType>
     </None>
-    <None Include="Service References\ServiceReference1\MasterUserService4.xsd">
+    <None Include="Service References\ServiceReference1\Master_Service4.xsd">
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
@@ -77,9 +77,6 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadataStorage Include="Service References\ServiceReference1\" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Service References\ServiceReference1\MasterUserService.disco" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Service References\ServiceReference1\configuration91.svcinfo" />
@@ -92,6 +89,9 @@
       <Generator>WCF Proxy Generator</Generator>
       <LastGenOutput>Reference.cs</LastGenOutput>
     </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ServiceReference1\Master_Service.disco" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

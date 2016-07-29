@@ -62,7 +62,10 @@ namespace ServiceConfigurator
             {
                 slaveUserService.Communicator.RunReceiver();
             }
-
+            foreach (var userService in services)
+            {
+                WCFServiceInitializer.CreateWcfService(userService);
+            }
             //SubscribeServices(master, slaves);
             ThreadInitializer.InitializeThreads(master, slaves);
         }
