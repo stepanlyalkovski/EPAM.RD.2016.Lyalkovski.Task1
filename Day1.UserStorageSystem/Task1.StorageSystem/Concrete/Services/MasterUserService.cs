@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
+using System.ServiceModel;
 using NetworkServiceCommunication;
 using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
@@ -9,6 +10,7 @@ using Task1.StorageSystem.Interfaces.Repository;
 
 namespace Task1.StorageSystem.Concrete.Services
 {
+    
     public class MasterUserService : UserService
     {
         public event EventHandler<UserDataApdatedEventArgs> Deleted;
@@ -69,16 +71,16 @@ namespace Task1.StorageSystem.Concrete.Services
 
         protected virtual void OnUserDeleted(object sender, UserDataApdatedEventArgs args)
         {
-            if (LoggingEnabled)
-                TraceSource.TraceEvent(TraceEventType.Information, 0, $"User {args.User.LastName} {args.User.PersonalId} was deleted");
+            //if (LoggingEnabled)
+            //    TraceSource.TraceEvent(TraceEventType.Information, 0, $"User {args.User.LastName} {args.User.PersonalId} was deleted");
             Communicator?.SendDelete(args);
             Deleted?.Invoke(sender, args);
         }
 
         protected virtual void OnUserAdded(object sender, UserDataApdatedEventArgs args)
         {
-            if (LoggingEnabled)
-                TraceSource.TraceEvent(TraceEventType.Information, 0, $"User {args.User.LastName} {args.User.PersonalId} was added");
+            //if (LoggingEnabled)
+            //    TraceSource.TraceEvent(TraceEventType.Information, 0, $"User {args.User.LastName} {args.User.PersonalId} was added");
             Communicator?.SendAdd(args);
             Added?.Invoke(sender, args);
         }

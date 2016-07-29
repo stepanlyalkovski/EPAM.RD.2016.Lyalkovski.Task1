@@ -36,6 +36,7 @@ namespace ServiceConfigurator.DomainServiceLoading
                 worker = new UserXmlFileWorker();
             }
             IRepository<User> repository = new UserRepository(worker, configuration.FilePath);
+
             UserService domainService;
             UserServiceCommunicator communicator;
             switch (configuration.Type)

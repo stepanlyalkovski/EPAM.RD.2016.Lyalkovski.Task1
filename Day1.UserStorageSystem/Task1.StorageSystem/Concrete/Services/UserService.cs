@@ -3,15 +3,19 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.ServiceModel;
 using System.Threading;
 using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
 using Task1.StorageSystem.Interfaces;
 using Task1.StorageSystem.Interfaces.Repository;
-
 namespace Task1.StorageSystem.Concrete.Services
 {
-    public abstract class UserService : MarshalByRefObject
+
+    //[ServiceKnownType(typeof(MasterUserService))]
+    //[ServiceKnownType(typeof(SlaveUserService))]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    public abstract class UserService : MarshalByRefObject, IUserServiceContract
     {
         protected INumGenerator NumGenerator;
         protected IRepository<User> Repository;                    
@@ -48,7 +52,9 @@ namespace Task1.StorageSystem.Concrete.Services
                 if (LoggingEnabled)
                     TraceSource.TraceEvent(TraceEventType.Information, 0, $"Adding User: {user.LastName} {user.PersonalId}");
 
-                return AddStrategy(user);
+                int id =  AddStrategy(user);
+                TraceSource.TraceEvent(TraceEventType.Information, 0, $"User was added: {user.LastName} {user.PersonalId}. Id = {id}");
+                return id;
             }
             finally
             {
@@ -66,6 +72,9 @@ namespace Task1.StorageSystem.Concrete.Services
                     TraceSource.TraceEvent(TraceEventType.Information, 0, $"Deleting User: {user.LastName} {user.PersonalId}");
 
                 DeleteStrategy(user);
+
+                if (LoggingEnabled)
+                    TraceSource.TraceEvent(TraceEventType.Information, 0, $"User {user.LastName} {user.PersonalId} was deleted");
             }
             finally
             {
@@ -98,6 +107,7 @@ namespace Task1.StorageSystem.Concrete.Services
         }
 
         public abstract void Save();
+
         public abstract void Initialize(); // get collection from xml file and get last generated Id
     }
 }
