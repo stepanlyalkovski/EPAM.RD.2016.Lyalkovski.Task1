@@ -44,6 +44,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Concrete\IdGenerator\EvenIdGenerator.cs" />
+    <Compile Include="Concrete\SearchCriteries\AndCriteria.cs" />
+    <Compile Include="Concrete\SearchCriteries\CriterialExtensionMethods.cs" />
+    <Compile Include="Concrete\SearchCriteries\OrCriteria.cs" />
+    <Compile Include="Concrete\SearchCriteries\UserCriteries\CriterionMales.cs" />
+    <Compile Include="Concrete\SearchCriteries\UserCriteries\CriterionPersonalId.cs" />
     <Compile Include="Concrete\Services\SlaveUserService.cs" />
     <Compile Include="Concrete\Services\UserDataApdatedEventArgs.cs" />
     <Compile Include="Concrete\Services\UserService.cs" />
@@ -56,6 +61,7 @@
     <Compile Include="Concrete\Validation\ValidatorBase.cs" />
     <Compile Include="CloneUtility.cs" />
     <Compile Include="Entities\SerializedUserData.cs" />
+    <Compile Include="Interfaces\ICriteria.cs" />
     <Compile Include="Interfaces\INumGenerator.cs" />
     <Compile Include="Interfaces\IUserServiceContract.cs" />
     <Compile Include="Interfaces\Repository\IRepository.cs" />
@@ -69,6 +75,7 @@
       <Name>NetworkServiceCommunication</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

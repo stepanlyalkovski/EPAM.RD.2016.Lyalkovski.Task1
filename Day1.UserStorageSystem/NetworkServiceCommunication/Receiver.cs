@@ -48,8 +48,8 @@ namespace NetworkServiceCommunication
         }
         public void Dispose()
         {
-            reciever.Close();
-            listener.Close();
+            reciever?.Close();
+            listener?.Close();
         }
     }
 }

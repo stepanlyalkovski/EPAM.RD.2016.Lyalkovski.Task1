@@ -64,7 +64,7 @@ namespace ServiceConfigurator
             }
             foreach (var userService in services)
             {
-                WCFServiceInitializer.CreateWcfService(userService);
+                WcfServiceInitializer.CreateWcfService(userService);
             }
             //SubscribeServices(master, slaves);
             ThreadInitializer.InitializeThreads(master, slaves);

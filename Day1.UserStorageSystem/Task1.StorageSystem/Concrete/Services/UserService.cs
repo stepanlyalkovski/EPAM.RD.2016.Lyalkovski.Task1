@@ -14,7 +14,7 @@ namespace Task1.StorageSystem.Concrete.Services
 
     //[ServiceKnownType(typeof(MasterUserService))]
     //[ServiceKnownType(typeof(SlaveUserService))]
-    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, AddressFilterMode = AddressFilterMode.Any)]
     public abstract class UserService : MarshalByRefObject, IUserServiceContract
     {
         protected INumGenerator NumGenerator;
@@ -53,7 +53,9 @@ namespace Task1.StorageSystem.Concrete.Services
                     TraceSource.TraceEvent(TraceEventType.Information, 0, $"Adding User: {user.LastName} {user.PersonalId}");
 
                 int id =  AddStrategy(user);
-                TraceSource.TraceEvent(TraceEventType.Information, 0, $"User was added: {user.LastName} {user.PersonalId}. Id = {id}");
+
+                if (LoggingEnabled)
+                    TraceSource.TraceEvent(TraceEventType.Information, 0, $"User was added: {user.LastName} {user.PersonalId}. Id = {id}");
                 return id;
             }
             finally
@@ -98,6 +100,16 @@ namespace Task1.StorageSystem.Concrete.Services
                 storageLock.ExitReadLock();
             }
             
+        }
+
+        public virtual List<int> SearchForUsers(ICriteria<User> criteria)
+        {
+            return Repository.SearchByCriteria(criteria).ToList();
+        }
+
+        public virtual List<int> SearchForUsers(IEnumerable<ICriteria<User>> criteries)
+        {
+            return Repository.SearchByCriteria(criteries).ToList();
         }
 
         public virtual void AddCommunicator(UserServiceCommunicator communicator)

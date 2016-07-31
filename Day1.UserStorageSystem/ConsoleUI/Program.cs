@@ -46,42 +46,11 @@ namespace ConsoleUI
             //master.Initialize();
             var master = services.FirstOrDefault(s => s is MasterUserService);
 
-            //if (master != null)
-            //{
-            //    AddSomeMasterThreads((MasterUserService)master);
-            //}
-            string cmd = String.Empty;
-            int requiredNumber = 0;
-            while (cmd != "exit")
+            if (master != null)
             {
-                ServiceHelper.PrintServiceList(services);
-                Console.WriteLine("Enter word 'service' and than type number'(service 1)");
-                cmd = Console.ReadLine();
-                var words = cmd.Split();
-                bool parsed = false;
-
-                if (cmd == "exit")
-                {
-
-                    return;
-                    //master.Add(AnotherUser);
-                }
-                if (cmd == "stop")
-                {
-                    var slave = services.First(s => s is SlaveUserService);
-                    slave.Communicator.StopReceiver();
-                }
-
-               
-                //if (words.Length > 1)
-                //{
-                //    parsed = Int32.TryParse(words.Skip(1).First(), out requiredNumber);
-                //}
-                //if (parsed)
-                //{
-                //    //here must be some awesome code
-                //}
+                AddSomeMasterThreads((MasterUserService)master);
             }
+
 
         }
 

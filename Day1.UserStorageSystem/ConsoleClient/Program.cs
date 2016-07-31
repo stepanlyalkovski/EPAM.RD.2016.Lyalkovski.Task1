@@ -11,23 +11,28 @@ namespace ConsoleClient
     {
         static void Main(string[] args)
         {
-            var master = new UserServiceContractClient("master");
-            //var slave = new UserServiceContractClient("slave_1");
-            User user = new User
+            var serviceList = UserServiceHelper.InitializeServices().ToList();
+            bool inProcess = true;
+            while (inProcess)
             {
-                FirstNamek__BackingField = "first_Name",
-                LastNamek__BackingField = "Last_Name",
-                BirthDatek__BackingField = DateTime.Now,
-                PersonalIdk__BackingField = "MP1987"
-            };
-            
-            Console.WriteLine("ready");
-            Console.ReadLine();
-            master.Add(user);
-            Console.ReadLine();
-            master.Delete(user);
-            Console.ReadLine();
-            //slave.Add(user);
+                for (int i = 0; i < serviceList.Count; i++)
+                {
+                    Console.WriteLine(1 + i + ")" + serviceList[i].Endpoint.Address);
+                }
+                string input = Console.ReadLine();
+                int number;
+                bool parsed = Int32.TryParse(input, out number);
+
+                if (parsed)
+                {
+                    UserServiceHelper.GetServiceMenu(serviceList[number - 1]);
+                }
+                else
+                {
+                    inProcess = false;
+                }
+            }
+           
         }
     }
 }

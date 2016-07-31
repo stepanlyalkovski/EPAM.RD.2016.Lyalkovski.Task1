@@ -16,6 +16,7 @@ using System.Threading;
 using Castle.Core.Internal;
 using ServiceConfigurator;
 using ServiceConfigurator.CustomSections.Files;
+using Task1.StorageSystem.Concrete.SearchCriteries.UserCriteries;
 using Task1.StorageSystem.Concrete.Services;
 using Task1.StorageSystem.Interfaces.Repository;
 
@@ -308,6 +309,19 @@ namespace Task1.Tests
             {
                 thread.Join();
             }
+        }
+
+        [Test]
+        public void SearchByCriteria_PersonalIdCriteria_ReturnedTwoUsers()
+        {
+            var service = new MasterUserService(FakeNumGenerator, FakeValidator, new UserRepository(null, null), false);
+            
+            service.Add(SimpleUser);
+            service.Add(new User {PersonalId = "PM321"});
+
+            var result = service.SearchForUsers(new CriterionPersonalId());
+            
+            Assert.AreEqual(2, result.Count);
         }
 
     }

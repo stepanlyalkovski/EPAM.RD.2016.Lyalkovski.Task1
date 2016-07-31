@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="EvenIdGeneratorTests.cs" />
     <Compile Include="NumberGeneratorTests.cs" />
+    <Compile Include="SearchTests.cs" />
     <Compile Include="SlaveUserServiceTests.cs" />
     <Compile Include="UserServiceCommunicatorTests.cs" />
     <Compile Include="UserServiceTests.cs" />

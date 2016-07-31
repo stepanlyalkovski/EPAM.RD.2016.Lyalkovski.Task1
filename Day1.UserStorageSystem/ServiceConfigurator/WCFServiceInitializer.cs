@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Net;
+using System.Net.Sockets;
 using System.ServiceModel;
 using Task1.StorageSystem.Concrete.Services;
 
 namespace ServiceConfigurator
 {
-    public class WCFServiceInitializer
+    public class WcfServiceInitializer
     {
         public static ServiceHost CreateWcfService(UserService service)
         {
-            Uri serviceUri = new Uri("http://localhost:8080/UserService/" + service.Name);
+            string localAddress = GetLocalIpAddress();
+            Uri serviceUri = new Uri($"http://{localAddress}:8080/UserService/" + service.Name);
             ServiceHost host = new ServiceHost(service, serviceUri);
             host.Open();
 
@@ -27,6 +30,19 @@ namespace ServiceConfigurator
             #endregion
 
             return host;
+        }
+
+        private static string GetLocalIpAddress()
+        {
+            var host = Dns.GetHostEntry(Dns.GetHostName());
+            foreach (var ip in host.AddressList)
+            {
+                if (ip.AddressFamily == AddressFamily.InterNetwork)
+                {
+                    return ip.ToString();
+                }
+            }
+            throw new Exception("Local IP Address Not Found!");
         }
     }
 }
