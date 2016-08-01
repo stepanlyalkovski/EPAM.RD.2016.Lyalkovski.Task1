@@ -51,6 +51,7 @@ namespace ConsoleUI
                 AddSomeMasterThreads((MasterUserService)master);
             }
 
+            Console.ReadLine();
 
         }
 
@@ -89,7 +90,7 @@ namespace ConsoleUI
                 while (true)
                 {
                     master.Add(uniqueUser);
-                    Thread.Sleep((int)(rand.NextDouble() * 5000));
+                    Thread.Sleep((int)(rand.NextDouble() * 8000));
                     master.Delete(uniqueUser);
                     Thread.Sleep((int)(rand.NextDouble() * 5000));
                 }

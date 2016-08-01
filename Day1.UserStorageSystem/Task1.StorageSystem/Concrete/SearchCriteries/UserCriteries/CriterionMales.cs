@@ -8,19 +8,22 @@ using Task1.StorageSystem.Interfaces;
 
 namespace Task1.StorageSystem.Concrete.SearchCriteries.UserCriteries
 {
+    [Serializable]
     public class CriterionMales : ICriteria<User>
     {
-        public IList<User> MeetCriteria(IList<User> users)
+        public bool MeetCriteria(User user)
         {
-            return users.Where(u => u.Gender == Gender.Male).ToList();
+            return user.Gender == Gender.Male;
         }
     }
 
+    [Serializable]
     public class CriterionFemales : ICriteria<User>
     {
-        public IList<User> MeetCriteria(IList<User> users)
+        public bool MeetCriteria(User user)
         {
-            return users.Where(u => u.Gender == Gender.Female).ToList();
+            Console.WriteLine("FEMALE CRITERIA!");
+            return user.Gender == Gender.Female;
         }
     }
 }

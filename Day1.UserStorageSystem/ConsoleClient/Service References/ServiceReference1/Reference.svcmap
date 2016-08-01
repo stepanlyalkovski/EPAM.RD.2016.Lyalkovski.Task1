@@ -22,13 +22,13 @@
     <MetadataSource Address="http://localhost:8080/UserService/Master_Service" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="Master_Service.xsd" MetadataType="Schema" ID="cc69f0e8-d630-4de4-b0c3-3d5ee9ed7bd6" SourceId="1" SourceUrl="http://localhost:8080/UserService/Master_Service?xsd=xsd2" />
-    <MetadataFile FileName="Master_Service.disco" MetadataType="Disco" ID="c21a018b-dd28-4bc0-9839-67d55bdf3e6f" SourceId="1" SourceUrl="http://localhost:8080/UserService/Master_Service?disco" />
-    <MetadataFile FileName="Master_Service1.xsd" MetadataType="Schema" ID="58c25036-8120-4c87-b75a-881b2e22bec5" SourceId="1" SourceUrl="http://localhost:8080/UserService/Master_Service?xsd=xsd3" />
-    <MetadataFile FileName="Master_Service2.xsd" MetadataType="Schema" ID="fd4ed77e-eb50-46dc-8062-a2fb5b09c262" SourceId="1" SourceUrl="http://localhost:8080/UserService/Master_Service?xsd=xsd0" />
-    <MetadataFile FileName="Master_Service3.xsd" MetadataType="Schema" ID="4694864e-ad8c-4eeb-a059-7e35196a22ea" SourceId="1" SourceUrl="http://localhost:8080/UserService/Master_Service?xsd=xsd1" />
-    <MetadataFile FileName="Master_Service4.xsd" MetadataType="Schema" ID="b2b07c84-1124-41e6-b33a-25c6f855c6cf" SourceId="1" SourceUrl="http://localhost:8080/UserService/Master_Service?xsd=xsd4" />
-    <MetadataFile FileName="MasterUserService1.wsdl" MetadataType="Wsdl" ID="63e7aa8a-8b04-452d-8928-a6dea3839c2b" SourceId="1" SourceUrl="http://localhost:8080/UserService/Master_Service?wsdl" />
+    <MetadataFile FileName="Master_Service5.xsd" MetadataType="Schema" ID="833c0b96-ff4a-4f54-b4f9-c9045209c5bf" SourceId="1" SourceUrl="http://10.6.106.60:8080/UserService/Master_Service?xsd=xsd0" />
+    <MetadataFile FileName="MasterUserService.wsdl" MetadataType="Wsdl" ID="a699b113-3593-4ab2-accf-968f8cfb2c08" SourceId="1" SourceUrl="http://10.6.106.60:8080/UserService/Master_Service?wsdl" />
+    <MetadataFile FileName="Master_Service1.disco" MetadataType="Disco" ID="e31b8751-8e64-41c7-8ab4-d930b6f5dab4" SourceId="1" SourceUrl="http://10.6.106.60:8080/UserService/Master_Service?disco" />
+    <MetadataFile FileName="Master_Service54.xsd" MetadataType="Schema" ID="b45665f2-bf76-4f96-8fe9-a18f309f8ac5" SourceId="1" SourceUrl="http://10.6.106.60:8080/UserService/Master_Service?xsd=xsd3" />
+    <MetadataFile FileName="Master_Service.xsd" MetadataType="Schema" ID="03fc8dd2-829a-4254-a3b0-38a33a9fe475" SourceId="1" SourceUrl="http://10.6.106.60:8080/UserService/Master_Service?xsd=xsd4" />
+    <MetadataFile FileName="Master_Service53.xsd" MetadataType="Schema" ID="23716b1e-5c10-4a8e-b457-bdfb55d1fef2" SourceId="1" SourceUrl="http://10.6.106.60:8080/UserService/Master_Service?xsd=xsd2" />
+    <MetadataFile FileName="Master_Service51.xsd" MetadataType="Schema" ID="b6abd1b8-189c-4126-a400-760c9998e7b6" SourceId="1" SourceUrl="http://10.6.106.60:8080/UserService/Master_Service?xsd=xsd1" />
   </Metadata>
   <Extensions>
     <ExtensionFile FileName="configuration91.svcinfo" Name="configuration91.svcinfo" />

@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ServiceModel;
+using Task1.StorageSystem.Concrete.SearchCriteries.UserCriteries;
 using Task1.StorageSystem.Entities;
 
 namespace Task1.StorageSystem.Interfaces
 {
     [ServiceContract]
+    [ServiceKnownType(typeof(CriterionFemales))]
+    [ServiceKnownType(typeof(CriterionMales))]
+    [ServiceKnownType(typeof(CriterionPersonalId))]
     public interface IUserServiceContract
     {
         [OperationContract]
@@ -21,6 +25,7 @@ namespace Task1.StorageSystem.Interfaces
         void Initialize();
 
         [OperationContract]
-        List<int> SearchForUsers(Func<User, bool>[] predicates);
+        List<int> SearchForUsers(ICriteria<User>[] criteries);
+
     }
 }

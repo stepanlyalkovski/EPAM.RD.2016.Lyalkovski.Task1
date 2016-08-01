@@ -34,6 +34,7 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Configuration.Install" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -44,9 +45,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Concrete\IdGenerator\EvenIdGenerator.cs" />
-    <Compile Include="Concrete\SearchCriteries\AndCriteria.cs" />
-    <Compile Include="Concrete\SearchCriteries\CriterialExtensionMethods.cs" />
-    <Compile Include="Concrete\SearchCriteries\OrCriteria.cs" />
     <Compile Include="Concrete\SearchCriteries\UserCriteries\CriterionMales.cs" />
     <Compile Include="Concrete\SearchCriteries\UserCriteries\CriterionPersonalId.cs" />
     <Compile Include="Concrete\Services\SlaveUserService.cs" />

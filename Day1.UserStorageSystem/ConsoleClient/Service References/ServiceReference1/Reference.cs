@@ -234,6 +234,96 @@ namespace ConsoleClient.ServiceReference1 {
         }
     }
     
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CriterionFemales", Namespace="http://schemas.datacontract.org/2004/07/Task1.StorageSystem.Concrete.SearchCriter" +
+        "ies.UserCriteries")]
+    [System.SerializableAttribute()]
+    public partial class CriterionFemales : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CriterionMales", Namespace="http://schemas.datacontract.org/2004/07/Task1.StorageSystem.Concrete.SearchCriter" +
+        "ies.UserCriteries")]
+    [System.SerializableAttribute()]
+    public partial class CriterionMales : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
+    [System.Diagnostics.DebuggerStepThroughAttribute()]
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
+    [System.Runtime.Serialization.DataContractAttribute(Name="CriterionPersonalId", Namespace="http://schemas.datacontract.org/2004/07/Task1.StorageSystem.Concrete.SearchCriter" +
+        "ies.UserCriteries")]
+    [System.SerializableAttribute()]
+    public partial class CriterionPersonalId : object, System.Runtime.Serialization.IExtensibleDataObject, System.ComponentModel.INotifyPropertyChanged {
+        
+        [System.NonSerializedAttribute()]
+        private System.Runtime.Serialization.ExtensionDataObject extensionDataField;
+        
+        [global::System.ComponentModel.BrowsableAttribute(false)]
+        public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
+            get {
+                return this.extensionDataField;
+            }
+            set {
+                this.extensionDataField = value;
+            }
+        }
+        
+        public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        
+        protected void RaisePropertyChanged(string propertyName) {
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            if ((propertyChanged != null)) {
+                propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
+            }
+        }
+    }
+    
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="ServiceReference1.IUserServiceContract")]
     public interface IUserServiceContract {
@@ -263,10 +353,19 @@ namespace ConsoleClient.ServiceReference1 {
         System.Threading.Tasks.Task InitializeAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserServiceContract/SearchForUsers", ReplyAction="http://tempuri.org/IUserServiceContract/SearchForUsersResponse")]
-        int[] SearchForUsers(System.Func<ConsoleClient.ServiceReference1.User, bool>[] predicates);
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ConsoleClient.ServiceReference1.User))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ConsoleClient.ServiceReference1.Gender))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ConsoleClient.ServiceReference1.VisaRecord[]))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ConsoleClient.ServiceReference1.VisaRecord))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(object[]))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(int[]))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ConsoleClient.ServiceReference1.CriterionFemales))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ConsoleClient.ServiceReference1.CriterionMales))]
+        [System.ServiceModel.ServiceKnownTypeAttribute(typeof(ConsoleClient.ServiceReference1.CriterionPersonalId))]
+        int[] SearchForUsers(object[] criteries);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IUserServiceContract/SearchForUsers", ReplyAction="http://tempuri.org/IUserServiceContract/SearchForUsersResponse")]
-        System.Threading.Tasks.Task<int[]> SearchForUsersAsync(System.Func<ConsoleClient.ServiceReference1.User, bool>[] predicates);
+        System.Threading.Tasks.Task<int[]> SearchForUsersAsync(object[] criteries);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -328,12 +427,12 @@ namespace ConsoleClient.ServiceReference1 {
             return base.Channel.InitializeAsync();
         }
         
-        public int[] SearchForUsers(System.Func<ConsoleClient.ServiceReference1.User, bool>[] predicates) {
-            return base.Channel.SearchForUsers(predicates);
+        public int[] SearchForUsers(object[] criteries) {
+            return base.Channel.SearchForUsers(criteries);
         }
         
-        public System.Threading.Tasks.Task<int[]> SearchForUsersAsync(System.Func<ConsoleClient.ServiceReference1.User, bool>[] predicates) {
-            return base.Channel.SearchForUsersAsync(predicates);
+        public System.Threading.Tasks.Task<int[]> SearchForUsersAsync(object[] criteries) {
+            return base.Channel.SearchForUsersAsync(criteries);
         }
     }
 }

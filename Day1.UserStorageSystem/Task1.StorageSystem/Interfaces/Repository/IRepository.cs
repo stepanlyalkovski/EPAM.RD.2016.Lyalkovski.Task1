@@ -7,8 +7,7 @@ namespace Task1.StorageSystem.Interfaces.Repository
     public interface IRepository<TEntity>
     {
         IEnumerable<int> SearhByPredicate(Func<TEntity, bool>[] predicates);
-        IEnumerable<int> SearchByCriteria(ICriteria<TEntity> criteria);
-        IEnumerable<int> SearchByCriteria(IEnumerable<ICriteria<TEntity>> criteries);
+        IEnumerable<int> SearchByCriteria(ICriteria<TEntity>[] criteries);
         void Add(TEntity user);
         void Save(int lastGeneratedId);
         void Initialize(); 

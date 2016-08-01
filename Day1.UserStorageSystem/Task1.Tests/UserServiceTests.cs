@@ -315,15 +315,27 @@ namespace Task1.Tests
         public void SearchByCriteria_PersonalIdCriteria_ReturnedTwoUsers()
         {
             var service = new MasterUserService(FakeNumGenerator, FakeValidator, new UserRepository(null, null), false);
-            
+            int users = 100000;
             service.Add(SimpleUser);
-            service.Add(new User {PersonalId = "PM321"});
-
-            var result = service.SearchForUsers(new CriterionPersonalId());
-            
-            Assert.AreEqual(2, result.Count);
+            service.Add(new User { PersonalId = "PM321" });
+            for (int i = 0; i < users; i++)
+            {
+                var user = new User {PersonalId = GenerateString()};
+                service.Add(user);
+            }
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            var result = service.SearchForUsers(new ICriteria<User>[] {new CriterionPersonalId()});
+            Console.WriteLine(stopwatch.Elapsed);
         }
 
+        private static string GenerateString()
+        {
+            Guid g = Guid.NewGuid();
+            string GuidString = Convert.ToBase64String(g.ToByteArray());
+            GuidString = GuidString.Replace("=", "");
+            GuidString = GuidString.Replace("+", "");
+            return GuidString;
+        }
     }
 
 }

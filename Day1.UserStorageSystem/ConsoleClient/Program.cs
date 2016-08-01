@@ -13,11 +13,16 @@ namespace ConsoleClient
         {
             var serviceList = UserServiceHelper.InitializeServices().ToList();
             bool inProcess = true;
+            Console.WriteLine("=== DEMO client. Only for testing purposes ===\nPress any key...");
+            Console.ReadLine();
+            Console.Clear();
             while (inProcess)
             {
                 for (int i = 0; i < serviceList.Count; i++)
                 {
+                    
                     Console.WriteLine(1 + i + ")" + serviceList[i].Endpoint.Address);
+
                 }
                 string input = Console.ReadLine();
                 int number;

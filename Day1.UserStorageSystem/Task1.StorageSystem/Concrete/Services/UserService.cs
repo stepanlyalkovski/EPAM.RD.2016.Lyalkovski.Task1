@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.Threading;
+using Task1.StorageSystem.Concrete.SearchCriteries.UserCriteries;
 using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
 using Task1.StorageSystem.Interfaces;
@@ -15,6 +17,8 @@ namespace Task1.StorageSystem.Concrete.Services
     //[ServiceKnownType(typeof(MasterUserService))]
     //[ServiceKnownType(typeof(SlaveUserService))]
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, AddressFilterMode = AddressFilterMode.Any)]
+    [ServiceKnownType(typeof(ICriteria<User>))]
+    [ServiceKnownType(typeof(CriterionMales))]
     public abstract class UserService : MarshalByRefObject, IUserServiceContract
     {
         protected INumGenerator NumGenerator;
@@ -22,6 +26,7 @@ namespace Task1.StorageSystem.Concrete.Services
         protected TraceSource TraceSource;
         protected bool LoggingEnabled;
         protected ReaderWriterLockSlim storageLock = new ReaderWriterLockSlim();
+        public ICriteria<User> criteria = new CriterionFemales(); 
         public ValidatorBase<User> Validator { get; set; }
         public UserServiceCommunicator Communicator { get; set; }
         public int LastGeneratedId { get; protected set; } //temp
@@ -102,14 +107,17 @@ namespace Task1.StorageSystem.Concrete.Services
             
         }
 
-        public virtual List<int> SearchForUsers(ICriteria<User> criteria)
+        public virtual List<int> SearchForUsers(ICriteria<User>[] criteries)
         {
-            return Repository.SearchByCriteria(criteria).ToList();
-        }
-
-        public virtual List<int> SearchForUsers(IEnumerable<ICriteria<User>> criteries)
-        {
-            return Repository.SearchByCriteria(criteries).ToList();
+            storageLock.EnterReadLock();
+            try
+            {
+                return Repository.SearchByCriteria(criteries).ToList();
+            }
+            finally
+            {
+                storageLock.ExitReadLock();
+            }
         }
 
         public virtual void AddCommunicator(UserServiceCommunicator communicator)

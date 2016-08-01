@@ -28,26 +28,15 @@ namespace Task1.StorageSystem.Concrete
 
         public IEnumerable<int> SearhByPredicate(Func<User, bool>[] predicates)
         {
-            return _memoryCollection.Where(p => predicates.Any(pr => pr(p))).Select(u => u.Id);
+            return _memoryCollection.Where(p => predicates.All(pr => pr(p))).Select(u => u.Id);
         }
 
-        public IEnumerable<int> SearchByCriteria(ICriteria<User> criteria)
+        public IEnumerable<int> SearchByCriteria(ICriteria<User>[] criteries)
         {
-            return criteria.MeetCriteria(_memoryCollection).AsParallel().Select(u => u.Id);
+            return _memoryCollection.AsParallel().Where(u => criteries.All(cr => cr.MeetCriteria(u)))
+                                    .Select(u => u.Id);
         }
 
-        public IEnumerable<int> SearchByCriteria(IEnumerable<ICriteria<User>> criteries)
-        {
-            IEnumerable<int> result = new List<int>();
-
-            foreach (var criteria in criteries)
-            {
-                var searchCriteriaResult = criteria.MeetCriteria(_memoryCollection).AsParallel().Select(u => u.Id);
-                result = result.AsParallel().Union(searchCriteriaResult);
-            }
-
-            return result;
-        }
 
         public void Add(User user)
         {

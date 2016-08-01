@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
+using System.ServiceModel;
 using System.ServiceModel.Configuration;
 using ConsoleClient.ServiceReference1;
 
@@ -38,22 +39,48 @@ namespace ConsoleClient
             while (inProcess)
             {
                 Console.Clear();
-                Console.WriteLine("----- " + service.Endpoint.Address + " -----");
+
+                Console.WriteLine("----- " + service.Endpoint.Address + " -----" + service.Endpoint.Name);
                 Console.WriteLine("cmd: add, delete, search, exit");
                 var readLine = Console.ReadLine();
                 if (readLine == null) continue;
 
                 string input = readLine.ToLower();
-
-                switch (input)
+                try
                 {
-                    case "add": service.Add(SimpleUser); break;
-                    case "delete": service.Delete(SimpleUser);
-                        break;
-                    case "exit":
-                        inProcess = false; break;
-                    default: continue;
+                    switch (input)
+                    {
+                        case "add": service.Add(SimpleUser); break;
+                        case "delete":
+                            service.Delete(SimpleUser);
+                            break;
+                        case "search":
+                            {
+                                CriterionFemales criteria = new CriterionFemales();
+                                var users = service.SearchForUsers(new[] { new CriterionPersonalId() });
+                                Console.WriteLine("Serch result: ");
+                                foreach (var user in users)
+                                {
+                                    Console.Write(user + " ");
+                                }
+                                Console.WriteLine();
+                                Console.ReadLine();
+
+
+                            }
+                            break;
+                        case "exit":
+                            inProcess = false; break;
+                        default: continue;
+                    }
                 }
+                catch (FaultException excp)
+                {
+                    Console.WriteLine("You're not allowed to invoke this operation. Inner Details: ");
+                    Console.WriteLine(excp.Message);
+                    Console.ReadLine();
+                }
+
             }
 
         }
