@@ -54,6 +54,11 @@ namespace Task1.StorageSystem.Concrete
             SavetoXmlFile(userData);
         }
 
+        public IEnumerable<User> GetAll()
+        {
+            return _memoryCollection;
+        }
+
         public int GetState()
         {
             return _state;
@@ -71,7 +76,7 @@ namespace Task1.StorageSystem.Concrete
 
         public void Initialize()
         {
-            InitializeFromXml();
+            InitializeFromXml();         
         }
 
         #region XMLworker
@@ -87,6 +92,9 @@ namespace Task1.StorageSystem.Concrete
         {
             if (_xmlWorker == null)
                 throw new InvalidOperationException("xmlWorker wasn't initialized");
+
+            if(!File.Exists(filePath))
+                throw new InvalidOperationException("File is not found");
 
             var xmlUsersCollection = _xmlWorker.Load(filePath);
             var userData = new SerializedUserData();

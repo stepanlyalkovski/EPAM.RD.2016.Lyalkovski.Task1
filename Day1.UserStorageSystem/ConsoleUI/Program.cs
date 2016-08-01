@@ -20,16 +20,20 @@ namespace ConsoleUI
             IList<UserService> services = UserServiceInitializer.InitializeServices().ToList();
             //Console.Clear();
             Console.WriteLine("=========== Welcome to Console App ===========");
-            //master.Initialize();
+            
             var master = services.FirstOrDefault(s => s is MasterUserService);
-
+            
             if (master != null)
             {
+                master.Initialize();
                 AddSomeMasterThreads((MasterUserService)master);
             }
 
-            Console.ReadLine();
-
+            var cmd = Console.ReadLine();
+            if (cmd == "save")
+            {
+                master.Save();
+            }
         }
 
         private static void AddSomeMasterThreads(MasterUserService master)

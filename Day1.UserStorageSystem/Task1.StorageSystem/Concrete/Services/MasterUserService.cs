@@ -64,9 +64,24 @@ namespace Task1.StorageSystem.Concrete.Services
         {
             if (LoggingEnabled)
                 TraceSource.TraceEvent(TraceEventType.Information, 0, "Initializing UserService state...");
-
-            Repository.Initialize();
+            try
+            {
+                Repository.Initialize();
+            }
+            catch (InvalidOperationException exception)
+            {
+                if (LoggingEnabled)
+                    TraceSource.TraceEvent(TraceEventType.Error, 0, 
+                                                "Services wasn't initialized! Exception message: " + exception.Message);
+            }
+            
+            
             LastGeneratedId = Repository.GetState();
+            var users = Repository.GetAll();
+            foreach (var user in users)
+            {
+                Communicator.SendAdd(new UserDataApdatedEventArgs {User = user});
+            }
         }
 
         protected virtual void OnUserDeleted(object sender, UserDataApdatedEventArgs args)
@@ -85,12 +100,5 @@ namespace Task1.StorageSystem.Concrete.Services
             Added?.Invoke(sender, args);
         }
 
-        private bool UserExists(User user)
-        {
-            return Repository.SearhByPredicate(new Func<User, bool>[]
-            {
-                u => u.PersonalId == user.PersonalId
-            }).Any();
-        }
     }
 }
