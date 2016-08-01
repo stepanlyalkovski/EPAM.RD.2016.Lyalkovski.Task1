@@ -15,29 +15,6 @@ namespace ConsoleUI
 {
     class Program
     {
-        //public static User SimpleUser { get; set; } = new User
-        //{
-        //    FirstName = "Ivan2",
-        //    LastName = "Ivanov2",
-        //    PersonalId = "MP12345",
-        //    BirthDate = DateTime.Now,
-        //};
-
-        //public static User AnotherUser { get; set; } = new User
-        //{
-        //    FirstName = "Bob",
-        //    LastName = "Smith",
-        //    PersonalId = "MP9999",
-        //    BirthDate = DateTime.Now,
-        //};
-        //public static User AnotherUser2 { get; set; } = new User
-        //{
-        //    FirstName = "Jack",
-        //    LastName = "Smith",
-        //    PersonalId = "MP3423",
-        //    BirthDate = DateTime.Now,
-        //};
-
         static void Main(string[] args)
         {
             IList<UserService> services = UserServiceInitializer.InitializeServices().ToList();
