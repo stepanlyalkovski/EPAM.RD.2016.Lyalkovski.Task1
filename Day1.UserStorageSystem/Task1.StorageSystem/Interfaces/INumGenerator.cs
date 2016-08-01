@@ -3,6 +3,6 @@
     public interface INumGenerator
     {
         int GenerateId();
-        
+        void Initialize(int number);
     }
 }

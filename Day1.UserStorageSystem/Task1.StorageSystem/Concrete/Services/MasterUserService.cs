@@ -41,6 +41,7 @@ namespace Task1.StorageSystem.Concrete.Services
             //    throw new ArgumentException("That User was added before!");
             //}
             user.Id = NumGenerator.GenerateId();
+            LastGeneratedId = user.Id;
             Repository.Add(user);
             OnUserAdded(this, new UserDataApdatedEventArgs {User = user});
             return user.Id;
@@ -77,6 +78,7 @@ namespace Task1.StorageSystem.Concrete.Services
             
             
             LastGeneratedId = Repository.GetState();
+            NumGenerator.Initialize(LastGeneratedId);
             var users = Repository.GetAll();
             foreach (var user in users)
             {

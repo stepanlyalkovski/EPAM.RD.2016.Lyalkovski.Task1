@@ -8,7 +8,7 @@ namespace Task1.StorageSystem.Concrete.IdGenerator
     [Serializable]
     public class EvenIdGenerator : MarshalByRefObject, INumGenerator, ISerializable
     {
-        private readonly IEnumerator<int> _enumerator;
+        private IEnumerator<int> _enumerator;
 
         public EvenIdGenerator(int lastGeneratedId = -1)
         {
@@ -31,6 +31,13 @@ namespace Task1.StorageSystem.Concrete.IdGenerator
             }
             
             throw new InvalidOperationException();
+        }
+
+        public void Initialize(int number)
+        {
+            //NumberGenerator is expecting startPosition, so we have to increment our lastId
+            int startPositionNumber = number + 1;
+            _enumerator = NumberGenerator.GetEvenNumbers(startPositionNumber).GetEnumerator();
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
