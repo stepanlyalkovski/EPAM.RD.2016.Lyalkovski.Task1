@@ -1,105 +1,105 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.ServiceModel;
-using NetworkServiceCommunication;
-using Task1.StorageSystem.Concrete.Validation;
-using Task1.StorageSystem.Entities;
-using Task1.StorageSystem.Interfaces;
-using Task1.StorageSystem.Interfaces.Repository;
-
-namespace Task1.StorageSystem.Concrete.Services
+﻿namespace Task1.StorageSystem.Concrete.Services
 {
-    
+    using System;
+    using System.Diagnostics;
+    using System.Linq;
+    using Validation;
+    using Entities;
+    using Interfaces;
+    using Interfaces.Repository;
+
     public class MasterUserService : UserService
     {
-        public event EventHandler<UserDataApdatedEventArgs> Deleted;
-        public event EventHandler<UserDataApdatedEventArgs> Added;
         public MasterUserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository)
-            :this(numGenerator, validator, repository, false)
-        {
-
+            : this(numGenerator, validator, repository, false)
+        {            
         }
 
-        public MasterUserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository, bool loggingEnabled)
-                :base(numGenerator, validator, repository, loggingEnabled)
-        {
-            
+        public MasterUserService(
+            INumGenerator numGenerator,
+            ValidatorBase<User> validator, 
+            IRepository<User> repository, 
+            bool loggingEnabled)
+            : base(numGenerator, validator, repository, loggingEnabled)
+        {  
         }
 
-        protected override int AddStrategy(User user)
-        {
-            var errorMessages = Validator.Validate(user).ToList();
-            if (errorMessages.Any())
-            {
-                TraceSource.TraceEvent(TraceEventType.Error, 0, $"Validation ERROR on User: {user.LastName} {user.PersonalId}\n " +
-                                                                "ValidationMessages: " + string.Join("\n",errorMessages));
-                throw new ArgumentException("Validation error! User is not valid\nValidationMessages: " + string.Join("\n", errorMessages));
-            }
-            //if (UserExists(user))
-            //{
-            //    throw new ArgumentException("That User was added before!");
-            //}
-            user.Id = NumGenerator.GenerateId();
-            LastGeneratedId = user.Id;
-            Repository.Add(user);
-            OnUserAdded(this, new UserDataApdatedEventArgs {User = user});
-            return user.Id;
-        }
+        public event EventHandler<UserDataApdatedEventArgs> Deleted;
 
-        protected override void DeleteStrategy(User user)
-        {
-            Repository.Delete(user);
-            OnUserDeleted(this, new UserDataApdatedEventArgs { User = user });
-        }
+        public event EventHandler<UserDataApdatedEventArgs> Added;
 
         public override void Save()
         {
-            if (LoggingEnabled)
-                TraceSource.TraceEvent(TraceEventType.Information, 0, "Saving UserService state...");
+            if (this.LoggingEnabled)
+            {
+                this.TraceSource.TraceEvent(TraceEventType.Information, 0, "Saving UserService state...");
+            }
 
-            Repository.Save(LastGeneratedId);
+            this.Repository.Save(this.LastGeneratedId);
         }
 
         public override void Initialize()
         {
-            if (LoggingEnabled)
-                TraceSource.TraceEvent(TraceEventType.Information, 0, "Initializing UserService state...");
+            if (this.LoggingEnabled)
+                this.TraceSource.TraceEvent(TraceEventType.Information, 0, "Initializing UserService state...");
             try
             {
-                Repository.Initialize();
+                this.Repository.Initialize();
             }
             catch (InvalidOperationException exception)
             {
-                if (LoggingEnabled)
-                    TraceSource.TraceEvent(TraceEventType.Error, 0, 
-                                                "Services wasn't initialized! Exception message: " + exception.Message);
+                if (this.LoggingEnabled)
+                    this.TraceSource.TraceEvent(
+                        TraceEventType.Error,
+                        0, 
+                        "Services wasn't initialized! Exception message: " + exception.Message);
             }
-            
-            
-            LastGeneratedId = Repository.GetState();
-            NumGenerator.Initialize(LastGeneratedId);
-            var users = Repository.GetAll();
+
+
+            this.LastGeneratedId = this.Repository.GetState();
+            this.NumGenerator.Initialize(this.LastGeneratedId);
+            var users = this.Repository.GetAll();
             foreach (var user in users)
             {
-                Communicator.SendAdd(new UserDataApdatedEventArgs {User = user});
+                this.Communicator.SendAdd(new UserDataApdatedEventArgs { User = user });
             }
+        }
+
+        protected override void DeleteStrategy(User user)
+        {
+            this.Repository.Delete(user);
+            this.OnUserDeleted(this, new UserDataApdatedEventArgs { User = user });
+        }
+
+        protected override int AddStrategy(User user)
+        {
+            var errorMessages = this.Validator.Validate(user).ToList();
+            if (errorMessages.Any())
+            {
+                this.TraceSource.TraceEvent(
+                    TraceEventType.Error,
+                    0,
+              $"Validation ERROR on User: {user.LastName} {user.PersonalId}\n " + "ValidationMessages: " + string.Join("\n", errorMessages));
+                throw new ArgumentException("Validation error! User is not valid\nValidationMessages: " + string.Join("\n", errorMessages));
+            }
+
+            user.Id = this.NumGenerator.GenerateId();
+            this.LastGeneratedId = user.Id;
+            this.Repository.Add(user);
+            this.OnUserAdded(this, new UserDataApdatedEventArgs { User = user });
+            return user.Id;
         }
 
         protected virtual void OnUserDeleted(object sender, UserDataApdatedEventArgs args)
         {
-            //if (LoggingEnabled)
-            //    TraceSource.TraceEvent(TraceEventType.Information, 0, $"User {args.User.LastName} {args.User.PersonalId} was deleted");
-            Communicator?.SendDelete(args);
-            Deleted?.Invoke(sender, args);
+            this.Communicator?.SendDelete(args);
+            this.Deleted?.Invoke(sender, args);
         }
 
         protected virtual void OnUserAdded(object sender, UserDataApdatedEventArgs args)
         {
-            //if (LoggingEnabled)
-            //    TraceSource.TraceEvent(TraceEventType.Information, 0, $"User {args.User.LastName} {args.User.PersonalId} was added");
-            Communicator?.SendAdd(args);
-            Added?.Invoke(sender, args);
+            this.Communicator?.SendAdd(args);
+            this.Added?.Invoke(sender, args);
         }
 
     }

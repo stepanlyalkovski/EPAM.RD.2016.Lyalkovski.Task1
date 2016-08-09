@@ -1,13 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using NUnit.Framework;
-using Task1.StorageSystem.Concrete;
-using Task1.StorageSystem.Concrete.SearchCriteries;
-using Task1.StorageSystem.Concrete.SearchCriteries.UserCriteries;
-using Task1.StorageSystem.Entities;
-using Task1.StorageSystem.Interfaces;
+﻿using NUnit.Framework;
 
 namespace Task1.Tests
 {

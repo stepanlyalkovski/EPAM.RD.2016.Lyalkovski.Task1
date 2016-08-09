@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Task1.StorageSystem.Entities;
-
-namespace Task1.StorageSystem.Concrete.Services
+﻿namespace Task1.StorageSystem.Concrete.Services
 {
+    using System;
+    using Entities;
+
     [Serializable]
     public class UserDataApdatedEventArgs : EventArgs
     {

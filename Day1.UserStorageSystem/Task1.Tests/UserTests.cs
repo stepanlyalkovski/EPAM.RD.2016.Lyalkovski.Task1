@@ -1,11 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Diagnostics;
 using NUnit.Framework;
-using Task1.StorageSystem;
 using Task1.StorageSystem.Entities;
 
 namespace Task1.Tests
@@ -23,7 +17,7 @@ namespace Task1.Tests
         [Test]
         public void User_EqualsWithHimself_ReturnTrue()
         {
-            Assert.IsTrue(TestUser.Equals(TestUser));
+            Assert.IsTrue(this.TestUser.Equals(this.TestUser));
         }
 
         [Test]
@@ -35,7 +29,7 @@ namespace Task1.Tests
                 FirstName = "Ivan",
                 LastName = "Ivanov"
             };
-            Assert.IsFalse(TestUser.Equals(someUser));
+            Assert.IsFalse(this.TestUser.Equals(someUser));
         }
 
         [Test]
@@ -52,21 +46,21 @@ namespace Task1.Tests
         [Test]
         public void User_EqualsWithNull_ReturnFalse()
         {
-            Assert.IsFalse(TestUser.Equals(null));
+            Assert.IsFalse(this.TestUser.Equals(null));
         }
 
         [Test]
         public void User_EqualsWithSimpleObject_ReturnFalse()
         {
             object someObject = new object();
-            Assert.IsFalse(TestUser.Equals(someObject));
+            Assert.IsFalse(this.TestUser.Equals(someObject));
         }
 
         [Test]
         public void User_InvokeGetHashCodeTwiceOnTheSameUserAndCompare_HashCodesAreEqual()
         {
-            Debug.WriteLine(TestUser.GetHashCode());
-            Assert.AreEqual(TestUser.GetHashCode(), TestUser.GetHashCode());
+            Debug.WriteLine(this.TestUser.GetHashCode());
+            Assert.AreEqual(this.TestUser.GetHashCode(), this.TestUser.GetHashCode());
         }
 
         [Test]
@@ -79,7 +73,7 @@ namespace Task1.Tests
                 PersonalId = "MP3421"
             };
 
-            Assert.AreNotEqual(TestUser.GetHashCode(), otherUser.GetHashCode());
+            Assert.AreNotEqual(this.TestUser.GetHashCode(), otherUser.GetHashCode());
         }
 
     }

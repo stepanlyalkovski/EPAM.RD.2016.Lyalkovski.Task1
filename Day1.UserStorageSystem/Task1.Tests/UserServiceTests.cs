@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Castle.Components.DictionaryAdapter.Xml;
 using Moq;
 using NUnit.Framework;
 using Task1.StorageSystem.Concrete;
@@ -9,13 +8,9 @@ using Task1.StorageSystem.Concrete.IdGenerator;
 using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
 using Task1.StorageSystem.Interfaces;
-using System.Configuration;
-using System.IO;
 using System.Linq;
 using System.Threading;
 using Castle.Core.Internal;
-using ServiceConfigurator;
-using ServiceConfigurator.CustomSections.Files;
 using Task1.StorageSystem.Concrete.SearchCriteries.UserCriteries;
 using Task1.StorageSystem.Concrete.Services;
 using Task1.StorageSystem.Interfaces.Repository;
@@ -48,15 +43,15 @@ namespace Task1.Tests
         public UserServiceTests()
         {
             int fakeId = 1;
-            var moqGenerator = new Moq.Mock<INumGenerator>();
+            var moqGenerator = new Mock<INumGenerator>();
             moqGenerator.Setup(g => g.GenerateId()).Returns(fakeId);
-            FakeNumGenerator = moqGenerator.Object;
+            this.FakeNumGenerator = moqGenerator.Object;
 
-            var moqRepository = new Moq.Mock<IRepository<User>>();
+            var moqRepository = new Mock<IRepository<User>>();
             // stab for repository
             moqRepository.Setup(r => r.Add(It.IsAny<User>()));
-            FakeRepository = moqRepository.Object;
-            FakeValidator = new EmptyUserValidator();
+            this.FakeRepository = moqRepository.Object;
+            this.FakeValidator = new EmptyUserValidator();
         }
 
         [Test]
@@ -64,7 +59,7 @@ namespace Task1.Tests
         public void Add_AddInvalidUser_ThrownArgumentExceptionWithValidationMessages()
         {
             ValidatorBase<User> validator = new SimpleUserValidator();
-            Service = new MasterUserService(FakeNumGenerator, validator, FakeRepository);
+            this.Service = new MasterUserService(this.FakeNumGenerator, validator, this.FakeRepository);
 
             var invalidUser = new User
             {
@@ -73,7 +68,7 @@ namespace Task1.Tests
                 BirthDate = new DateTime()
             };
 
-            Service.Add(invalidUser);
+            this.Service.Add(invalidUser);
         }
 
         [Test]
@@ -91,10 +86,10 @@ namespace Task1.Tests
             var userMemoryRepository = new UserRepository(null, null); // we don't need it
 
             // because we don't care what type of generator we will use in this test
-            Service = new MasterUserService(FakeNumGenerator, validator, userMemoryRepository);
+            this.Service = new MasterUserService(this.FakeNumGenerator, validator, userMemoryRepository);
 
-            int id = Service.Add(validUser);
-            var recievedId = Service.SearchForUsers(new Func<User, bool>[]
+            int id = this.Service.Add(validUser);
+            var recievedId = this.Service.SearchForUsers(new Func<User, bool>[]
             {
                 u => u.PersonalId == validUser.PersonalId
             }).FirstOrDefault();
@@ -109,7 +104,7 @@ namespace Task1.Tests
             var numGenerator = new EvenIdGenerator();
             var userMemoryRepository = new UserRepository(null, null);
             int userCount = 5;
-            Service = new MasterUserService(numGenerator, validator, userMemoryRepository);
+            this.Service = new MasterUserService(numGenerator, validator, userMemoryRepository);
             var receivedUsers = new List<User>();
 
             for (int i = 0; i < userCount; i++)
@@ -121,10 +116,10 @@ namespace Task1.Tests
                     BirthDate = DateTime.Now
                 };
 
-                int userId = Service.Add(validUser);
+                int userId = this.Service.Add(validUser);
             }
 
-            var storageUserCount = Service.SearchForUsers(new Func<User, bool>[]
+            var storageUserCount = this.Service.SearchForUsers(new Func<User, bool>[]
             {
                 u => !u.LastName.IsNullOrEmpty() // kind of GetAll -_-
             }).Count();
@@ -137,7 +132,7 @@ namespace Task1.Tests
         {
             var userMemoryRepository = new UserRepository(null, null);
             ValidatorBase<User> validator = new SimpleUserValidator();
-            Service = new MasterUserService(FakeNumGenerator, validator, userMemoryRepository);
+            this.Service = new MasterUserService(this.FakeNumGenerator, validator, userMemoryRepository);
             var user = new User
             {
                 FirstName = "Default",
@@ -145,9 +140,9 @@ namespace Task1.Tests
                 BirthDate = DateTime.Now
             };
 
-            int userId = Service.Add(user);
-            Service.Delete(user);
-            var users = Service.SearchForUsers(new Func<User, bool>[] { u => u.Id == userId });
+            int userId = this.Service.Add(user);
+            this.Service.Delete(user);
+            var users = this.Service.SearchForUsers(new Func<User, bool>[] { u => u.Id == userId });
 
             Assert.IsEmpty(users);
         }
@@ -157,8 +152,8 @@ namespace Task1.Tests
         {
             var userMemoryRepository = new UserRepository(null, null);
             ValidatorBase<User> validator = new SimpleUserValidator();
-            Service = new MasterUserService(FakeNumGenerator, validator, userMemoryRepository);
-            Service.Delete(null);
+            this.Service = new MasterUserService(this.FakeNumGenerator, validator, userMemoryRepository);
+            this.Service.Delete(null);
 
         }
 
@@ -177,12 +172,12 @@ namespace Task1.Tests
                 LastName = "Ivanov",
                 PersonalId = "MP5678"
             };
-            Service = new MasterUserService(new EvenIdGenerator(), new EmptyUserValidator(),
+            this.Service = new MasterUserService(new EvenIdGenerator(), new EmptyUserValidator(),
                                                 new UserRepository(null, null));
-            int requiredId = Service.Add(requiredUser);
-            Service.Add(anotherUser);
+            int requiredId = this.Service.Add(requiredUser);
+            this.Service.Add(anotherUser);
 
-            var searchUserId = Service.SearchForUsers(new Func<User, bool>[]
+            var searchUserId = this.Service.SearchForUsers(new Func<User, bool>[]
             {
                 u => u.LastName == "Ivanov" && u.PersonalId == "MP12345"
             }).FirstOrDefault();
@@ -198,9 +193,9 @@ namespace Task1.Tests
             ValidatorBase<User> validator = new SimpleUserValidator();
             int lastId = 10;
             int expectedId = 14; // not 12 because we will add one user
-            Service = new MasterUserService(new EvenIdGenerator(lastId), validator, userMemoryRepository);
-            Service.Add(SimpleUser);
-            Service.Save();
+            this.Service = new MasterUserService(new EvenIdGenerator(lastId), validator, userMemoryRepository);
+            this.Service.Add(this.SimpleUser);
+            this.Service.Save();
             var anotheruser = new User
             {
                 FirstName = "Ivan",
@@ -209,8 +204,8 @@ namespace Task1.Tests
                 BirthDate = DateTime.Now,
             };
 
-            Service.Initialize();
-            int id = Service.Add(anotheruser);
+            this.Service.Initialize();
+            int id = this.Service.Add(anotheruser);
 
             Debug.WriteLine(id);
             Assert.AreEqual(expectedId, id);
@@ -222,12 +217,12 @@ namespace Task1.Tests
             string filePath = "D://forTests.xml";
             var userMemoryRepository = new UserRepository(new UserXmlFileWorker(), filePath);
             ValidatorBase<User> validator = new SimpleUserValidator();
-            Service = new MasterUserService(new EvenIdGenerator(), validator, userMemoryRepository);
-            int expectedId = Service.Add(SimpleUser);
-            Service.Save();
-            Service.Initialize();
-            var predicates = new Func<User, bool>[] { p => p.PersonalId == SimpleUser.PersonalId };
-            var user = Service.SearchForUsers(predicates).First();
+            this.Service = new MasterUserService(new EvenIdGenerator(), validator, userMemoryRepository);
+            int expectedId = this.Service.Add(this.SimpleUser);
+            this.Service.Save();
+            this.Service.Initialize();
+            var predicates = new Func<User, bool>[] { p => p.PersonalId == this.SimpleUser.PersonalId };
+            var user = this.Service.SearchForUsers(predicates).First();
             Assert.AreEqual(expectedId, user);
         }
 
@@ -237,17 +232,17 @@ namespace Task1.Tests
         {
             var userRepository = new UserRepository(null, null);
             ValidatorBase<User> validator = new SimpleUserValidator();
-            Service = new MasterUserService(new EvenIdGenerator(), validator, userRepository);
-            int id = Service.Add(SimpleUser);
+            this.Service = new MasterUserService(new EvenIdGenerator(), validator, userRepository);
+            int id = this.Service.Add(this.SimpleUser);
 
-            SimpleUser.Id = id + 1; // change User ID in local object
+            this.SimpleUser.Id = id + 1; // change User ID in local object
 
             int userRepositoryId = userRepository.SearhByPredicate(new Func<User, bool>[]
             {
-                u => u.PersonalId == SimpleUser.PersonalId
+                u => u.PersonalId == this.SimpleUser.PersonalId
             }).First();
             Debug.WriteLine("UserRepositoryId:" + userRepositoryId);
-            Assert.AreNotEqual(SimpleUser.Id, userRepositoryId);
+            Assert.AreNotEqual(this.SimpleUser.Id, userRepositoryId);
         }
 
         [Test]
@@ -256,7 +251,7 @@ namespace Task1.Tests
             Random random = new Random();
             var userRepository = new UserRepository(null, null);
             ValidatorBase<User> validator = new EmptyUserValidator();
-            Service = new MasterUserService(new EvenIdGenerator(), validator, userRepository);
+            this.Service = new MasterUserService(new EvenIdGenerator(), validator, userRepository);
             int threadsCount = 5;
             int iterationCount = 3;
             IList<Thread> threads = new List<Thread>(threadsCount);
@@ -265,7 +260,7 @@ namespace Task1.Tests
                 int iterations = iterationCount;
                 while (iterations-- > 0)
                 {
-                    var usersIds = Service.SearchForUsers(new Func<User, bool>[]
+                    var usersIds = this.Service.SearchForUsers(new Func<User, bool>[]
                     {
                         u => u.PersonalId != null
                     });
@@ -290,10 +285,10 @@ namespace Task1.Tests
                     int iterations = iterationCount;
                     while (iterations-- > 0)
                     {
-                        Service.Add(user);
+                        this.Service.Add(user);
                         Console.WriteLine("User added " + user.PersonalId);
                         Thread.Sleep((int)(random.NextDouble() * 1000));
-                        Service.Delete(user);
+                        this.Service.Delete(user);
                         Console.WriteLine("User deleted " + user.PersonalId);
                         Thread.Sleep((int)(random.NextDouble() * 1000));
                     }
@@ -314,9 +309,9 @@ namespace Task1.Tests
         [Test]
         public void SearchByCriteria_PersonalIdCriteria_ReturnedTwoUsers()
         {
-            var service = new MasterUserService(FakeNumGenerator, FakeValidator, new UserRepository(null, null), false);
+            var service = new MasterUserService(this.FakeNumGenerator, this.FakeValidator, new UserRepository(null, null), false);
             int users = 100000;
-            service.Add(SimpleUser);
+            service.Add(this.SimpleUser);
             service.Add(new User { PersonalId = "PM321" });
             for (int i = 0; i < users; i++)
             {
@@ -331,10 +326,10 @@ namespace Task1.Tests
         private static string GenerateString()
         {
             Guid g = Guid.NewGuid();
-            string GuidString = Convert.ToBase64String(g.ToByteArray());
-            GuidString = GuidString.Replace("=", "");
-            GuidString = GuidString.Replace("+", "");
-            return GuidString;
+            string guidString = Convert.ToBase64String(g.ToByteArray());
+            guidString = guidString.Replace("=", "");
+            guidString = guidString.Replace("+", "");
+            return guidString;
         }
     }
 

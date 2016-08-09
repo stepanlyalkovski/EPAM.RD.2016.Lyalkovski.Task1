@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Concrete\IdGenerator\EvenIdGenerator.cs" />
+    <Compile Include="Concrete\SearchCriteries\UserCriteries\CriterionFemales.cs" />
     <Compile Include="Concrete\SearchCriteries\UserCriteries\CriterionMales.cs" />
     <Compile Include="Concrete\SearchCriteries\UserCriteries\CriterionPersonalId.cs" />
     <Compile Include="Concrete\Services\SlaveUserService.cs" />

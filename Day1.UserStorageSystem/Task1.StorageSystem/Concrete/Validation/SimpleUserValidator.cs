@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using Task1.StorageSystem.Entities;
-
-namespace Task1.StorageSystem.Concrete.Validation
+﻿namespace Task1.StorageSystem.Concrete.Validation
 {
+    using System;
+    using System.Collections.Generic;
+    using Entities;
+
     [Serializable]
     public class SimpleUserValidator : ValidatorBase<User>
     {
@@ -15,7 +15,7 @@ namespace Task1.StorageSystem.Concrete.Validation
                 {
                     new Rule { Test = u => u.LastName != null, Message = "Last Name must not be null" },
                     new Rule { Test = u => u.FirstName != null, Message = "First Name must not be null" },
-                    new Rule {Test = u => u.BirthDate.Year > 1900, Message = "Year value must be more than 1900"}
+                    new Rule { Test = u => u.BirthDate.Year > 1900, Message = "Year value must be more than 1900" }
                 };
             }
         }

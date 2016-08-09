@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Configuration;
 using System.Diagnostics;
 using System.Linq;
@@ -31,30 +29,30 @@ namespace Task1.Tests
         public SlaveUserServiceTests()
         {
             int fakeId = 1;
-            var moqGenerator = new Moq.Mock<INumGenerator>();
+            var moqGenerator = new Mock<INumGenerator>();
             moqGenerator.Setup(g => g.GenerateId()).Returns(fakeId);
-            FakeNumGenerator = moqGenerator.Object;
+            this.FakeNumGenerator = moqGenerator.Object;
 
-            var moqRepository = new Moq.Mock<IRepository<User>>();
+            var moqRepository = new Mock<IRepository<User>>();
             // stab for repository
             moqRepository.Setup(r => r.Add(It.IsAny<User>()));
-            FakeRepository = moqRepository.Object;
-            FakeValidator = new EmptyUserValidator();
+            this.FakeRepository = moqRepository.Object;
+            this.FakeValidator = new EmptyUserValidator();
         }
         [Test]
         [ExpectedException(typeof(NotSupportedException))]
         public void Add_AddSimpleUser_ThrownedNotSupportedException()
         {
-            var service = new SlaveUserService(FakeNumGenerator, FakeValidator, FakeRepository);
-            service.Add(SimpleUser);
+            var service = new SlaveUserService(this.FakeNumGenerator, this.FakeValidator, this.FakeRepository);
+            service.Add(this.SimpleUser);
         }
 
         [Test]
         public void MasterServiceAdd_CreateSlaveAndSubscribeToMasterEditEvent_EventReceivedTwiceAfterAddAndDelete()
         {
             var userRepository = new UserRepository(null, null);
-            var master = new MasterUserService(FakeNumGenerator, FakeValidator, userRepository);
-            var slave = new SlaveUserService(FakeNumGenerator, FakeValidator, userRepository);
+            var master = new MasterUserService(this.FakeNumGenerator, this.FakeValidator, userRepository);
+            var slave = new SlaveUserService(this.FakeNumGenerator, this.FakeValidator, userRepository);
             slave.Subscribe(master);
             int eventsNumber = 2;
             int receivedEvents = 0;
@@ -65,8 +63,8 @@ namespace Task1.Tests
                 receivedEvents++;
             };
 
-            master.Add(SimpleUser);
-            master.Delete(SimpleUser);
+            master.Add(this.SimpleUser);
+            master.Delete(this.SimpleUser);
 
             Assert.AreEqual(eventsNumber, receivedEvents);
         }
@@ -76,13 +74,13 @@ namespace Task1.Tests
         {
             var masterRepository = new UserRepository(null, null);
             var slaveRepository = new UserRepository(null, null);
-            var master = new MasterUserService(FakeNumGenerator, FakeValidator, masterRepository);
-            var slave = new SlaveUserService(FakeNumGenerator, FakeValidator, slaveRepository);
+            var master = new MasterUserService(this.FakeNumGenerator, this.FakeValidator, masterRepository);
+            var slave = new SlaveUserService(this.FakeNumGenerator, this.FakeValidator, slaveRepository);
             slave.Subscribe(master);
-            int userIdFromMaster = master.Add(SimpleUser);
+            int userIdFromMaster = master.Add(this.SimpleUser);
             int userIdFromSlave = slave.SearchForUsers(new Func<User, bool>[]
             {
-                u => u.PersonalId == SimpleUser.PersonalId
+                u => u.PersonalId == this.SimpleUser.PersonalId
             }).First();
 
             Assert.AreEqual(userIdFromMaster, userIdFromSlave);
@@ -94,16 +92,16 @@ namespace Task1.Tests
         {
             var masterRepository = new UserRepository(null, null);
             var slaveRepository = new UserRepository(null, null);
-            var master = new MasterUserService(FakeNumGenerator, FakeValidator, masterRepository);
-            var slave = new SlaveUserService(FakeNumGenerator, FakeValidator, slaveRepository);
+            var master = new MasterUserService(this.FakeNumGenerator, this.FakeValidator, masterRepository);
+            var slave = new SlaveUserService(this.FakeNumGenerator, this.FakeValidator, slaveRepository);
             slave.Subscribe(master);
-            int userIdFromMaster = master.Add(SimpleUser);
+            int userIdFromMaster = master.Add(this.SimpleUser);
 
-            master.Delete(SimpleUser);
+            master.Delete(this.SimpleUser);
             var searchResults = slave.SearchForUsers(new Func<User, bool>[]
             {
-                u => u.PersonalId == SimpleUser.PersonalId
-                      && u.Id == SimpleUser.Id
+                u => u.PersonalId == this.SimpleUser.PersonalId
+                      && u.Id == this.SimpleUser.Id
             }).ToList();
 
             Assert.IsEmpty(searchResults);

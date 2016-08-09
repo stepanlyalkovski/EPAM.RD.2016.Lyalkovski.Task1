@@ -15,6 +15,6 @@ namespace ServiceConfigurator.CustomSections.Files
             return ((FileElement)element).Path;
         }
 
-        public FileElement this[int idx] => (FileElement)BaseGet(idx);
+        public FileElement this[int idx] => (FileElement) this.BaseGet(idx);
     }
 }

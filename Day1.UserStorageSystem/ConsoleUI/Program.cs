@@ -1,14 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Remoting;
-using System.ServiceModel;
-using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using ServiceConfigurator;
 using Task1.StorageSystem.Concrete.Services;
-using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
 
 namespace ConsoleUI

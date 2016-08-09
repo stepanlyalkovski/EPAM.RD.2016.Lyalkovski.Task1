@@ -9,7 +9,7 @@ namespace ServiceConfigurator
 {
     public class ThreadInitializer
     {
-        private static IEnumerable<User> _userTestCollection = new List<User>
+        private static IEnumerable<User> userTestCollection = new List<User>
         {
             new User
             {
@@ -41,8 +41,8 @@ namespace ServiceConfigurator
             }
         };
 
-        private static readonly Func<User, bool> _searchFoAllUserPredicate = u => u.PersonalId != String.Empty;
-        private static string lines { get; } = String.Join("", Enumerable.Repeat("-", 30));
+        private static readonly Func<User, bool> SearchFoAllUserPredicate = u => u.PersonalId != String.Empty;
+        private static string Lines { get; } = String.Join("", Enumerable.Repeat("-", 30));
 
         public static IEnumerable<Thread> InitializeThreads(MasterUserService master, IEnumerable<SlaveUserService> slaves)
         {
@@ -55,7 +55,7 @@ namespace ServiceConfigurator
                     User previousUser = null;
                     while (true)
                     {
-                        foreach (var user in _userTestCollection)
+                        foreach (var user in userTestCollection)
                         {
                             master.Add(user);
                             Thread.Sleep(6000);
@@ -65,14 +65,14 @@ namespace ServiceConfigurator
                             }
                             previousUser = user;
                             Thread.Sleep(6000);
-                            Console.WriteLine(lines + "\n" + "Master Search: ");
-                            var userIds = master.SearchForUsers(new[] { _searchFoAllUserPredicate });
+                            Console.WriteLine(Lines + "\n" + "Master Search: ");
+                            var userIds = master.SearchForUsers(new[] { SearchFoAllUserPredicate });
                             Console.Write("User's IDs: ");
                             foreach (var userId in userIds)
                             {
                                 Console.Write(userId + " ");
                             }
-                            Console.WriteLine("\n" + lines + "\n");
+                            Console.WriteLine("\n" + Lines + "\n");
                         }
                     }
                 });
@@ -89,15 +89,15 @@ namespace ServiceConfigurator
                     {
                         var userIds = slave.SearchForUsers(new[]
                         {
-                            _searchFoAllUserPredicate
+                            SearchFoAllUserPredicate
                         });
-                        Console.WriteLine(lines);
+                        Console.WriteLine(Lines);
                         Console.Write(slave.Name + " User's IDs: ");
                         foreach (var user in userIds)
                         {
                             Console.Write(user + " ");
                         }
-                        Console.WriteLine("\n" + lines);
+                        Console.WriteLine("\n" + Lines);
                         Thread.Sleep(2000);
                     }
 

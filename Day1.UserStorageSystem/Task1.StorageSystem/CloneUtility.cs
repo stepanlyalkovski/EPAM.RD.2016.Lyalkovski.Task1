@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Task1.StorageSystem
+﻿namespace Task1.StorageSystem
 {
-    class CloneUtility
+    using System.IO;
+    using System.Runtime.Serialization.Formatters.Binary;
+
+    public class CloneUtility
     {
         public static T DeepClone<T>(T obj)
         {
@@ -18,9 +13,8 @@ namespace Task1.StorageSystem
                 formatter.Serialize(ms, obj);
                 ms.Position = 0;
 
-                return (T) formatter.Deserialize(ms);
+                return (T)formatter.Deserialize(ms);
             }
         }
-
     }
 }

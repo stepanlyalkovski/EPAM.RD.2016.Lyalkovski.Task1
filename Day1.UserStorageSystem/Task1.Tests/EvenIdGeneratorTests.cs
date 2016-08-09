@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
-using Task1.StorageSystem.Concrete;
 using Task1.StorageSystem.Concrete.IdGenerator;
 
 namespace Task1.Tests
@@ -18,17 +13,17 @@ namespace Task1.Tests
         {
             int count = 5;
             EvenIdGenerator generator = new EvenIdGenerator();
-            int[] IDs = new int[count];
+            int[] ds = new int[count];
 
             for (int i = 0; i < count; i++)
             {
-                IDs[i] = generator.GenerateId();
+                ds[i] = generator.GenerateId();
 
                 //temp 
-                Debug.WriteLine(IDs[i]);
+                Debug.WriteLine(ds[i]);
             }
 
-            bool numbersAreUnique = IDs.Distinct().Count() == IDs.Length;
+            bool numbersAreUnique = ds.Distinct().Count() == ds.Length;
 
             Assert.IsTrue(numbersAreUnique);
         }

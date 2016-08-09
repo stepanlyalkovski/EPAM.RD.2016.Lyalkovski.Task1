@@ -15,11 +15,11 @@ namespace NetworkServiceCommunication
         public IPEndPoint IpEndPoint { get; set; }
         public Receiver(IPAddress ipAddress, int port)
         {
-            IpEndPoint = new IPEndPoint(ipAddress, port);
-            listener = new Socket(AddressFamily.InterNetwork,
+            this.IpEndPoint = new IPEndPoint(ipAddress, port);
+            this.listener = new Socket(AddressFamily.InterNetwork,
                SocketType.Stream, ProtocolType.Tcp);
-            listener.Bind(IpEndPoint);
-            listener.Listen(1);
+            this.listener.Bind(this.IpEndPoint);
+            this.listener.Listen(1);
         }
 
         public Task AcceptConnection()
@@ -27,7 +27,7 @@ namespace NetworkServiceCommunication
             return Task.Run(() =>
             {
                 Debug.WriteLine("Wait Connection");
-                reciever = listener.Accept();
+                this.reciever = this.listener.Accept();
                 Debug.WriteLine("Connection accepted");
             });
 
@@ -38,7 +38,7 @@ namespace NetworkServiceCommunication
             BinaryFormatter formatter = new BinaryFormatter();
             ServiceMessage<TEntity> message;
 
-            using (var networkStream = new NetworkStream(reciever, false))
+            using (var networkStream = new NetworkStream(this.reciever, false))
             {
 
                 message = (ServiceMessage<TEntity>)formatter.Deserialize(networkStream);
@@ -48,8 +48,8 @@ namespace NetworkServiceCommunication
         }
         public void Dispose()
         {
-            reciever?.Close();
-            listener?.Close();
+            this.reciever?.Close();
+            this.listener?.Close();
         }
     }
 }

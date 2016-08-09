@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Serialization;
-using System.ServiceModel;
-using System.Threading;
-using Task1.StorageSystem.Concrete.SearchCriteries.UserCriteries;
-using Task1.StorageSystem.Concrete.Validation;
-using Task1.StorageSystem.Entities;
-using Task1.StorageSystem.Interfaces;
-using Task1.StorageSystem.Interfaces.Repository;
-namespace Task1.StorageSystem.Concrete.Services
+﻿namespace Task1.StorageSystem.Concrete.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Linq;
+    using System.ServiceModel;
+    using System.Threading;
+    using SearchCriteries.UserCriteries;
+    using Validation;
+    using Entities;
+    using Interfaces;
+    using Interfaces.Repository;
 
-    //[ServiceKnownType(typeof(MasterUserService))]
-    //[ServiceKnownType(typeof(SlaveUserService))]
     [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single, AddressFilterMode = AddressFilterMode.Any)]
     [ServiceKnownType(typeof(ICriteria<User>))]
     [ServiceKnownType(typeof(CriterionMales))]
@@ -25,67 +21,73 @@ namespace Task1.StorageSystem.Concrete.Services
         protected IRepository<User> Repository;                    
         protected TraceSource TraceSource;
         protected bool LoggingEnabled;
-        protected ReaderWriterLockSlim storageLock = new ReaderWriterLockSlim();
-        public ICriteria<User> criteria = new CriterionFemales(); 
+        protected ReaderWriterLockSlim StorageLock = new ReaderWriterLockSlim();
+
+        public ICriteria<User> Criteria = new CriterionFemales(); 
+
         public ValidatorBase<User> Validator { get; set; }
+
         public UserServiceCommunicator Communicator { get; set; }
-        public int LastGeneratedId { get; protected set; } //temp
+        public int LastGeneratedId { get; protected set; }
         public string Name { get; set; }
-        protected UserService(INumGenerator numGenerator, ValidatorBase<User> validator,
-            IRepository<User> repository) : this(numGenerator, validator, repository, false)
+        protected UserService(
+                        INumGenerator numGenerator, 
+                        ValidatorBase<User> validator,
+                        IRepository<User> repository) : this(numGenerator, validator, repository, false)
+        { }
+
+        protected UserService(
+                       INumGenerator numGenerator, 
+                       ValidatorBase<User> validator,
+                       IRepository<User> repository, 
+                       bool loggingEnabled)
         {
+            this.NumGenerator = numGenerator;
+            this.Validator = validator;
+            this.Repository = repository;
+            this.TraceSource = new TraceSource("StorageSystem");
 
-        }
-
-        protected UserService(INumGenerator numGenerator, ValidatorBase<User> validator,
-                                IRepository<User> repository, bool loggingEnabled)
-        {
-            NumGenerator = numGenerator;
-            Validator = validator;
-            Repository = repository;
-            TraceSource = new TraceSource("StorageSystem");
-
-            LoggingEnabled = loggingEnabled;
+            this.LoggingEnabled = loggingEnabled;
             Debug.WriteLine($"Initializing UserService:\nDomain: {AppDomain.CurrentDomain.FriendlyName}");
         }
 
         public int Add(User user)
         {
-            storageLock.EnterWriteLock();
+            this.StorageLock.EnterWriteLock();
             try
             {
-                if (LoggingEnabled)
-                    TraceSource.TraceEvent(TraceEventType.Information, 0, $"Adding User: {user.LastName} {user.PersonalId}");
+                if (this.LoggingEnabled)
+                    this.TraceSource.TraceEvent(TraceEventType.Information, 0, $"Adding User: {user.LastName} {user.PersonalId}");
 
-                int id =  AddStrategy(user);
+                int id = this.AddStrategy(user);
 
-                if (LoggingEnabled)
-                    TraceSource.TraceEvent(TraceEventType.Information, 0, $"User was added: {user.LastName} {user.PersonalId}. Id = {id}");
+                if (this.LoggingEnabled)
+                    this.TraceSource.TraceEvent(TraceEventType.Information, 0, $"User was added: {user.LastName} {user.PersonalId}. Id = {id}");
                 return id;
             }
             finally
             {
-                storageLock.ExitWriteLock();
+                this.StorageLock.ExitWriteLock();
             }
             
         }
 
         public void Delete(User user)
         {
-            storageLock.EnterWriteLock();
+            this.StorageLock.EnterWriteLock();
             try
             {
-                if (LoggingEnabled)
-                    TraceSource.TraceEvent(TraceEventType.Information, 0, $"Deleting User: {user.LastName} {user.PersonalId}");
+                if (this.LoggingEnabled)
+                    this.TraceSource.TraceEvent(TraceEventType.Information, 0, $"Deleting User: {user.LastName} {user.PersonalId}");
 
-                DeleteStrategy(user);
+                this.DeleteStrategy(user);
 
-                if (LoggingEnabled)
-                    TraceSource.TraceEvent(TraceEventType.Information, 0, $"User {user.LastName} {user.PersonalId} was deleted");
+                if (this.LoggingEnabled)
+                    this.TraceSource.TraceEvent(TraceEventType.Information, 0, $"User {user.LastName} {user.PersonalId} was deleted");
             }
             finally
             {
-                storageLock.ExitWriteLock();
+                this.StorageLock.ExitWriteLock();
             }
             
         }
@@ -95,35 +97,35 @@ namespace Task1.StorageSystem.Concrete.Services
 
         public virtual List<int> SearchForUsers(Func<User, bool>[] predicates)
         {
-            storageLock.EnterReadLock();
+            this.StorageLock.EnterReadLock();
             try
             {
-                return Repository.SearhByPredicate(predicates).ToList();
+                return this.Repository.SearhByPredicate(predicates).ToList();
             }
             finally
             {
-                storageLock.ExitReadLock();
+                this.StorageLock.ExitReadLock();
             }
             
         }
 
         public virtual List<int> SearchForUsers(ICriteria<User>[] criteries)
         {
-            storageLock.EnterReadLock();
+            this.StorageLock.EnterReadLock();
             try
             {
-                return Repository.SearchByCriteria(criteries).ToList();
+                return this.Repository.SearchByCriteria(criteries).ToList();
             }
             finally
             {
-                storageLock.ExitReadLock();
+                this.StorageLock.ExitReadLock();
             }
         }
 
         public virtual void AddCommunicator(UserServiceCommunicator communicator)
         {
             if (communicator == null) return;
-            Communicator = communicator;
+            this.Communicator = communicator;
         }
 
         public abstract void Save();

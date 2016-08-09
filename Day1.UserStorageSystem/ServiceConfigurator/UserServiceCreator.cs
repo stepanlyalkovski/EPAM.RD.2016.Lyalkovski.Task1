@@ -1,21 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.Remoting;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using ServiceConfigurator.DomainServiceLoading;
 using ServiceConfigurator.Entities;
 using Task1.StorageSystem.Concrete.Services;
-using Task1.StorageSystem.Concrete.Validation;
-using Task1.StorageSystem.Entities;
-using Task1.StorageSystem.Interfaces;
-using Task1.StorageSystem.Interfaces.Repository;
 
 namespace ServiceConfigurator
 {

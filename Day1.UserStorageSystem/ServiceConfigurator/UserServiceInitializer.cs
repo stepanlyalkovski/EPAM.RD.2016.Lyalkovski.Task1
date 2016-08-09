@@ -1,24 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Diagnostics;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Runtime.Remoting;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using ServiceConfigurator.CustomSections.Services;
 using ServiceConfigurator.Entities;
-using Task1.StorageSystem.Concrete;
-using Task1.StorageSystem.Concrete.IdGenerator;
 using Task1.StorageSystem.Concrete.Services;
-using Task1.StorageSystem.Concrete.Validation;
-using Task1.StorageSystem.Entities;
-using Task1.StorageSystem.Interfaces;
-using Task1.StorageSystem.Interfaces.Repository;
 
 namespace ServiceConfigurator
 {
@@ -44,11 +27,6 @@ namespace ServiceConfigurator
             var userServices = services as IList<UserService> ?? services.ToList();
 
             var master = (MasterUserService)userServices.FirstOrDefault(s => s is MasterUserService);
-
-            //if (master == null)
-            //{
-            //    throw new ConfigurationErrorsException("Master is not exist");
-            //}
 
             var slaves = userServices.OfType<SlaveUserService>().ToList();
 

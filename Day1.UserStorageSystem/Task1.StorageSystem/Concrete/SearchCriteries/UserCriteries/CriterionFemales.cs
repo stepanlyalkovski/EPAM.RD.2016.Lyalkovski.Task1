@@ -5,11 +5,12 @@
     using Interfaces;
 
     [Serializable]
-    public class CriterionMales : ICriteria<User>
+    public class CriterionFemales : ICriteria<User>
     {
         public bool MeetCriteria(User user)
         {
-            return user.Gender == Gender.Male;
+            Console.WriteLine("FEMALE CRITERIA!");
+            return user.Gender == Gender.Female;
         }
     }
 }

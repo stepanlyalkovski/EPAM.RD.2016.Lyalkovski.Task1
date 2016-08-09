@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.Remoting;
-using System.Threading.Tasks;
 using NetworkServiceCommunication;
 using ServiceConfigurator.Entities;
 using Task1.StorageSystem.Concrete;
@@ -46,7 +42,7 @@ namespace ServiceConfigurator.DomainServiceLoading
                         domainService = new MasterUserService(generator, validator,
                             repository, configuration.LoggingEnabled);
 
-                        communicator = GetMasterCommunicator();                        
+                        communicator = this.GetMasterCommunicator();                        
                     }      
                     break;
 

@@ -25,24 +25,24 @@ namespace ServiceConfigurator.Tests
         public ThreadInitializerTests()
         {
             int fakeId = 1;
-            var moqGenerator = new Moq.Mock<INumGenerator>();
+            var moqGenerator = new Mock<INumGenerator>();
             moqGenerator.Setup(g => g.GenerateId()).Returns(fakeId);
-            FakeNumGenerator = moqGenerator.Object;
+            this.FakeNumGenerator = moqGenerator.Object;
 
-            var moqRepository = new Moq.Mock<IRepository<User>>();
+            var moqRepository = new Mock<IRepository<User>>();
             // stab for repository
             moqRepository.Setup(r => r.Add(It.IsAny<User>()));
             moqRepository.Setup(r => r.Delete(It.IsAny<User>()));
-            FakeRepository = moqRepository.Object;
-            FakeValidator = new EmptyUserValidator();
+            this.FakeRepository = moqRepository.Object;
+            this.FakeValidator = new EmptyUserValidator();
         }
         [Test]
         public void InitializeThreads_AddOneMasterAndTwoSlaves_ReturnedThreeThreads()
         {
             int threadsCount = 3;
-            var slave = new SlaveUserService(FakeNumGenerator, FakeValidator, FakeRepository) {Name = "slave1"};
-            var slave2 = new SlaveUserService(FakeNumGenerator, FakeValidator, FakeRepository) {Name = "slave2"};
-            var master = new MasterUserService(FakeNumGenerator, FakeValidator, FakeRepository) {Name = "master"};
+            var slave = new SlaveUserService(this.FakeNumGenerator, this.FakeValidator, this.FakeRepository) {Name = "slave1"};
+            var slave2 = new SlaveUserService(this.FakeNumGenerator, this.FakeValidator, this.FakeRepository) {Name = "slave2"};
+            var master = new MasterUserService(this.FakeNumGenerator, this.FakeValidator, this.FakeRepository) {Name = "master"};
             var threads = ThreadInitializer.InitializeThreads(master, new[] {slave, slave2});
             Thread.Sleep(5000);
             Assert.AreEqual(threadsCount, threads.Count());

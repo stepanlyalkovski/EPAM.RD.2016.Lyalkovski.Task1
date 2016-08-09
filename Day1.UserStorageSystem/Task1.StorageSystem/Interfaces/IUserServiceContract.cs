@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ServiceModel;
-using Task1.StorageSystem.Concrete.SearchCriteries.UserCriteries;
-using Task1.StorageSystem.Entities;
-
-namespace Task1.StorageSystem.Interfaces
+﻿namespace Task1.StorageSystem.Interfaces
 {
+    using System.Collections.Generic;
+    using System.ServiceModel;
+    using Concrete.SearchCriteries.UserCriteries;
+    using Entities;
+
     [ServiceContract]
     [ServiceKnownType(typeof(CriterionFemales))]
     [ServiceKnownType(typeof(CriterionMales))]

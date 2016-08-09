@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ServiceConfigurator.CustomSections.Files;
+﻿using System.Configuration;
 
 namespace ServiceConfigurator.CustomSections.Services
 {
@@ -21,6 +15,6 @@ namespace ServiceConfigurator.CustomSections.Services
             return ((ServiceElement) element).ServiceName;
         }
 
-        public ServiceElement this[int idx] => (ServiceElement) BaseGet(idx);
+        public ServiceElement this[int idx] => (ServiceElement) this.BaseGet(idx);
     }
 }

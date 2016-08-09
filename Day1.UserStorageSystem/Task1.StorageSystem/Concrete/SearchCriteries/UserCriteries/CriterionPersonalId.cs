@@ -1,11 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Task1.StorageSystem.Entities;
-using Task1.StorageSystem.Interfaces;
-
-namespace Task1.StorageSystem.Concrete.SearchCriteries.UserCriteries
+﻿namespace Task1.StorageSystem.Concrete.SearchCriteries.UserCriteries
 {
+    using System;
+    using Entities;
+    using Interfaces;
+
     [Serializable]
     public class CriterionPersonalId : ICriteria<User>
     {

@@ -1,53 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Net;
-using System.Security.Policy;
-using System.Threading;
-using System.Threading.Tasks;
-using NetworkServiceCommunication;
-using NetworkServiceCommunication.Entities;
-using Task1.StorageSystem.Entities;
-
-namespace Task1.StorageSystem.Concrete.Services
+﻿namespace Task1.StorageSystem.Concrete.Services
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using NetworkServiceCommunication;
+    using NetworkServiceCommunication.Entities;
+    using Entities;
+
     [Serializable]
-    public class UserServiceCommunicator : MarshalByRefObject,IDisposable
+    public class UserServiceCommunicator : MarshalByRefObject, IDisposable
     {
-        public event EventHandler<UserDataApdatedEventArgs> UserAdded;
-        public event EventHandler<UserDataApdatedEventArgs> UserDeleted;
-        private Sender<User> _sender;
+        private Sender<User> sender;
+
         private Task recieverTask;
+
         private CancellationTokenSource tokenSource;
-        private Receiver<User> _receiver;
+
+        private Receiver<User> receiver;
 
         public UserServiceCommunicator(Sender<User> sender, Receiver<User> receiver)
         {
-            _sender = sender;
-            _receiver = receiver;
+            this.sender = sender;
+            this.receiver = receiver;
         }
 
         public UserServiceCommunicator(Sender<User> sender) : this(sender, null) { }
+
         public UserServiceCommunicator(Receiver<User> receiver) : this(null, receiver) { }
 
+        public event EventHandler<UserDataApdatedEventArgs> UserAdded;
+
+        public event EventHandler<UserDataApdatedEventArgs> UserDeleted;
         public async void RunReceiver()
         {
-            await _receiver.AcceptConnection();
-            if (_receiver == null) return;
-            tokenSource = new CancellationTokenSource();
-            recieverTask = Task.Run((Action)ReceiveMessages, tokenSource.Token);
+            await this.receiver.AcceptConnection();
+            if (this.receiver == null) return;
+            this.tokenSource = new CancellationTokenSource();
+            this.recieverTask = Task.Run((Action)this.ReceiveMessages, this.tokenSource.Token);
         }
 
         public void ConnectGroup(IEnumerable<IPEndPoint> endPoints)
         {
-            _sender.ConnectGroup(endPoints);
+            this.sender.ConnectGroup(endPoints);
         }
        
-
         public void StopReceiver()
         {
-            if (tokenSource.Token.CanBeCanceled)
+            if (this.tokenSource.Token.CanBeCanceled)
             {
-                tokenSource.Cancel();
+                this.tokenSource.Cancel();
             }
         }
 
@@ -55,25 +58,29 @@ namespace Task1.StorageSystem.Concrete.Services
         {
             while (true)
             {
-                if(tokenSource.IsCancellationRequested) return;
-                var message = _receiver.Receive();
+                if (this.tokenSource.IsCancellationRequested) return;
+                var message = this.receiver.Receive();
                 var args = new UserDataApdatedEventArgs
                 {
                     User = message.Entity
                 };
                 switch (message.MessageType)
                 {
-                    case MessageType.Add: OnUserAdded(this, args); break;
-                    case MessageType.Delete: OnUserDeleted(this, args); break;
+                    case MessageType.Add:
+                        this.OnUserAdded(this, args);
+                        break;
+                    case MessageType.Delete:
+                        this.OnUserDeleted(this, args);
+                        break;
                 }
             }
         }
 
         public void SendAdd(UserDataApdatedEventArgs args)
         {
-            if (_sender == null) return;
+            if (this.sender == null) return;
 
-            Send(new ServiceMessage<User>
+            this.Send(new ServiceMessage<User>
             {
                 Entity = args.User,
                 MessageType = MessageType.Add
@@ -81,34 +88,34 @@ namespace Task1.StorageSystem.Concrete.Services
         }
         public void SendDelete(UserDataApdatedEventArgs args)
         {
-            if (_sender == null) return;
+            if (this.sender == null) return;
 
-            Send(new ServiceMessage<User>
+            this.Send(new ServiceMessage<User>
             {
                 Entity = args.User,
                 MessageType = MessageType.Delete
             });
         }
 
-        private void Send(ServiceMessage<User> message)
-        {
-            _sender.Send(message);
-        }
-
         protected virtual void OnUserDeleted(object sender, UserDataApdatedEventArgs args)
         {
-            UserDeleted?.Invoke(sender, args);
+            this.UserDeleted?.Invoke(sender, args);
         }
 
         protected virtual void OnUserAdded(object sender, UserDataApdatedEventArgs args)
         {
-            UserAdded?.Invoke(sender, args);
+            this.UserAdded?.Invoke(sender, args);
         }
 
         public void Dispose()
         {
-            _receiver?.Dispose();
-            _sender?.Dispose();
+            this.receiver?.Dispose();
+            this.sender?.Dispose();
         }
+        private void Send(ServiceMessage<User> message)
+        {
+            this.sender.Send(message);
+        }
+
     }
 }

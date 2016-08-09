@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using NetworkServiceCommunication.Entities;
@@ -34,8 +32,8 @@ namespace NetworkServiceCommunication.Tests
             var receiver = new Receiver<User>(receiverAddress, receiverPort1);
             var receiver2 = new Receiver<User>(receiverAddress, receiverPort2);
             var sender = new Sender<User>();
-            var task1 = StartReceiver(receiver);
-            var task2 = StartReceiver(receiver2);
+            var task1 = this.StartReceiver(receiver);
+            var task2 = this.StartReceiver(receiver2);
             var point1 = new IPEndPoint(receiverAddress, receiverPort1);
             var point2 = new IPEndPoint(receiverAddress, receiverPort2);
             sender.ConnectGroup(new List<IPEndPoint> {point1, point2});

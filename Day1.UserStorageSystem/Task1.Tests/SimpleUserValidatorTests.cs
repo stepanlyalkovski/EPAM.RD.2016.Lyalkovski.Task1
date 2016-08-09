@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using NUnit.Framework;
 using Task1.StorageSystem.Concrete.Validation;
 using Task1.StorageSystem.Entities;
@@ -24,7 +20,7 @@ namespace Task1.Tests
                 LastName = null
             };
 
-            var messages = Validator.Validate(user);
+            var messages = this.Validator.Validate(user);
             Assert.IsTrue(messages.Contains(expectedMessage));
         }
 
@@ -39,7 +35,7 @@ namespace Task1.Tests
                 LastName = "Ivanov"
             };
 
-            var messages = Validator.Validate(user);
+            var messages = this.Validator.Validate(user);
             Assert.IsTrue(messages.Contains(expectedMessage));
         }
 
@@ -54,7 +50,7 @@ namespace Task1.Tests
                 BirthDate = new DateTime()
             };
 
-            var messages = Validator.Validate(user);
+            var messages = this.Validator.Validate(user);
             Assert.IsTrue(messages.Contains(expectedMessage));
         }
 
@@ -67,7 +63,7 @@ namespace Task1.Tests
                 LastName = "Ivanov",
                 BirthDate = DateTime.Now
             };
-            var messages = Validator.Validate(user);
+            var messages = this.Validator.Validate(user);
             Assert.IsTrue(!messages.Any());
         }
 
@@ -75,7 +71,7 @@ namespace Task1.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Validate_SendNull_ThrownArgumentNullException()
         {
-           Validator.Validate(null);
+            this.Validator.Validate(null);
 
         }
     }

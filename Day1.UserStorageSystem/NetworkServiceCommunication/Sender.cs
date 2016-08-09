@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -19,7 +18,7 @@ namespace NetworkServiceCommunication
             {
                 var socket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 socket.Connect(ipEndPoint);
-                sockets.Add(socket);
+                this.sockets.Add(socket);
             }
 
         }
@@ -27,12 +26,12 @@ namespace NetworkServiceCommunication
         {
             var socket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             socket.Connect(ipEndPoint);
-            sockets.Add(socket);
+            this.sockets.Add(socket);
         }
 
         public void Send(ServiceMessage<TEntity> message)
         {
-            foreach (var socket in sockets)
+            foreach (var socket in this.sockets)
             {
                 //TODO Make xml formatter
                 BinaryFormatter formatter = new BinaryFormatter();
@@ -45,7 +44,7 @@ namespace NetworkServiceCommunication
 
         public void Dispose()
         {
-            foreach (var socket in sockets)
+            foreach (var socket in this.sockets)
             {
                 socket.Shutdown(SocketShutdown.Both);
                 socket.Close();

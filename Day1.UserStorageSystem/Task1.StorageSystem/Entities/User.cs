@@ -1,9 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using Task1.StorageSystem.Interfaces;
-
-namespace Task1.StorageSystem.Entities
+﻿namespace Task1.StorageSystem.Entities
 {
+    using System;
+    using System.Collections.Generic;
+    public enum Gender
+    {
+        None,
+        Female,
+        Male
+    }
+    [Serializable]
+    public struct VisaRecord
+    {
+        public string Country { get; set; }
+
+        public DateTime StartDate { get; set; }
+
+        public DateTime EndDate { get; set; }
+    }
+
     [Serializable]
     public class User : IEquatable<User>, ICloneable
     {
@@ -17,21 +31,26 @@ namespace Task1.StorageSystem.Entities
 
         public List<VisaRecord> VisaRecords { get; set; }
 
-
-
         public bool Equals(User other)
         {
             if (other == null)
+            {
                 return false;
+            }
 
-            if (object.ReferenceEquals(this, other))
+            if (ReferenceEquals(this, other))
+            {
                 return true;
+            }
+
             if (this.GetType() != other.GetType())
+            {
                 return false;
+            }
+
             return this.PersonalId == other.PersonalId
                    && this.FirstName == other.FirstName
                    && this.LastName == other.LastName;
-
         }
 
         public override bool Equals(object other)
@@ -39,7 +58,7 @@ namespace Task1.StorageSystem.Entities
             if (other == null)
                 return false;
 
-            if (object.ReferenceEquals(this, other))
+            if (ReferenceEquals(this, other))
                 return true;
 
 
@@ -52,20 +71,19 @@ namespace Task1.StorageSystem.Entities
         public override int GetHashCode()
         {
             int hash = 13;
-            //TODO Check for null
-            if(FirstName != null)
-                hash = (hash * 7) + FirstName.GetHashCode();
-            if(LastName != null)
-            hash = (hash * 7) + LastName.GetHashCode();
-            if(PersonalId != null)
-            hash = (hash * 7) + PersonalId.GetHashCode();
+            if (this.FirstName != null)
+                hash = (hash * 7) + this.FirstName.GetHashCode();
+            if (this.LastName != null)
+            hash = (hash * 7) + this.LastName.GetHashCode();
+            if (this.PersonalId != null)
+            hash = (hash * 7) + this.PersonalId.GetHashCode();
 
             return hash;
         }
 
         object ICloneable.Clone()
         {
-            return Clone();
+            return this.Clone();
         }
 
         public User Clone()
@@ -74,17 +92,5 @@ namespace Task1.StorageSystem.Entities
         }
     }
 
-    public enum Gender
-    {
-        None,
-        Female,
-        Male
-    }
-    [Serializable]
-    public struct VisaRecord
-    {
-        public string Country { get; set; }
-        public DateTime StartDate { get; set; }
-        public DateTime EndDate { get; set; }
-    }
+
 }

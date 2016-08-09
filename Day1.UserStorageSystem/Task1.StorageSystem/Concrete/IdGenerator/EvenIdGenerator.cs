@@ -1,33 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Runtime.Serialization;
-using Task1.StorageSystem.Interfaces;
-
-namespace Task1.StorageSystem.Concrete.IdGenerator
+﻿namespace Task1.StorageSystem.Concrete.IdGenerator
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Runtime.Serialization;
+    using Interfaces;
+
     [Serializable]
     public class EvenIdGenerator : MarshalByRefObject, INumGenerator, ISerializable
     {
-        private IEnumerator<int> _enumerator;
+        private IEnumerator<int> enumerator;
 
         public EvenIdGenerator(int lastGeneratedId = -1)
         {
-            //NumberGenerator is expecting startPosition, so we have to increment our lastId
+            // NumberGenerator is expecting startPosition, so we have to increment our lastId        
             int startPositionNumber = lastGeneratedId + 1;
-            _enumerator = NumberGenerator.GetEvenNumbers(startPositionNumber).GetEnumerator();
+            this.enumerator = NumberGenerator.GetEvenNumbers(startPositionNumber).GetEnumerator();
         }
 
         public EvenIdGenerator(SerializationInfo info, StreamingContext context)
         {
             int lastId = (int)info.GetValue("lastId", typeof(int));
-            _enumerator = NumberGenerator.GetEvenNumbers(lastId).GetEnumerator();
+            this.enumerator = NumberGenerator.GetEvenNumbers(lastId).GetEnumerator();
         }
 
         public int GenerateId()
         {
-            if (_enumerator.MoveNext())
+            if (this.enumerator.MoveNext())
             {
-                return _enumerator.Current;
+                return this.enumerator.Current;
             }
             
             throw new InvalidOperationException();
@@ -35,15 +35,14 @@ namespace Task1.StorageSystem.Concrete.IdGenerator
 
         public void Initialize(int number)
         {
-            //NumberGenerator is expecting startPosition, so we have to increment our lastId
+            // NumberGenerator is expecting startPosition, so we have to increment our lastId
             int startPositionNumber = number + 1;
-            _enumerator = NumberGenerator.GetEvenNumbers(startPositionNumber).GetEnumerator();
+            this.enumerator = NumberGenerator.GetEvenNumbers(startPositionNumber).GetEnumerator();
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("lastId", _enumerator.Current, typeof(int));
-
+            info.AddValue("lastId", this.enumerator.Current, typeof(int));      
         }
     }
 }
