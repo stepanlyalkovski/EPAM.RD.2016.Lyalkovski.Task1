@@ -63,6 +63,13 @@
             }
             
         }
+
+        private void OnRepositoryClear(object sender, EventArgs args)
+        {
+            Console.WriteLine("REPOSITORY CLEAR!");
+            this.Repository.Clear();
+        }
+
         public void Subscribe(MasterUserService master)
         {
             master.Deleted += this.OnDeleted;
@@ -75,6 +82,7 @@
 
             this.Communicator.UserAdded += this.OnAdded;
             this.Communicator.UserDeleted += this.OnDeleted;
+            this.Communicator.RepositoryClear += this.OnRepositoryClear;
         }
     }
 }

@@ -70,6 +70,11 @@
             this.memoryCollection.Remove(entity);
         }
 
+        public void Clear()
+        {
+            this.memoryCollection.Clear();
+        }
+
         public void Initialize()
         {
             this.InitializeFromXml();         

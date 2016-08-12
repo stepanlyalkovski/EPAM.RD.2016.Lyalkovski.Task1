@@ -33,6 +33,8 @@
         public event EventHandler<UserDataApdatedEventArgs> UserAdded;
 
         public event EventHandler<UserDataApdatedEventArgs> UserDeleted;
+
+        public event EventHandler RepositoryClear;
         public async void RunReceiver()
         {
             await this.receiver.AcceptConnection();
@@ -72,6 +74,9 @@
                     case MessageType.Delete:
                         this.OnUserDeleted(this, args);
                         break;
+                    case MessageType.Clear:
+                        this.OnRepositoryClear(this, args);        
+                        break;
                 }
             }
         }
@@ -86,6 +91,15 @@
                 MessageType = MessageType.Add
             });
         }
+
+        public void SendClear(EventArgs args)
+        {
+            this.Send(new ServiceMessage<User>
+            {
+                MessageType = MessageType.Clear
+            });
+        }
+
         public void SendDelete(UserDataApdatedEventArgs args)
         {
             if (this.sender == null) return;
@@ -107,11 +121,17 @@
             this.UserAdded?.Invoke(sender, args);
         }
 
+        protected virtual void OnRepositoryClear(object sender, UserDataApdatedEventArgs args)
+        {
+            this.RepositoryClear?.Invoke(sender, args);
+        }
+
         public void Dispose()
         {
             this.receiver?.Dispose();
             this.sender?.Dispose();
         }
+
         private void Send(ServiceMessage<User> message)
         {
             this.sender.Send(message);

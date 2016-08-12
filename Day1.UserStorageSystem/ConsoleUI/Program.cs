@@ -21,7 +21,8 @@ namespace ConsoleUI
             if (master != null)
             {
                 master.Initialize();
-                AddSomeMasterThreads((MasterUserService)master);
+                var slaves = services.Where(s => s != master).Select(sl => sl as SlaveUserService).ToList();
+                ThreadInitializer.InitializeThreads((MasterUserService)master, slaves);
             }
 
             var cmd = Console.ReadLine();
@@ -30,6 +31,12 @@ namespace ConsoleUI
                 master.Save();
 
             }
+
+            if (cmd == "init")
+            {
+                master.Initialize();
+            }
+            Console.ReadLine();
         }
 
         private static void AddSomeMasterThreads(MasterUserService master)

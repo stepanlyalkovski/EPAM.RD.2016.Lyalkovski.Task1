@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
 using System.Threading.Tasks;
 using NetworkServiceCommunication.Entities; 
 namespace NetworkServiceCommunication
@@ -12,6 +13,7 @@ namespace NetworkServiceCommunication
     {
         private Socket listener;
         private Socket reciever;
+        protected TraceSource TraceSource = new TraceSource("StorageSystem");
         public IPEndPoint IpEndPoint { get; set; }
         public Receiver(IPAddress ipAddress, int port)
         {
@@ -43,7 +45,11 @@ namespace NetworkServiceCommunication
 
                 message = (ServiceMessage<TEntity>)formatter.Deserialize(networkStream);
             }
+
             Debug.WriteLine("Message received!");
+
+            //this.reciever.Send(Encoding.UTF8.GetBytes("RECEIVED"));
+
             return message;
         }
         public void Dispose()

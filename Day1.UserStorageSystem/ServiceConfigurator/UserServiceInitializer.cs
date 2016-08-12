@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading;
 using ServiceConfigurator.Entities;
 using Task1.StorageSystem.Concrete.Services;
 
@@ -45,7 +46,8 @@ namespace ServiceConfigurator
                 WcfServiceInitializer.CreateWcfService(userService);
             }
             //SubscribeServices(master, slaves);
-            ThreadInitializer.InitializeThreads(master, slaves);
+            //Thread.Sleep(10000);
+            //ThreadInitializer.InitializeThreads(master, slaves);
         }
         private static void SubscribeServices(MasterUserService master, IEnumerable<SlaveUserService> slaves)
         {

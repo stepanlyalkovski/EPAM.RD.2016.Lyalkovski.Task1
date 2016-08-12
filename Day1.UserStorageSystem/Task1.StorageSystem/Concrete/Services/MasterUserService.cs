@@ -1,4 +1,6 @@
-﻿namespace Task1.StorageSystem.Concrete.Services
+﻿using System.Threading;
+
+namespace Task1.StorageSystem.Concrete.Services
 {
     using System;
     using System.Diagnostics;
@@ -42,27 +44,29 @@
         {
             if (this.LoggingEnabled)
                 this.TraceSource.TraceEvent(TraceEventType.Information, 0, "Initializing UserService state...");
-            try
-            {
-                this.Repository.Initialize();
-            }
-            catch (InvalidOperationException exception)
-            {
-                if (this.LoggingEnabled)
-                    this.TraceSource.TraceEvent(
-                        TraceEventType.Error,
-                        0, 
-                        "Services wasn't initialized! Exception message: " + exception.Message);
-            }
+                try
+                {
+                    this.Repository.Initialize();
+                }
+                catch (InvalidOperationException exception)
+                {
+                    if (this.LoggingEnabled)
+                        this.TraceSource.TraceEvent(
+                            TraceEventType.Error,
+                            0,
+                            "Services wasn't initialized! Exception message: " + exception.Message);
+                }
 
 
-            this.LastGeneratedId = this.Repository.GetState();
-            this.NumGenerator.Initialize(this.LastGeneratedId);
-            var users = this.Repository.GetAll();
-            foreach (var user in users)
-            {
-                this.Communicator.SendAdd(new UserDataApdatedEventArgs { User = user });
-            }
+                this.LastGeneratedId = this.Repository.GetState();
+                this.NumGenerator.Initialize(this.LastGeneratedId);
+                var users = this.Repository.GetAll().ToList();
+                this.OnRepositoryClear(this, null);
+                foreach (var user in users)
+                {
+                    this.OnUserAdded(this, new UserDataApdatedEventArgs { User = user });
+                }
+
         }
 
         protected override void DeleteStrategy(User user)
@@ -102,5 +106,9 @@
             this.Added?.Invoke(sender, args);
         }
 
+        protected virtual void OnRepositoryClear(object sender, EventArgs args)
+        {
+            this.Communicator?.SendClear(args);
+        }
     }
 }

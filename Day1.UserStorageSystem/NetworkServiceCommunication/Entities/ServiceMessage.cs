@@ -5,7 +5,8 @@ namespace NetworkServiceCommunication.Entities
     public enum MessageType
     {
         Add = 0,
-        Delete = 1
+        Delete = 1,
+        Clear = 2
     }
 
     [Serializable]

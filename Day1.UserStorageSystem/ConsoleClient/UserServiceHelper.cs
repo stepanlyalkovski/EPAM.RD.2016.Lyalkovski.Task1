@@ -41,7 +41,7 @@ namespace ConsoleClient
                 Console.Clear();
 
                 Console.WriteLine("----- " + service.Endpoint.Address + " -----" + service.Endpoint.Name);
-                Console.WriteLine("cmd: add, delete, search, exit");
+                Console.WriteLine("cmd: add, delete, search, save, initialize, exit");
                 var readLine = Console.ReadLine();
                 if (readLine == null) continue;
 
@@ -68,6 +68,16 @@ namespace ConsoleClient
 
 
                             }
+                            break;
+                        case "save":
+                        {
+                            service.Save();
+                        }
+                            break;;
+                        case "init":
+                        {
+                            service.Initialize();
+                        }
                             break;
                         case "exit":
                             inProcess = false; break;

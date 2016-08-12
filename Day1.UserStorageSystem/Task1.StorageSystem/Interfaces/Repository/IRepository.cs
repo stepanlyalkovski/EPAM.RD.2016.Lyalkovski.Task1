@@ -23,5 +23,7 @@
         TEntity GetById(int id);
 
         void Delete(TEntity entity);
+
+        void Clear();
     }
 }

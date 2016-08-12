@@ -93,6 +93,7 @@
         }
 
         protected abstract int AddStrategy(User user);
+
         protected abstract void DeleteStrategy(User user);
 
         public virtual List<int> SearchForUsers(Func<User, bool>[] predicates)
