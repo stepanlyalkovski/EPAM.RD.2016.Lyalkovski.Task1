@@ -41,7 +41,9 @@ namespace ConsoleClient
                 Console.Clear();
 
                 Console.WriteLine("----- " + service.Endpoint.Address + " -----" + service.Endpoint.Name);
-                Console.WriteLine("cmd: add, delete, search, save, initialize, exit");
+                Console.WriteLine("cmd: add, delete, search, save, init, exit");
+                Console.WriteLine("(init - clear repository and take users from xml file)");
+                Console.WriteLine("(save - save users to xml file), add/delete - one default user");
                 var readLine = Console.ReadLine();
                 if (readLine == null) continue;
 
