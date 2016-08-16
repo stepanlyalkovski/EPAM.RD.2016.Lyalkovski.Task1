@@ -10,7 +10,7 @@ namespace ServiceConfigurator
     {
         public static ServiceHost CreateWcfService(UserService service)
         {
-            string localAddress = GetLocalIpAddress();
+            string localAddress = "127.0.0.1"; //GetLocalIpAddress();
             Uri serviceUri = new Uri($"http://{localAddress}:8080/UserService/" + service.Name);
             ServiceHost host = new ServiceHost(service, serviceUri);
             host.Open();

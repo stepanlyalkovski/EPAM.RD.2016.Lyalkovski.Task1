@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<SerializedUserData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <LastGeneratedId>50</LastGeneratedId>
+  <Users>
+    <User>
+      <Id>32</Id>
+      <PersonalId>MP7895</PersonalId>
+      <FirstName>Bob1</FirstName>
+      <LastName>Smith</LastName>
+      <BirthDate>2016-08-12T16:11:14.9166248+03:00</BirthDate>
+      <Gender>None</Gender>
+      <VisaRecords />
+    </User>
+    <User>
+      <Id>34</Id>
+      <PersonalId>MP7896</PersonalId>
+      <FirstName>Bob2</FirstName>
+      <LastName>Smith</LastName>
+      <BirthDate>2016-08-12T16:11:14.9166248+03:00</BirthDate>
+      <Gender>None</Gender>
+      <VisaRecords />
+    </User>
+    <User>
+      <Id>36</Id>
+      <PersonalId>MP783</PersonalId>
+      <FirstName>Bob3</FirstName>
+      <LastName>Smith</LastName>
+      <BirthDate>2016-08-12T16:11:14.9166248+03:00</BirthDate>
+      <Gender>None</Gender>
+      <VisaRecords />
+    </User>
+    <User>
+      <Id>38</Id>
+      <PersonalId>MP78945</PersonalId>
+      <FirstName>Bob4</FirstName>
+      <LastName>Smith</LastName>
+      <BirthDate>2016-08-12T16:11:14.9166248+03:00</BirthDate>
+      <Gender>None</Gender>
+      <VisaRecords />
+    </User>
+    <User>
+      <Id>44</Id>
+      <PersonalId>MP777</PersonalId>
+      <FirstName>Ivan</FirstName>
+      <LastName>Ivanov</LastName>
+      <BirthDate>2016-08-12T17:58:14.8882791+03:00</BirthDate>
+      <Gender>None</Gender>
+    </User>
+    <User>
+      <Id>48</Id>
+      <PersonalId>MP999</PersonalId>
+      <FirstName>Jack</FirstName>
+      <LastName>Jackson</LastName>
+      <BirthDate>2016-08-12T17:58:11.3603975+03:00</BirthDate>
+      <Gender>None</Gender>
+    </User>
+    <User>
+      <Id>50</Id>
+      <PersonalId>MP123</PersonalId>
+      <FirstName>Ivan</FirstName>
+      <LastName>Ivanov</LastName>
+      <BirthDate>2016-08-12T17:58:11.3603975+03:00</BirthDate>
+      <Gender>None</Gender>
+    </User>
+  </Users>
+</SerializedUserData>
