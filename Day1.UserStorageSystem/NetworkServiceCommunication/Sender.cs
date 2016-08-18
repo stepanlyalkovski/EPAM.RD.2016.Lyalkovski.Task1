@@ -21,7 +21,7 @@ namespace NetworkServiceCommunication
             {
                 var socket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
                 socket.Connect(ipEndPoint);
-                this.sockets.Add(socket);
+                sockets.Add(socket);
             }
 
         }
@@ -29,12 +29,12 @@ namespace NetworkServiceCommunication
         {
             var socket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
             socket.Connect(ipEndPoint);
-            this.sockets.Add(socket);
+            sockets.Add(socket);
         }
 
         public void Send(ServiceMessage<TEntity> message)
         {
-            foreach (var socket in this.sockets)
+            foreach (var socket in sockets)
             {
                 BinaryFormatter formatter = new BinaryFormatter();
                 using (NetworkStream networkStream = new NetworkStream(socket, false))
@@ -53,7 +53,7 @@ namespace NetworkServiceCommunication
 
         public void Dispose()
         {
-            foreach (var socket in this.sockets)
+            foreach (var socket in sockets)
             {
                 socket.Shutdown(SocketShutdown.Both);
                 socket.Close();

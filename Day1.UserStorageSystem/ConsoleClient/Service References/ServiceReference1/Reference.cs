@@ -39,22 +39,22 @@ namespace ConsoleClient.ServiceReference1 {
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
-                return this.extensionDataField;
+                return extensionDataField;
             }
             set {
-                this.extensionDataField = value;
+                extensionDataField = value;
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(Name="<BirthDate>k__BackingField", IsRequired=true)]
         public System.DateTime BirthDatek__BackingField {
             get {
-                return this.BirthDatek__BackingFieldField;
+                return BirthDatek__BackingFieldField;
             }
             set {
-                if ((this.BirthDatek__BackingFieldField.Equals(value) != true)) {
-                    this.BirthDatek__BackingFieldField = value;
-                    this.RaisePropertyChanged("BirthDatek__BackingField");
+                if ((BirthDatek__BackingFieldField.Equals(value) != true)) {
+                    BirthDatek__BackingFieldField = value;
+                    RaisePropertyChanged("BirthDatek__BackingField");
                 }
             }
         }
@@ -62,12 +62,12 @@ namespace ConsoleClient.ServiceReference1 {
         [System.Runtime.Serialization.DataMemberAttribute(Name="<FirstName>k__BackingField", IsRequired=true)]
         public string FirstNamek__BackingField {
             get {
-                return this.FirstNamek__BackingFieldField;
+                return FirstNamek__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.FirstNamek__BackingFieldField, value) != true)) {
-                    this.FirstNamek__BackingFieldField = value;
-                    this.RaisePropertyChanged("FirstNamek__BackingField");
+                if ((object.ReferenceEquals(FirstNamek__BackingFieldField, value) != true)) {
+                    FirstNamek__BackingFieldField = value;
+                    RaisePropertyChanged("FirstNamek__BackingField");
                 }
             }
         }
@@ -75,12 +75,12 @@ namespace ConsoleClient.ServiceReference1 {
         [System.Runtime.Serialization.DataMemberAttribute(Name="<Gender>k__BackingField", IsRequired=true)]
         public ConsoleClient.ServiceReference1.Gender Genderk__BackingField {
             get {
-                return this.Genderk__BackingFieldField;
+                return Genderk__BackingFieldField;
             }
             set {
-                if ((this.Genderk__BackingFieldField.Equals(value) != true)) {
-                    this.Genderk__BackingFieldField = value;
-                    this.RaisePropertyChanged("Genderk__BackingField");
+                if ((Genderk__BackingFieldField.Equals(value) != true)) {
+                    Genderk__BackingFieldField = value;
+                    RaisePropertyChanged("Genderk__BackingField");
                 }
             }
         }
@@ -88,12 +88,12 @@ namespace ConsoleClient.ServiceReference1 {
         [System.Runtime.Serialization.DataMemberAttribute(Name="<Id>k__BackingField", IsRequired=true)]
         public int Idk__BackingField {
             get {
-                return this.Idk__BackingFieldField;
+                return Idk__BackingFieldField;
             }
             set {
-                if ((this.Idk__BackingFieldField.Equals(value) != true)) {
-                    this.Idk__BackingFieldField = value;
-                    this.RaisePropertyChanged("Idk__BackingField");
+                if ((Idk__BackingFieldField.Equals(value) != true)) {
+                    Idk__BackingFieldField = value;
+                    RaisePropertyChanged("Idk__BackingField");
                 }
             }
         }
@@ -101,12 +101,12 @@ namespace ConsoleClient.ServiceReference1 {
         [System.Runtime.Serialization.DataMemberAttribute(Name="<LastName>k__BackingField", IsRequired=true)]
         public string LastNamek__BackingField {
             get {
-                return this.LastNamek__BackingFieldField;
+                return LastNamek__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.LastNamek__BackingFieldField, value) != true)) {
-                    this.LastNamek__BackingFieldField = value;
-                    this.RaisePropertyChanged("LastNamek__BackingField");
+                if ((object.ReferenceEquals(LastNamek__BackingFieldField, value) != true)) {
+                    LastNamek__BackingFieldField = value;
+                    RaisePropertyChanged("LastNamek__BackingField");
                 }
             }
         }
@@ -114,12 +114,12 @@ namespace ConsoleClient.ServiceReference1 {
         [System.Runtime.Serialization.DataMemberAttribute(Name="<PersonalId>k__BackingField", IsRequired=true)]
         public string PersonalIdk__BackingField {
             get {
-                return this.PersonalIdk__BackingFieldField;
+                return PersonalIdk__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.PersonalIdk__BackingFieldField, value) != true)) {
-                    this.PersonalIdk__BackingFieldField = value;
-                    this.RaisePropertyChanged("PersonalIdk__BackingField");
+                if ((object.ReferenceEquals(PersonalIdk__BackingFieldField, value) != true)) {
+                    PersonalIdk__BackingFieldField = value;
+                    RaisePropertyChanged("PersonalIdk__BackingField");
                 }
             }
         }
@@ -127,12 +127,12 @@ namespace ConsoleClient.ServiceReference1 {
         [System.Runtime.Serialization.DataMemberAttribute(Name="<VisaRecords>k__BackingField", IsRequired=true)]
         public ConsoleClient.ServiceReference1.VisaRecord[] VisaRecordsk__BackingField {
             get {
-                return this.VisaRecordsk__BackingFieldField;
+                return VisaRecordsk__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.VisaRecordsk__BackingFieldField, value) != true)) {
-                    this.VisaRecordsk__BackingFieldField = value;
-                    this.RaisePropertyChanged("VisaRecordsk__BackingField");
+                if ((object.ReferenceEquals(VisaRecordsk__BackingFieldField, value) != true)) {
+                    VisaRecordsk__BackingFieldField = value;
+                    RaisePropertyChanged("VisaRecordsk__BackingField");
                 }
             }
         }
@@ -140,7 +140,7 @@ namespace ConsoleClient.ServiceReference1 {
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
@@ -178,22 +178,22 @@ namespace ConsoleClient.ServiceReference1 {
         
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
-                return this.extensionDataField;
+                return extensionDataField;
             }
             set {
-                this.extensionDataField = value;
+                extensionDataField = value;
             }
         }
         
         [System.Runtime.Serialization.DataMemberAttribute(Name="<Country>k__BackingField", IsRequired=true)]
         public string Countryk__BackingField {
             get {
-                return this.Countryk__BackingFieldField;
+                return Countryk__BackingFieldField;
             }
             set {
-                if ((object.ReferenceEquals(this.Countryk__BackingFieldField, value) != true)) {
-                    this.Countryk__BackingFieldField = value;
-                    this.RaisePropertyChanged("Countryk__BackingField");
+                if ((object.ReferenceEquals(Countryk__BackingFieldField, value) != true)) {
+                    Countryk__BackingFieldField = value;
+                    RaisePropertyChanged("Countryk__BackingField");
                 }
             }
         }
@@ -201,12 +201,12 @@ namespace ConsoleClient.ServiceReference1 {
         [System.Runtime.Serialization.DataMemberAttribute(Name="<EndDate>k__BackingField", IsRequired=true)]
         public System.DateTime EndDatek__BackingField {
             get {
-                return this.EndDatek__BackingFieldField;
+                return EndDatek__BackingFieldField;
             }
             set {
-                if ((this.EndDatek__BackingFieldField.Equals(value) != true)) {
-                    this.EndDatek__BackingFieldField = value;
-                    this.RaisePropertyChanged("EndDatek__BackingField");
+                if ((EndDatek__BackingFieldField.Equals(value) != true)) {
+                    EndDatek__BackingFieldField = value;
+                    RaisePropertyChanged("EndDatek__BackingField");
                 }
             }
         }
@@ -214,12 +214,12 @@ namespace ConsoleClient.ServiceReference1 {
         [System.Runtime.Serialization.DataMemberAttribute(Name="<StartDate>k__BackingField", IsRequired=true)]
         public System.DateTime StartDatek__BackingField {
             get {
-                return this.StartDatek__BackingFieldField;
+                return StartDatek__BackingFieldField;
             }
             set {
-                if ((this.StartDatek__BackingFieldField.Equals(value) != true)) {
-                    this.StartDatek__BackingFieldField = value;
-                    this.RaisePropertyChanged("StartDatek__BackingField");
+                if ((StartDatek__BackingFieldField.Equals(value) != true)) {
+                    StartDatek__BackingFieldField = value;
+                    RaisePropertyChanged("StartDatek__BackingField");
                 }
             }
         }
@@ -227,7 +227,7 @@ namespace ConsoleClient.ServiceReference1 {
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
@@ -247,17 +247,17 @@ namespace ConsoleClient.ServiceReference1 {
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
-                return this.extensionDataField;
+                return extensionDataField;
             }
             set {
-                this.extensionDataField = value;
+                extensionDataField = value;
             }
         }
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
@@ -277,17 +277,17 @@ namespace ConsoleClient.ServiceReference1 {
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
-                return this.extensionDataField;
+                return extensionDataField;
             }
             set {
-                this.extensionDataField = value;
+                extensionDataField = value;
             }
         }
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }
@@ -307,17 +307,17 @@ namespace ConsoleClient.ServiceReference1 {
         [global::System.ComponentModel.BrowsableAttribute(false)]
         public System.Runtime.Serialization.ExtensionDataObject ExtensionData {
             get {
-                return this.extensionDataField;
+                return extensionDataField;
             }
             set {
-                this.extensionDataField = value;
+                extensionDataField = value;
             }
         }
         
         public event System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         
         protected void RaisePropertyChanged(string propertyName) {
-            System.ComponentModel.PropertyChangedEventHandler propertyChanged = this.PropertyChanged;
+            System.ComponentModel.PropertyChangedEventHandler propertyChanged = PropertyChanged;
             if ((propertyChanged != null)) {
                 propertyChanged(this, new System.ComponentModel.PropertyChangedEventArgs(propertyName));
             }

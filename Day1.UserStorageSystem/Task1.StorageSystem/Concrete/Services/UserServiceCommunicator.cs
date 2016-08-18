@@ -5,9 +5,9 @@
     using System.Net;
     using System.Threading;
     using System.Threading.Tasks;
+    using Entities;
     using NetworkServiceCommunication;
     using NetworkServiceCommunication.Entities;
-    using Entities;
 
     [Serializable]
     public class UserServiceCommunicator : MarshalByRefObject, IDisposable
@@ -26,66 +26,53 @@
             this.receiver = receiver;
         }
 
-        public UserServiceCommunicator(Sender<User> sender) : this(sender, null) { }
+        public UserServiceCommunicator(Sender<User> sender) : this(sender, null)
+        {            
+        }
 
-        public UserServiceCommunicator(Receiver<User> receiver) : this(null, receiver) { }
+        public UserServiceCommunicator(Receiver<User> receiver) : this(null, receiver)
+        {          
+        }
 
         public event EventHandler<UserDataApdatedEventArgs> UserAdded;
 
         public event EventHandler<UserDataApdatedEventArgs> UserDeleted;
 
         public event EventHandler RepositoryClear;
+
         public async void RunReceiver()
         {
-            await this.receiver.AcceptConnection();
-            if (this.receiver == null) return;
-            this.tokenSource = new CancellationTokenSource();
-            this.recieverTask = Task.Run((Action)this.ReceiveMessages, this.tokenSource.Token);
+            await receiver.AcceptConnection();
+            if (receiver == null)
+            {
+                return;
+            }
+
+            tokenSource = new CancellationTokenSource();
+            recieverTask = Task.Run((Action)ReceiveMessages, tokenSource.Token);
         }
 
         public void ConnectGroup(IEnumerable<IPEndPoint> endPoints)
         {
-            this.sender.ConnectGroup(endPoints);
+            sender.ConnectGroup(endPoints);
         }
        
         public void StopReceiver()
         {
-            if (this.tokenSource.Token.CanBeCanceled)
+            if (tokenSource.Token.CanBeCanceled)
             {
-                this.tokenSource.Cancel();
-            }
-        }
-
-        private void ReceiveMessages()
-        {
-            while (true)
-            {
-                if (this.tokenSource.IsCancellationRequested) return;
-                var message = this.receiver.Receive();
-                var args = new UserDataApdatedEventArgs
-                {
-                    User = message.Entity
-                };
-                switch (message.MessageType)
-                {
-                    case MessageType.Add:
-                        this.OnUserAdded(this, args);
-                        break;
-                    case MessageType.Delete:
-                        this.OnUserDeleted(this, args);
-                        break;
-                    case MessageType.Clear:
-                        this.OnRepositoryClear(this, args);        
-                        break;
-                }
+                tokenSource.Cancel();
             }
         }
 
         public void SendAdd(UserDataApdatedEventArgs args)
         {
-            if (this.sender == null) return;
+            if (sender == null)
+            {
+                return;
+            }
 
-            this.Send(new ServiceMessage<User>
+            Send(new ServiceMessage<User>
             {
                 Entity = args.User,
                 MessageType = MessageType.Add
@@ -94,7 +81,7 @@
 
         public void SendClear(EventArgs args)
         {
-            this.Send(new ServiceMessage<User>
+            Send(new ServiceMessage<User>
             {
                 MessageType = MessageType.Clear
             });
@@ -102,40 +89,71 @@
 
         public void SendDelete(UserDataApdatedEventArgs args)
         {
-            if (this.sender == null) return;
+            if (sender == null)
+            {
+                return;
+            }
 
-            this.Send(new ServiceMessage<User>
+            Send(new ServiceMessage<User>
             {
                 Entity = args.User,
                 MessageType = MessageType.Delete
             });
         }
 
+        public void Dispose()
+        {
+            receiver?.Dispose();
+            sender?.Dispose();
+        }
+
         protected virtual void OnUserDeleted(object sender, UserDataApdatedEventArgs args)
         {
-            this.UserDeleted?.Invoke(sender, args);
+            UserDeleted?.Invoke(sender, args);
         }
 
         protected virtual void OnUserAdded(object sender, UserDataApdatedEventArgs args)
         {
-            this.UserAdded?.Invoke(sender, args);
+            UserAdded?.Invoke(sender, args);
         }
 
         protected virtual void OnRepositoryClear(object sender, UserDataApdatedEventArgs args)
         {
-            this.RepositoryClear?.Invoke(sender, args);
-        }
-
-        public void Dispose()
-        {
-            this.receiver?.Dispose();
-            this.sender?.Dispose();
+            RepositoryClear?.Invoke(sender, args);
         }
 
         private void Send(ServiceMessage<User> message)
         {
-            this.sender.Send(message);
+            sender.Send(message);
         }
 
+        private void ReceiveMessages()
+        {
+            while (true)
+            {
+                if (tokenSource.IsCancellationRequested)
+                {
+                    return;
+                }
+
+                var message = receiver.Receive();
+                var args = new UserDataApdatedEventArgs
+                {
+                    User = message.Entity
+                };
+                switch (message.MessageType)
+                {
+                    case MessageType.Add:
+                        OnUserAdded(this, args);
+                        break;
+                    case MessageType.Delete:
+                        OnUserDeleted(this, args);
+                        break;
+                    case MessageType.Clear:
+                        OnRepositoryClear(this, args);
+                        break;
+                }
+            }
+        }
     }
 }

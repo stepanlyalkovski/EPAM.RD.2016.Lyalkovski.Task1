@@ -20,7 +20,7 @@ namespace Task1.Tests
                 LastName = null
             };
 
-            var messages = this.Validator.Validate(user);
+            var messages = Validator.Validate(user);
             Assert.IsTrue(messages.Contains(expectedMessage));
         }
 
@@ -35,7 +35,7 @@ namespace Task1.Tests
                 LastName = "Ivanov"
             };
 
-            var messages = this.Validator.Validate(user);
+            var messages = Validator.Validate(user);
             Assert.IsTrue(messages.Contains(expectedMessage));
         }
 
@@ -50,7 +50,7 @@ namespace Task1.Tests
                 BirthDate = new DateTime()
             };
 
-            var messages = this.Validator.Validate(user);
+            var messages = Validator.Validate(user);
             Assert.IsTrue(messages.Contains(expectedMessage));
         }
 
@@ -63,7 +63,7 @@ namespace Task1.Tests
                 LastName = "Ivanov",
                 BirthDate = DateTime.Now
             };
-            var messages = this.Validator.Validate(user);
+            var messages = Validator.Validate(user);
             Assert.IsTrue(!messages.Any());
         }
 
@@ -71,7 +71,7 @@ namespace Task1.Tests
         [ExpectedException(typeof(ArgumentNullException))]
         public void Validate_SendNull_ThrownArgumentNullException()
         {
-            this.Validator.Validate(null);
+            Validator.Validate(null);
 
         }
     }

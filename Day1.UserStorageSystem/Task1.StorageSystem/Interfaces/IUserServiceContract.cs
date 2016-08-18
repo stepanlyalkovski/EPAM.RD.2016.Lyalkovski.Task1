@@ -25,6 +25,5 @@
 
         [OperationContract]
         List<int> SearchForUsers(ICriteria<User>[] criteries);
-
     }
 }

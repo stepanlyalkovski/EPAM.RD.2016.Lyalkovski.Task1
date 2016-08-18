@@ -17,7 +17,7 @@ namespace Task1.Tests
         [Test]
         public void User_EqualsWithHimself_ReturnTrue()
         {
-            Assert.IsTrue(this.TestUser.Equals(this.TestUser));
+            Assert.IsTrue(TestUser.Equals(TestUser));
         }
 
         [Test]
@@ -29,7 +29,7 @@ namespace Task1.Tests
                 FirstName = "Ivan",
                 LastName = "Ivanov"
             };
-            Assert.IsFalse(this.TestUser.Equals(someUser));
+            Assert.IsFalse(TestUser.Equals(someUser));
         }
 
         [Test]
@@ -46,21 +46,21 @@ namespace Task1.Tests
         [Test]
         public void User_EqualsWithNull_ReturnFalse()
         {
-            Assert.IsFalse(this.TestUser.Equals(null));
+            Assert.IsFalse(TestUser.Equals(null));
         }
 
         [Test]
         public void User_EqualsWithSimpleObject_ReturnFalse()
         {
             object someObject = new object();
-            Assert.IsFalse(this.TestUser.Equals(someObject));
+            Assert.IsFalse(TestUser.Equals(someObject));
         }
 
         [Test]
         public void User_InvokeGetHashCodeTwiceOnTheSameUserAndCompare_HashCodesAreEqual()
         {
-            Debug.WriteLine(this.TestUser.GetHashCode());
-            Assert.AreEqual(this.TestUser.GetHashCode(), this.TestUser.GetHashCode());
+            Debug.WriteLine(TestUser.GetHashCode());
+            Assert.AreEqual(TestUser.GetHashCode(), TestUser.GetHashCode());
         }
 
         [Test]
@@ -73,7 +73,7 @@ namespace Task1.Tests
                 PersonalId = "MP3421"
             };
 
-            Assert.AreNotEqual(this.TestUser.GetHashCode(), otherUser.GetHashCode());
+            Assert.AreNotEqual(TestUser.GetHashCode(), otherUser.GetHashCode());
         }
 
     }

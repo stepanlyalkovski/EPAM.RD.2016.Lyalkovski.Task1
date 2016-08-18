@@ -21,6 +21,6 @@ namespace ServiceConfigurator.CustomSections.Dependencies
             set { base["name"] = value; }
         }
 
-        public DependencyElement this[int idx] => (DependencyElement) this.BaseGet(idx);
+        public DependencyElement this[int idx] => (DependencyElement)BaseGet(idx);
     }
 }

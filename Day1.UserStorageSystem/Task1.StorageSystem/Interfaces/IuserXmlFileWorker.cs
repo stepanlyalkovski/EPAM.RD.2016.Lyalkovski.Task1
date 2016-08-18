@@ -5,7 +5,7 @@
     public interface IUserXmlFileWorker
     {
         void Save(SerializedUserData data, string filePath);
-        SerializedUserData Load(string filePath);
 
+        SerializedUserData Load(string filePath);
     }
 }

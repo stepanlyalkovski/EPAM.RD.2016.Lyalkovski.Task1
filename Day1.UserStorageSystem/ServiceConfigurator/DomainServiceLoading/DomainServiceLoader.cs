@@ -42,7 +42,7 @@ namespace ServiceConfigurator.DomainServiceLoading
                         domainService = new MasterUserService(generator, validator,
                             repository, configuration.LoggingEnabled);
 
-                        communicator = this.GetMasterCommunicator();                        
+                        communicator = GetMasterCommunicator();                        
                     }      
                     break;
 

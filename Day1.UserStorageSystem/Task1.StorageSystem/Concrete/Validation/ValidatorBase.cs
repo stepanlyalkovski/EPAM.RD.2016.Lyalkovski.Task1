@@ -12,16 +12,18 @@
         public IEnumerable<string> Validate(T t)
         {
             if (t == null)
+            {
                 throw new ArgumentNullException(nameof(t), "User must not be a null");
-            return this.Rules?.Where(r => !r.Test(t)).Select(r => r.Message);
+            }
+
+            return Rules?.Where(r => !r.Test(t)).Select(r => r.Message);
         }
 
         public class Rule
         {
             public Func<T, bool> Test { get; set; }
+
             public string Message { get; set; }
-
         }
-
     }
 }

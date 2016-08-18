@@ -2,29 +2,23 @@
 {
     using System;
     using System.Diagnostics;
-    using Validation;
     using Entities;
     using Interfaces;
     using Interfaces.Repository;
+    using Validation;
 
     public class SlaveUserService : UserService
     {
-        public SlaveUserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository) 
+        public SlaveUserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository)
             : this(numGenerator, validator, repository, false)
-        { }
-        public SlaveUserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository, bool loggingEnabled) 
-                        : base(numGenerator, validator, repository, loggingEnabled)
-        { }
-        protected override int AddStrategy(User user)
-        {
-            throw new NotSupportedException();
+        {           
         }
 
-        protected override void DeleteStrategy(User user)
-        {
-            throw new NotSupportedException();
+        public SlaveUserService(INumGenerator numGenerator, ValidatorBase<User> validator, IRepository<User> repository, bool loggingEnabled)
+            : base(numGenerator, validator, repository, loggingEnabled)
+        {          
         }
-
+   
         public override void Save()
         {
             throw new NotSupportedException();
@@ -35,54 +29,63 @@
             throw new NotSupportedException();
         }
 
-        private void OnAdded(object sender, UserDataApdatedEventArgs args)
-        {
-            this.StorageLock.EnterWriteLock();
-            try
-            {
-                Debug.WriteLine("On Added! " + AppDomain.CurrentDomain.FriendlyName);
-                this.Repository.Add(args.User);
-                this.LastGeneratedId = args.User.Id;
-            }
-            finally
-            {
-                this.StorageLock.ExitWriteLock();
-            }                
-        }
-
-        private void OnDeleted(object sender, UserDataApdatedEventArgs args)
-        {
-            this.StorageLock.EnterWriteLock();
-            try
-            {
-                this.Repository.Delete(args.User);
-            }
-            finally
-            {
-                this.StorageLock.ExitWriteLock();
-            }
-            
-        }
-
-        private void OnRepositoryClear(object sender, EventArgs args)
-        {
-            Console.WriteLine("REPOSITORY CLEAR!");
-            this.Repository.Clear();
-        }
-
         public void Subscribe(MasterUserService master)
         {
-            master.Deleted += this.OnDeleted;
-            master.Added += this.OnAdded;
+            master.Deleted += OnDeleted;
+            master.Added += OnAdded;
         }
 
         public override void AddCommunicator(UserServiceCommunicator communicator)
         {
             base.AddCommunicator(communicator);
 
-            this.Communicator.UserAdded += this.OnAdded;
-            this.Communicator.UserDeleted += this.OnDeleted;
-            this.Communicator.RepositoryClear += this.OnRepositoryClear;
+            Communicator.UserAdded += OnAdded;
+            Communicator.UserDeleted += OnDeleted;
+            Communicator.RepositoryClear += OnRepositoryClear;
+        }
+
+        protected override int AddStrategy(User user)
+        {
+            throw new NotSupportedException();
+        }
+
+        protected override void DeleteStrategy(User user)
+        {
+            throw new NotSupportedException();
+        }
+
+        private void OnAdded(object sender, UserDataApdatedEventArgs args)
+        {
+            StorageLock.EnterWriteLock();
+            try
+            {
+                Debug.WriteLine("On Added! " + AppDomain.CurrentDomain.FriendlyName);
+                Repository.Add(args.User);
+                LastGeneratedId = args.User.Id;
+            }
+            finally
+            {
+                StorageLock.ExitWriteLock();
+            }
+        }
+
+        private void OnDeleted(object sender, UserDataApdatedEventArgs args)
+        {
+            StorageLock.EnterWriteLock();
+            try
+            {
+                Repository.Delete(args.User);
+            }
+            finally
+            {
+                StorageLock.ExitWriteLock();
+            }
+        }
+
+        private void OnRepositoryClear(object sender, EventArgs args)
+        {
+            Console.WriteLine("REPOSITORY CLEAR!");
+            Repository.Clear();
         }
     }
 }

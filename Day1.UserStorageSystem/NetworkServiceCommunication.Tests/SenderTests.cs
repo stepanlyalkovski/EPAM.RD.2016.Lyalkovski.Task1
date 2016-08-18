@@ -37,8 +37,8 @@ namespace NetworkServiceCommunication.Tests
             var receiver3 = new Receiver<User>(receiverAddress, receiverPort3);
             var receiver4 = new Receiver<User>(receiverAddress, receiverPort4);
             var sender = new Sender<User>();
-            this.StartReceiver(receiver);
-            this.StartReceiver(receiver2);
+            StartReceiver(receiver);
+            StartReceiver(receiver2);
             StartReceiver(receiver3);
             StartReceiver(receiver4);
             var point1 = new IPEndPoint(receiverAddress, receiverPort1);
@@ -93,7 +93,7 @@ namespace NetworkServiceCommunication.Tests
             var receiver = new Receiver<User>(receiverAddress, receiverPort1);
             var sender = new Sender<User>();
             //Task tsk = receiver.AcceptConnection();
-            this.StartReceiver(receiver);
+            StartReceiver(receiver);
             sender.Connect(receiver.IpEndPoint);
             Thread.Sleep(1000);
             int iterations = 20;

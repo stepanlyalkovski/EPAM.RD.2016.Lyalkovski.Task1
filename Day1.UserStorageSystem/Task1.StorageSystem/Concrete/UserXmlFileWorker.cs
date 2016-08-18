@@ -14,32 +14,35 @@
 
         public UserXmlFileWorker()
         {
-            this.serializer = new XmlSerializer(typeof(SerializedUserData));
+            serializer = new XmlSerializer(typeof(SerializedUserData));
         }
+
         public UserXmlFileWorker(SerializationInfo info, StreamingContext context)
         {
             var type = Type.GetType((string)info.GetValue("typeName", typeof(string)));
-            this.serializer = new XmlSerializer(type);
+            serializer = new XmlSerializer(type);
         }
 
         public void Save(SerializedUserData data, string filePath)
         {
             using (Stream s = File.Create(filePath))
             {
-                this.serializer.Serialize(s, data);
+                serializer.Serialize(s, data);
             }
         }
 
         public SerializedUserData Load(string filePath)
         {
-            if (!File.Exists(filePath)) return null;
+            if (!File.Exists(filePath))
+            {
+                return null;
+            }
 
             using (Stream s = File.OpenRead(filePath))
             {
-                var data = (SerializedUserData)this.serializer.Deserialize(s);
+                var data = (SerializedUserData)serializer.Deserialize(s);
                 return data;
             }
-
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)

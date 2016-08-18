@@ -14,20 +14,20 @@
         {
             // NumberGenerator is expecting startPosition, so we have to increment our lastId        
             int startPositionNumber = lastGeneratedId + 1;
-            this.enumerator = NumberGenerator.GetEvenNumbers(startPositionNumber).GetEnumerator();
+            enumerator = NumberGenerator.GetEvenNumbers(startPositionNumber).GetEnumerator();
         }
 
         public EvenIdGenerator(SerializationInfo info, StreamingContext context)
         {
             int lastId = (int)info.GetValue("lastId", typeof(int));
-            this.enumerator = NumberGenerator.GetEvenNumbers(lastId).GetEnumerator();
+            enumerator = NumberGenerator.GetEvenNumbers(lastId).GetEnumerator();
         }
 
         public int GenerateId()
         {
-            if (this.enumerator.MoveNext())
+            if (enumerator.MoveNext())
             {
-                return this.enumerator.Current;
+                return enumerator.Current;
             }
             
             throw new InvalidOperationException();
@@ -37,12 +37,12 @@
         {
             // NumberGenerator is expecting startPosition, so we have to increment our lastId
             int startPositionNumber = number + 1;
-            this.enumerator = NumberGenerator.GetEvenNumbers(startPositionNumber).GetEnumerator();
+            enumerator = NumberGenerator.GetEvenNumbers(startPositionNumber).GetEnumerator();
         }
 
         public void GetObjectData(SerializationInfo info, StreamingContext context)
         {
-            info.AddValue("lastId", this.enumerator.Current, typeof(int));      
+            info.AddValue("lastId", enumerator.Current, typeof(int));      
         }
     }
 }

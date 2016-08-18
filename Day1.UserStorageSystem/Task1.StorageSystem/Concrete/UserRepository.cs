@@ -15,93 +15,102 @@
         private IUserXmlFileWorker xmlWorker;
         private string filePath;
         private int state; // we can add interface for State, but now it will be redundant
+
         public UserRepository(IUserXmlFileWorker worker, string filePath)
         {
-            this.memoryCollection = new List<User>();
-            this.xmlWorker = worker;
+            memoryCollection = new List<User>();
+            xmlWorker = worker;
             this.filePath = filePath ?? Path.Combine(Directory.GetCurrentDirectory(), "testFile.xml");
         }
 
         public IEnumerable<int> SearhByPredicate(Func<User, bool>[] predicates)
         {
-            return this.memoryCollection.Where(p => predicates.All(pr => pr(p))).Select(u => u.Id);
+            return memoryCollection.Where(p => predicates.All(pr => pr(p))).Select(u => u.Id);
         }
 
         public IEnumerable<int> SearchByCriteria(ICriteria<User>[] criteries)
         {
-            return this.memoryCollection.AsParallel().Where(u => criteries.All(cr => cr.MeetCriteria(u)))
+            return memoryCollection.AsParallel().Where(u => criteries.All(cr => cr.MeetCriteria(u)))
                                     .Select(u => u.Id);
         }
-
 
         public void Add(User user)
         {
             var newUser = user.Clone();
-            this.memoryCollection.Add(newUser);
+            memoryCollection.Add(newUser);
         }
 
         public void Save(int lastGeneratedId)
         {
             var userData = new SerializedUserData
             {
-                Users = this.memoryCollection.ToList(),
+                Users = memoryCollection.ToList(),
                 LastGeneratedId = lastGeneratedId
             };
-            this.SavetoXmlFile(userData);
+            SavetoXmlFile(userData);
         }
 
         public IEnumerable<User> GetAll()
         {
-            return this.memoryCollection;
+            return memoryCollection;
         }
 
         public int GetState()
         {
-            return this.state;
+            return state;
         }
 
         public User GetById(int id)
         {
-            return this.memoryCollection.FirstOrDefault(u => u.Id == id);
+            return memoryCollection.FirstOrDefault(u => u.Id == id);
         }
 
         public void Delete(User entity)
         {
-            this.memoryCollection.Remove(entity);
+            memoryCollection.Remove(entity);
         }
 
         public void Clear()
         {
-            this.memoryCollection.Clear();
+            memoryCollection.Clear();
         }
 
         public void Initialize()
         {
-            this.InitializeFromXml();         
+            InitializeFromXml();         
         }
 
         #region XMLworker
         private void SavetoXmlFile(SerializedUserData userData)
         {
-            if (this.xmlWorker == null)
+            if (xmlWorker == null)
+            {
                 throw new InvalidOperationException("xmlWorker wasn't initialized");
+            }
 
-            this.xmlWorker.Save(userData, this.filePath);
+            xmlWorker.Save(userData, filePath);
         }
 
         private void InitializeFromXml()
         {
-            if (this.xmlWorker == null)
+            if (xmlWorker == null)
+            {
                 throw new InvalidOperationException("xmlWorker wasn't initialized");
+            }
 
-            if (!File.Exists(this.filePath))
+            if (!File.Exists(filePath))
+            {
                 throw new InvalidOperationException("File is not found");
+            }
 
-            var xmlUsersCollection = this.xmlWorker.Load(this.filePath);
+            var xmlUsersCollection = xmlWorker.Load(filePath);
             var userData = new SerializedUserData();
             if (xmlUsersCollection != null)
-                this.memoryCollection = xmlUsersCollection.Users;
-            this.state = xmlUsersCollection.LastGeneratedId;
+            {
+                memoryCollection = xmlUsersCollection.Users;
+            }
+
+            state = xmlUsersCollection.LastGeneratedId;
         }
 #endregion
     }

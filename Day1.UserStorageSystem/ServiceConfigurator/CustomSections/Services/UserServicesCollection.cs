@@ -15,6 +15,6 @@ namespace ServiceConfigurator.CustomSections.Services
             return ((ServiceElement) element).ServiceName;
         }
 
-        public ServiceElement this[int idx] => (ServiceElement) this.BaseGet(idx);
+        public ServiceElement this[int idx] => (ServiceElement)BaseGet(idx);
     }
 }
