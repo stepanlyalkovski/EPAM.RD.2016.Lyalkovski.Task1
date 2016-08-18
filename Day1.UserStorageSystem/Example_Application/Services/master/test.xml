@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <SerializedUserData xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
-  <LastGeneratedId>54</LastGeneratedId>
+  <LastGeneratedId>50</LastGeneratedId>
   <Users>
     <User>
       <Id>32</Id>
@@ -45,7 +45,14 @@
       <LastName>Ivanov</LastName>
       <BirthDate>2016-08-12T17:58:14.8882791+03:00</BirthDate>
       <Gender>None</Gender>
-      <VisaRecords />
+    </User>
+    <User>
+      <Id>48</Id>
+      <PersonalId>MP999</PersonalId>
+      <FirstName>Jack</FirstName>
+      <LastName>Jackson</LastName>
+      <BirthDate>2016-08-12T17:58:11.3603975+03:00</BirthDate>
+      <Gender>None</Gender>
     </User>
     <User>
       <Id>50</Id>
@@ -53,24 +60,6 @@
       <FirstName>Ivan</FirstName>
       <LastName>Ivanov</LastName>
       <BirthDate>2016-08-12T17:58:11.3603975+03:00</BirthDate>
-      <Gender>None</Gender>
-      <VisaRecords />
-    </User>
-    <User>
-      <Id>52</Id>
-      <PersonalId>MP456</PersonalId>
-      <FirstName>Petr</FirstName>
-      <LastName>Petrov</LastName>
-      <BirthDate>2016-08-18T11:52:12.7227927+03:00</BirthDate>
-      <Gender>None</Gender>
-      <VisaRecords />
-    </User>
-    <User>
-      <Id>54</Id>
-      <PersonalId>MP123</PersonalId>
-      <FirstName>Ivan</FirstName>
-      <LastName>Ivanov</LastName>
-      <BirthDate>2016-08-18T11:52:12.7227927+03:00</BirthDate>
       <Gender>None</Gender>
     </User>
   </Users>

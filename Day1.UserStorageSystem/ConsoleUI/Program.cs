@@ -17,14 +17,11 @@ namespace ConsoleUI
             Console.WriteLine("=========== Welcome to Console App ===========");
             
             var master = services.FirstOrDefault(s => s is MasterUserService);
-            
-            if (master != null)
-            {
-                master.Initialize();
-                var slaves = services.Where(s => s != master).Select(sl => sl as SlaveUserService).ToList();
-                ThreadInitializer.InitializeThreads((MasterUserService)master, slaves);
-            }
+            var slaves = services.Where(s => s != master).Select(sl => sl as SlaveUserService).ToList();
 
+            master?.Initialize();
+
+            ThreadInitializer.InitializeThreads((MasterUserService)master, slaves);
             var cmd = Console.ReadLine();
             if (cmd == "save")
             {

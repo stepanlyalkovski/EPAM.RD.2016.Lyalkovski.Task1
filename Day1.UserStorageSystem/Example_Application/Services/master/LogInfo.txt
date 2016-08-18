@@ -1,0 +1,256 @@
+StorageSystem Information: 0 : Initializing UserService state...
+    ProcessId=18496
+    ThreadId=1
+    DateTime=2016-08-18T10:59:31.2428948Z
+StorageSystem Error: 0 : Services wasn't initialized! Exception message: File is not found
+    ProcessId=18496
+    ThreadId=1
+    DateTime=2016-08-18T10:59:31.2438947Z
+StorageSystem Information: 0 : Adding User: Ivanov MP123
+    ProcessId=18496
+    ThreadId=9
+    DateTime=2016-08-18T10:59:31.2638934Z
+StorageSystem Information: 0 : User was added: Ivanov MP123. Id = 2
+    ProcessId=18496
+    ThreadId=9
+    DateTime=2016-08-18T10:59:31.2929096Z
+StorageSystem Information: 0 : Initializing UserService state...
+    ProcessId=18496
+    ThreadId=1
+    DateTime=2016-08-18T11:00:15.8268888Z
+StorageSystem Information: 0 : Adding User: Ivanov MP123
+    ProcessId=18496
+    ThreadId=9
+    DateTime=2016-08-18T11:00:15.9489958Z
+StorageSystem Information: 0 : User was added: Ivanov MP123. Id = 52
+    ProcessId=18496
+    ThreadId=9
+    DateTime=2016-08-18T11:00:15.9690666Z
+StorageSystem Information: 0 : Initializing UserService state...
+    ProcessId=13884
+    ThreadId=1
+    DateTime=2016-08-18T11:01:03.8191229Z
+StorageSystem Information: 0 : Adding User: Ivanov MP123
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:03.9711238Z
+StorageSystem Information: 0 : User was added: Ivanov MP123. Id = 52
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:03.9921185Z
+StorageSystem Information: 0 : Adding User: Petrov MP456
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:17.0956880Z
+StorageSystem Information: 0 : User was added: Petrov MP456. Id = 54
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:17.1121911Z
+StorageSystem Information: 0 : Deleting User: Ivanov MP123
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:23.1153008Z
+StorageSystem Information: 0 : User Ivanov MP123 was deleted
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:23.1392596Z
+StorageSystem Information: 0 : Adding User: Smith MP789
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:29.1454122Z
+StorageSystem Information: 0 : User was added: Smith MP789. Id = 56
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:29.1743893Z
+StorageSystem Information: 0 : Deleting User: Petrov MP456
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:35.1774762Z
+StorageSystem Information: 0 : User Petrov MP456 was deleted
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:35.2064838Z
+StorageSystem Information: 0 : Adding User: Jackson MP999
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:41.2121046Z
+StorageSystem Information: 0 : User was added: Jackson MP999. Id = 58
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:41.2261614Z
+StorageSystem Information: 0 : Deleting User: Smith MP789
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:47.2278276Z
+StorageSystem Information: 0 : User Smith MP789 was deleted
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:47.2618827Z
+StorageSystem Information: 0 : Adding User: Ivanov MP123
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:53.2725116Z
+StorageSystem Information: 0 : User was added: Ivanov MP123. Id = 60
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:53.3045134Z
+StorageSystem Information: 0 : Deleting User: Jackson MP999
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:59.3070428Z
+StorageSystem Information: 0 : User Jackson MP999 was deleted
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:01:59.3371449Z
+StorageSystem Information: 0 : Adding User: Petrov MP456
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:05.3434647Z
+StorageSystem Information: 0 : User was added: Petrov MP456. Id = 62
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:05.3744226Z
+StorageSystem Information: 0 : Deleting User: Ivanov MP123
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:11.3762408Z
+StorageSystem Information: 0 : User Ivanov MP123 was deleted
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:11.3952512Z
+StorageSystem Information: 0 : Adding User: Smith MP789
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:17.4028207Z
+StorageSystem Information: 0 : User was added: Smith MP789. Id = 64
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:17.4169548Z
+StorageSystem Information: 0 : Deleting User: Petrov MP456
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:23.4190836Z
+StorageSystem Information: 0 : User Petrov MP456 was deleted
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:23.4452673Z
+StorageSystem Information: 0 : Adding User: Jackson MP999
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:29.4628889Z
+StorageSystem Information: 0 : User was added: Jackson MP999. Id = 66
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:29.4898317Z
+StorageSystem Information: 0 : Adding User: Ivanov MP777
+    ProcessId=13884
+    ThreadId=7
+    DateTime=2016-08-18T11:02:34.8912083Z
+StorageSystem Information: 0 : User was added: Ivanov MP777. Id = 68
+    ProcessId=13884
+    ThreadId=7
+    DateTime=2016-08-18T11:02:34.9021570Z
+StorageSystem Information: 0 : Deleting User: Smith MP789
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:35.4928217Z
+StorageSystem Information: 0 : User Smith MP789 was deleted
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:35.5203713Z
+StorageSystem Information: 0 : Adding User: Ivanov MP123
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:41.5282729Z
+StorageSystem Information: 0 : User was added: Ivanov MP123. Id = 70
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:41.5572814Z
+StorageSystem Information: 0 : Deleting User: Ivanov MP777
+    ProcessId=13884
+    ThreadId=7
+    DateTime=2016-08-18T11:02:45.6009200Z
+StorageSystem Information: 0 : User Ivanov MP777 was deleted
+    ProcessId=13884
+    ThreadId=7
+    DateTime=2016-08-18T11:02:45.6108836Z
+StorageSystem Information: 0 : Deleting User: Jackson MP999
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:47.5595609Z
+StorageSystem Information: 0 : User Jackson MP999 was deleted
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:47.5865636Z
+StorageSystem Information: 0 : Deleting User: Ivanov MP777
+    ProcessId=13884
+    ThreadId=7
+    DateTime=2016-08-18T11:02:50.2891703Z
+StorageSystem Information: 0 : User Ivanov MP777 was deleted
+    ProcessId=13884
+    ThreadId=7
+    DateTime=2016-08-18T11:02:50.3001805Z
+StorageSystem Information: 0 : Adding User: Petrov MP456
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:53.5961654Z
+StorageSystem Information: 0 : User was added: Petrov MP456. Id = 72
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:53.6211275Z
+StorageSystem Information: 0 : Initializing UserService state...
+    ProcessId=13884
+    ThreadId=6
+    DateTime=2016-08-18T11:02:58.0993896Z
+StorageSystem Information: 0 : Deleting User: Ivanov MP123
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:59.6236877Z
+StorageSystem Information: 0 : User Ivanov MP123 was deleted
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:02:59.6506657Z
+StorageSystem Information: 0 : Adding User: Smith MP789
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:03:05.6587841Z
+StorageSystem Information: 0 : User was added: Smith MP789. Id = 52
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:03:05.6823156Z
+StorageSystem Information: 0 : Deleting User: Petrov MP456
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:03:11.6849470Z
+StorageSystem Information: 0 : User Petrov MP456 was deleted
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:03:11.7109488Z
+StorageSystem Information: 0 : Initializing UserService state...
+    ProcessId=13884
+    ThreadId=8
+    DateTime=2016-08-18T11:03:13.4741103Z
+StorageSystem Information: 0 : Adding User: Jackson MP999
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:03:17.7147748Z
+StorageSystem Information: 0 : User was added: Jackson MP999. Id = 52
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:03:17.7357773Z
+StorageSystem Information: 0 : Deleting User: Smith MP789
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:03:23.7376522Z
+StorageSystem Information: 0 : User Smith MP789 was deleted
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:03:23.7643297Z
+StorageSystem Information: 0 : Adding User: Ivanov MP123
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:03:29.7724622Z
+StorageSystem Information: 0 : User was added: Ivanov MP123. Id = 54
+    ProcessId=13884
+    ThreadId=9
+    DateTime=2016-08-18T11:03:29.8024604Z
