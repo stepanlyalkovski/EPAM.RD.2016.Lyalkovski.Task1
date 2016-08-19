@@ -8,6 +8,11 @@ namespace ServiceConfigurator
 {
     public class WcfServiceInitializer
     {
+        /// <summary>
+        /// Create wcf service
+        /// </summary>
+        /// <param name="service">UserService that will be created into wcf service</param>
+        /// <returns>created wcf service host</returns>
         public static ServiceHost CreateWcfService(UserService service)
         {
             string localAddress = "127.0.0.1"; // GetLocalIpAddress();
@@ -30,20 +35,6 @@ namespace ServiceConfigurator
             Console.WriteLine();
 
             return host;
-        }
-
-        private static string GetLocalIpAddress()
-        {
-            var host = Dns.GetHostEntry(Dns.GetHostName());
-            foreach (var ip in host.AddressList)
-            {
-                if (ip.AddressFamily == AddressFamily.InterNetwork)
-                {
-                    return ip.ToString();
-                }
-            }
-
-            throw new Exception("Local IP Address Not Found!");
         }
     }
 }

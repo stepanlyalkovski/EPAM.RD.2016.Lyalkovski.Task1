@@ -44,7 +44,13 @@ namespace ServiceConfigurator
         };
 
         private static string Lines { get; } = string.Join(string.Empty, Enumerable.Repeat("-", 30));
-
+        
+        /// <summary>
+        /// Initialize thread for user services. It's used only for testing purposes
+        /// </summary>
+        /// <param name="master">master service</param>
+        /// <param name="slaves">slave services</param>
+        /// <returns>thread that was created in services</returns>
         public static IEnumerable<Thread> InitializeThreads(MasterUserService master, IEnumerable<SlaveUserService> slaves)
         {
             IList<Thread> threads = new List<Thread>();

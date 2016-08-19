@@ -32,6 +32,11 @@ namespace ServiceConfigurator
             return serviceConfigurations.Select(CreateService).ToList();
         }
 
+        /// <summary>
+        /// Create services with required configuration. Service is wrapped in new application domain
+        /// </summary>
+        /// <param name="configuration">user service settings</param>
+        /// <returns>user service proxy from new app domain</returns>
         private static UserService CreateService(ServiceConfiguration configuration)
         {           
             var domain = AppDomain.CreateDomain(configuration.Name, null, null);

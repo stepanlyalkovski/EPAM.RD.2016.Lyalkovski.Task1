@@ -12,6 +12,10 @@ namespace ServiceConfigurator
 {
     public class ConfigParser
     {
+        /// <summary>
+        /// Parse app.config file and create object with all service settings.
+        /// </summary>
+        /// <returns>service configuration</returns>
         public static IEnumerable<ServiceConfiguration> ParseServiceConfigSection()
         {
             var serviceSection = GetServiceSection();
@@ -49,6 +53,11 @@ namespace ServiceConfigurator
             return serviceConfigurations;
         }
 
+        /// <summary>
+        /// Get dependency configuration from app.config. 
+        /// This configuration will be used by master to send messages to slaves
+        /// </summary>
+        /// <returns>configuration with slave addresses</returns>
         public static DependencyConfiguration ParseDependencyConfiguration()
         {
             var section = GetDependencySection();
