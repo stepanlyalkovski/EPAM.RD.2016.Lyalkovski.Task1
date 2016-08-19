@@ -63,11 +63,14 @@ namespace ServiceConfigurator
                 var dependency = section.MasterServices[i];
                 IPAddress address;
                 bool parsed = IPAddress.TryParse(dependency.IpAddress, out address);
-                if(!parsed)
+                if (!parsed)
+                {
                     throw new ArgumentException("Address is not valid");
+                }
+
                 var slaveConfig = new ServiceConfiguration
                 {
-                    IpEndPoint =  new IPEndPoint(address, dependency.Port),
+                    IpEndPoint = new IPEndPoint(address, dependency.Port),
                     Name = dependency.ServiceName
                 };
                 config.SlaveConfigurations.Add(slaveConfig);
@@ -83,7 +86,7 @@ namespace ServiceConfigurator
 
         private static DependencyConfigSection GetDependencySection()
         {
-            return (DependencyConfigSection) ConfigurationManager.GetSection("MasterDependencies");
+            return (DependencyConfigSection)ConfigurationManager.GetSection("MasterDependencies");
         }
 
         #region Files Section

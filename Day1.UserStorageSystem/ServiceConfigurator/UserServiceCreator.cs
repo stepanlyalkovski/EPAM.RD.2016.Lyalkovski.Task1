@@ -18,19 +18,22 @@ namespace ServiceConfigurator
             var serviceConfigurations = configurations as ServiceConfiguration[] ?? configurations.ToArray();
 
             bool namesAreUnique = CheckUniqueName(serviceConfigurations);
-            if(!namesAreUnique)
-                throw new ConfigurationErrorsException("Service's names must be unique!");
+            if (!namesAreUnique)
+            {
+                throw new ConfigurationErrorsException("Service's names must be unique!");               
+            }
 
             bool validNetworkConfiguration = CheckNetworkConfiguration(serviceConfigurations);
-            if(!validNetworkConfiguration)
+            if (!validNetworkConfiguration)
+            {
                 throw new ConfigurationErrorsException("Some of services don't have ip Address");
+            }
 
             return serviceConfigurations.Select(CreateService).ToList();
         }
 
         private static UserService CreateService(ServiceConfiguration configuration)
-        {
-            
+        {           
             var domain = AppDomain.CreateDomain(configuration.Name, null, null);
             var type = typeof(DomainServiceLoader);
             var loader = (DomainServiceLoader)domain.CreateInstanceAndUnwrap(Assembly.GetAssembly(type).FullName, type.FullName);
@@ -41,6 +44,7 @@ namespace ServiceConfigurator
             {
                 Console.WriteLine(assembly.FullName);
             }
+
             Console.WriteLine(RemotingServices.IsTransparentProxy(loader));
             var path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"Task1.StorageSystem.dll");
             return loader.LoadDomainService(path, configuration);
@@ -58,6 +62,5 @@ namespace ServiceConfigurator
 
             return configurationNames.Distinct().Count() == configurationNames.Count;
         }
-
     }
 }

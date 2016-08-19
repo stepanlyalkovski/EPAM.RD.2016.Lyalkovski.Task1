@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace ConsoleClient
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var serviceList = UserServiceHelper.InitializeServices().ToList();
             bool inProcess = true;
@@ -15,14 +15,13 @@ namespace ConsoleClient
             while (inProcess)
             {
                 for (int i = 0; i < serviceList.Count; i++)
-                {
-                    
+                {                  
                     Console.WriteLine(1 + i + ")" + serviceList[i].Endpoint.Address);
-
                 }
+
                 string input = Console.ReadLine();
                 int number;
-                bool parsed = Int32.TryParse(input, out number);
+                bool parsed = int.TryParse(input, out number);
 
                 if (parsed)
                 {
@@ -32,8 +31,7 @@ namespace ConsoleClient
                 {
                     inProcess = false;
                 }
-            }
-           
+            }           
         }
     }
 }

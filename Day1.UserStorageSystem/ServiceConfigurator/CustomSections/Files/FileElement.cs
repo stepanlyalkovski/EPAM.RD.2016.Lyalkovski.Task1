@@ -4,11 +4,10 @@ namespace ServiceConfigurator.CustomSections.Files
 {
     public class FileElement : ConfigurationElement
     {
-
         [ConfigurationProperty("fileType", DefaultValue = "", IsKey = true, IsRequired = true)]
         public string FileType
         {
-            get { return ((string)base["fileType"]); }
+            get { return (string)base["fileType"]; }
             set { base["fileType"] = value; }
         }
 

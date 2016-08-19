@@ -19,11 +19,14 @@ namespace ConsoleUI
                 var service = userServices[i];
                 Console.Write($"Service {i} : type = ");
                 if (service is MasterUserService)
+                {
                     Console.WriteLine(" Master");
+                }
                 else
                 {
                     Console.WriteLine(" Slave");
                 }
+
                 Console.WriteLine("Current Domain: " + AppDomain.CurrentDomain.FriendlyName);
                 Console.WriteLine("IsProxy: " + RemotingServices.IsTransparentProxy(service));
                 var predicates = new Func<User, bool>[] { p => p.LastName != null };
@@ -32,9 +35,9 @@ namespace ConsoleUI
                 {
                     Console.Write(user + " ");
                 }
+
                 Console.WriteLine("\n" + string.Concat(Enumerable.Repeat("-", 20)));
             }
         }
-
     }
 }

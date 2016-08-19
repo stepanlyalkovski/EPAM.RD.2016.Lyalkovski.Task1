@@ -8,7 +8,6 @@ namespace ServiceConfigurator
 {
     public static class UserServiceInitializer
     {
-        //TODO create interface with Settings so you'll be able to test creator
         public static IEnumerable<UserService> InitializeServices()
         {           
             var serviceConfigurations = ConfigParser.ParseServiceConfigSection();
@@ -22,8 +21,7 @@ namespace ServiceConfigurator
             return services;     
         }
 
-        private static void InitializeComponents(IEnumerable<UserService> services,
-            IEnumerable<ServiceConfiguration> configurations, DependencyConfiguration dependencyConfiguration)
+        private static void InitializeComponents(IEnumerable<UserService> services, IEnumerable<ServiceConfiguration> configurations, DependencyConfiguration dependencyConfiguration)
         {
             var userServices = services as IList<UserService> ?? services.ToList();
 
@@ -35,20 +33,23 @@ namespace ServiceConfigurator
                                                 .Select(c => c.IpEndPoint)
                                                 .ToList();
 
-            //master.Communicator.ConnectGroup(slavesAddresses);
+            // master.Communicator.ConnectGroup(slavesAddresses);
             DependencyInitializer.InitalizeDependencies(master, dependencyConfiguration);
             foreach (var slaveUserService in slaves)
             {
                 slaveUserService.Communicator.RunReceiver();
             }
+
             foreach (var userService in services)
             {
                 WcfServiceInitializer.CreateWcfService(userService);
             }
-            //SubscribeServices(master, slaves);
-            //Thread.Sleep(10000);
-            //ThreadInitializer.InitializeThreads(master, slaves);
+
+            // SubscribeServices(master, slaves);
+            // Thread.Sleep(10000);
+            // ThreadInitializer.InitializeThreads(master, slaves);
         }
+
         private static void SubscribeServices(MasterUserService master, IEnumerable<SlaveUserService> slaves)
         {
             foreach (var slave in slaves)

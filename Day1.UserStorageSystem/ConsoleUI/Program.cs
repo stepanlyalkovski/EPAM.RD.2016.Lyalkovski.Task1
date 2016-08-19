@@ -8,12 +8,11 @@ using Task1.StorageSystem.Entities;
 
 namespace ConsoleUI
 {
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             IList<UserService> services = UserServiceInitializer.InitializeServices().ToList();
-            //Console.Clear();
             Console.WriteLine("=========== Welcome to Console App ===========");
             
             var master = services.FirstOrDefault(s => s is MasterUserService);
@@ -26,13 +25,13 @@ namespace ConsoleUI
             if (cmd == "save")
             {
                 master.Save();
-
             }
 
             if (cmd == "init")
             {
                 master.Initialize();
             }
+
             Console.ReadLine();
         }
 
@@ -41,7 +40,6 @@ namespace ConsoleUI
             Random rand = new Random();
             ThreadStart masterSearch = () =>
             {
-
                 while (true)
                 {
                     var serachresult = master.SearchForUsers(new Func<User, bool>[]
@@ -53,10 +51,10 @@ namespace ConsoleUI
                     {
                         Console.Write(result + " ");
                     }
+
                     Console.WriteLine();
                     Thread.Sleep((int)(rand.NextDouble() * 5000));
                 }
-
             };
             ThreadStart masterAdd = () =>
             {
@@ -66,7 +64,6 @@ namespace ConsoleUI
                     LastName = "Smith",
                     FirstName = "Bob",
                     BirthDate = DateTime.Now
-
                 };
                 while (true)
                 {
@@ -84,7 +81,6 @@ namespace ConsoleUI
             masterAddThread.Start();
             masterSearchThread.Start();
             masterSearchThread2.Start();
-
         }
     }
 }

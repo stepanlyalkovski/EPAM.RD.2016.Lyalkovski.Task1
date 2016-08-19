@@ -5,6 +5,8 @@ namespace ServiceConfigurator.CustomSections.Files
     [ConfigurationCollection(typeof(FileElement))]
     public class FilesCollection : ConfigurationElementCollection
     {
+        public FileElement this[int idx] => (FileElement)BaseGet(idx);
+
         protected override ConfigurationElement CreateNewElement()
         {
             return new FileElement();
@@ -14,7 +16,5 @@ namespace ServiceConfigurator.CustomSections.Files
         {
             return ((FileElement)element).Path;
         }
-
-        public FileElement this[int idx] => (FileElement)BaseGet(idx);
     }
 }

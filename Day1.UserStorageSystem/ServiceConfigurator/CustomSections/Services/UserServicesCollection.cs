@@ -5,6 +5,8 @@ namespace ServiceConfigurator.CustomSections.Services
     [ConfigurationCollection(typeof(ServiceElement))]
     public class UserServicesCollection : ConfigurationElementCollection
     {
+        public ServiceElement this[int idx] => (ServiceElement)BaseGet(idx);
+
         protected override ConfigurationElement CreateNewElement()
         {
             return new ServiceElement();
@@ -12,9 +14,7 @@ namespace ServiceConfigurator.CustomSections.Services
 
         protected override object GetElementKey(ConfigurationElement element)
         {
-            return ((ServiceElement) element).ServiceName;
+            return ((ServiceElement)element).ServiceName;
         }
-
-        public ServiceElement this[int idx] => (ServiceElement)BaseGet(idx);
     }
 }

@@ -13,6 +13,7 @@ namespace NetworkServiceCommunication.Entities
     public class ServiceMessage<TEntity>
     {
         public TEntity Entity { get; set; }
+
         public MessageType MessageType { get; set; }
     }
 }

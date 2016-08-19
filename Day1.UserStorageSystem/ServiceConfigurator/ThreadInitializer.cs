@@ -9,6 +9,8 @@ namespace ServiceConfigurator
 {
     public class ThreadInitializer
     {
+        private static readonly Func<User, bool> SearchFoAllUserPredicate = u => u.PersonalId != string.Empty;
+
         private static IEnumerable<User> userTestCollection = new List<User>
         {
             new User
@@ -41,8 +43,7 @@ namespace ServiceConfigurator
             }
         };
 
-        private static readonly Func<User, bool> SearchFoAllUserPredicate = u => u.PersonalId != String.Empty;
-        private static string Lines { get; } = String.Join("", Enumerable.Repeat("-", 30));
+        private static string Lines { get; } = string.Join(string.Empty, Enumerable.Repeat("-", 30));
 
         public static IEnumerable<Thread> InitializeThreads(MasterUserService master, IEnumerable<SlaveUserService> slaves)
         {
@@ -63,6 +64,7 @@ namespace ServiceConfigurator
                             {
                                 master.Delete(previousUser);
                             }
+
                             previousUser = user;
                             Thread.Sleep(6000);
                             Console.WriteLine(Lines + "\n" + "Master Search: ");
@@ -72,6 +74,7 @@ namespace ServiceConfigurator
                             {
                                 Console.Write(userId + " ");
                             }
+
                             Console.WriteLine("\n" + Lines + "\n");
                         }
                     }
@@ -97,16 +100,18 @@ namespace ServiceConfigurator
                         {
                             Console.Write(user + " ");
                         }
+
                         Console.WriteLine("\n" + Lines);
                         Thread.Sleep(2000);
                     }
-
                 });
+
                 slaveThread.IsBackground = true;
                 slaveThread.Start();
                 slaveThread.IsBackground = true;
                 threads.Add(slaveThread);
             }
+
             return threads;
         }
     }

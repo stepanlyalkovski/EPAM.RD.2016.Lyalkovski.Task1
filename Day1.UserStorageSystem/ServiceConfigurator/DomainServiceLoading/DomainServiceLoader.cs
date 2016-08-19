@@ -15,15 +15,14 @@ namespace ServiceConfigurator.DomainServiceLoading
     {
         public UserService LoadDomainService(string assemblyString, ServiceConfiguration configuration)
         {
-            //ServiceConfigurator includes Service dll so we don't need to Load in explicitly
-            //var assembly = Assembly.LoadFrom(assemblyString); 
+            // ServiceConfigurator includes Service dll so we don't need to Load in explicitly
             var assemblies = AppDomain.CurrentDomain.GetAssemblies();
             Console.WriteLine("Assemblies: ");
             foreach (var assembly in assemblies)
             {
                 Console.WriteLine(assembly.FullName);
             }
-            //temporary way to initialize components
+
             INumGenerator generator = new EvenIdGenerator();
             ValidatorBase<User> validator = new SimpleUserValidator();
             IUserXmlFileWorker worker = null;
@@ -31,6 +30,7 @@ namespace ServiceConfigurator.DomainServiceLoading
             {
                 worker = new UserXmlFileWorker();
             }
+
             IRepository<User> repository = new UserRepository(worker, configuration.FilePath);
 
             UserService domainService;
@@ -39,26 +39,26 @@ namespace ServiceConfigurator.DomainServiceLoading
             {
                     case ServiceType.Master:
                     {
-                        domainService = new MasterUserService(generator, validator,
-                            repository, configuration.LoggingEnabled);
-
+                        domainService = new MasterUserService(generator, validator, repository, configuration.LoggingEnabled);
                         communicator = GetMasterCommunicator();                        
-                    }      
+                    }
+                          
                     break;
 
                     case ServiceType.Slave:
                     {
-                        domainService = new SlaveUserService(generator, validator, repository,
-                                                                    configuration.LoggingEnabled);
+                        domainService = new SlaveUserService(generator, validator, repository, configuration.LoggingEnabled);
 
-                        Receiver<User> receiver = new Receiver<User>(configuration.IpEndPoint.Address, 
-                                                                        configuration.IpEndPoint.Port);
+                        Receiver<User> receiver = new Receiver<User>(configuration.IpEndPoint.Address, configuration.IpEndPoint.Port);
                        
                         communicator = new UserServiceCommunicator(receiver);
-                    }    break;
+                    }
+
+                    break;
 
                 default: throw new ArgumentException("Unknown ServiceType");
             }
+
             domainService.AddCommunicator(communicator);
 
             domainService.Name = AppDomain.CurrentDomain.FriendlyName;
@@ -72,6 +72,4 @@ namespace ServiceConfigurator.DomainServiceLoading
             return new UserServiceCommunicator(sender);
         }
     }
-
-
 }

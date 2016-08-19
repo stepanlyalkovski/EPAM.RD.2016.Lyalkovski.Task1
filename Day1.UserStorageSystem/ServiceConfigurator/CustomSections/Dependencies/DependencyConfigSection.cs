@@ -5,7 +5,6 @@ namespace ServiceConfigurator.CustomSections.Dependencies
     public class DependencyConfigSection : ConfigurationSection
     {
         [ConfigurationProperty("MasterService")]
-        public MasterServiceCollection MasterServices => (MasterServiceCollection) base["MasterService"];
+        public MasterServiceCollection MasterServices => (MasterServiceCollection)base["MasterService"];
     }
-    
 }

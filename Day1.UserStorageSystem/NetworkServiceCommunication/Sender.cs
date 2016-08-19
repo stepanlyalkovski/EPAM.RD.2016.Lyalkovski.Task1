@@ -14,7 +14,9 @@ namespace NetworkServiceCommunication
     public class Sender<TEntity> : IDisposable
     {
         private IList<Socket> sockets = new List<Socket>();
-        protected TraceSource TraceSource = new TraceSource("StorageSystem");
+
+        protected TraceSource TraceSource { get; set; } = new TraceSource("StorageSystem");
+
         public void ConnectGroup(IEnumerable<IPEndPoint> ipEndPoints)
         {
             foreach (var ipEndPoint in ipEndPoints)
@@ -23,8 +25,8 @@ namespace NetworkServiceCommunication
                 socket.Connect(ipEndPoint);
                 sockets.Add(socket);
             }
-
         }
+
         public void Connect(IPEndPoint ipEndPoint)
         {
             var socket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
@@ -41,14 +43,7 @@ namespace NetworkServiceCommunication
                 {
                     formatter.Serialize(networkStream, message);
                 }
-
-                //var byteMessage = new byte[1024];
-                //int bytes = socket.Receive(byteMessage);
-                //var resultMessage = Encoding.UTF8.GetString(byteMessage.Take(bytes).ToArray());
-                //this.TraceSource.TraceEvent(TraceEventType.Critical, 10, resultMessage + " " + AppDomain.CurrentDomain.FriendlyName);
-                //Debug.WriteLine(resultMessage);
             }
-
         }
 
         public void Dispose()

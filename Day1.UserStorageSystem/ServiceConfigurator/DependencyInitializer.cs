@@ -8,12 +8,21 @@ namespace ServiceConfigurator
     {
         public static void InitalizeDependencies(MasterUserService master, DependencyConfiguration configuration)
         {
-            if(master == null)
+            if (master == null)
+            {
                 return;
-            if(master.Name != configuration.MasterName)
+            }
+
+            if (master.Name != configuration.MasterName)
+            {
                 return;
-            if(configuration.SlaveConfigurations.Count == 0)
-                return;
+            }
+
+            if (configuration.SlaveConfigurations.Count == 0)
+            {
+                return;                
+            }
+
             master.Communicator.ConnectGroup(configuration.SlaveConfigurations.Select(c => c.IpEndPoint).ToList());
         }
     }

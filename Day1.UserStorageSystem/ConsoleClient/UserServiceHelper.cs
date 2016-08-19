@@ -17,20 +17,12 @@ namespace ConsoleClient
             BirthDatek__BackingField = DateTime.Now,
             PersonalIdk__BackingField = "MP777"
         };
+
         public static IEnumerable<UserServiceContractClient> InitializeServices()
         {
             var names = GetServiceNames();
 
             return names.Select(name => new UserServiceContractClient(name)).ToList();
-        }
-
-        private static IEnumerable<string> GetServiceNames()
-        {
-            var cfg = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            var sectionGroup = ServiceModelSectionGroup.GetSectionGroup(cfg);
-
-            var endpoints = sectionGroup?.Client.Endpoints;
-            return endpoints?.OfType<ChannelEndpointElement>().Select(endPoint => endPoint.Name).ToList();
         }
 
         public static void GetServiceMenu(UserServiceContractClient service)
@@ -45,14 +37,18 @@ namespace ConsoleClient
                 Console.WriteLine("(init - clear repository and take users from xml file)");
                 Console.WriteLine("(save - save users to xml file), add/delete - one default user");
                 var readLine = Console.ReadLine();
-                if (readLine == null) continue;
+                if (readLine == null)
+                {
+                    continue;
+                }
 
                 string input = readLine.ToLower();
                 try
                 {
                     switch (input)
                     {
-                        case "add": service.Add(SimpleUser); break;
+                        case "add": service.Add(SimpleUser);
+                            break;
                         case "delete":
                             service.Delete(SimpleUser);
                             break;
@@ -65,24 +61,27 @@ namespace ConsoleClient
                                 {
                                     Console.Write(user + " ");
                                 }
+
                                 Console.WriteLine();
                                 Console.ReadLine();
-
-
                             }
+
                             break;
                         case "save":
                         {
                             service.Save();
                         }
-                            break;;
+
+                            break;
                         case "init":
                         {
                             service.Initialize();
                         }
+
                             break;
                         case "exit":
-                            inProcess = false; break;
+                            inProcess = false;
+                            break;
                         default: continue;
                     }
                 }
@@ -92,9 +91,16 @@ namespace ConsoleClient
                     Console.WriteLine(excp.Message);
                     Console.ReadLine();
                 }
-
             }
+        }
 
+        private static IEnumerable<string> GetServiceNames()
+        {
+            var cfg = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
+            var sectionGroup = ServiceModelSectionGroup.GetSectionGroup(cfg);
+
+            var endpoints = sectionGroup?.Client.Endpoints;
+            return endpoints?.OfType<ChannelEndpointElement>().Select(endPoint => endPoint.Name).ToList();
         }
     }
 }
