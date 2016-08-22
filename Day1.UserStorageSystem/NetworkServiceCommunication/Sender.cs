@@ -17,6 +17,10 @@ namespace NetworkServiceCommunication
 
         protected TraceSource TraceSource { get; set; } = new TraceSource("StorageSystem");
 
+        /// <summary>
+        /// Establish connection between master and required addresses
+        /// </summary>
+        /// <param name="ipEndPoints">end points that master will connect to</param>
         public void ConnectGroup(IEnumerable<IPEndPoint> ipEndPoints)
         {
             foreach (var ipEndPoint in ipEndPoints)
@@ -34,6 +38,10 @@ namespace NetworkServiceCommunication
             sockets.Add(socket);
         }
 
+        /// <summary>
+        /// send message to connected group of slaves
+        /// </summary>
+        /// <param name="message">message type and data</param>
         public void Send(ServiceMessage<TEntity> message)
         {
             foreach (var socket in sockets)

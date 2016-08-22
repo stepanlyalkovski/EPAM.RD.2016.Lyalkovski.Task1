@@ -27,7 +27,10 @@ namespace NetworkServiceCommunication
         public IPEndPoint IpEndPoint { get; set; }
 
         protected TraceSource TraceSource { get; set; } = new TraceSource("StorageSystem");
-
+        /// <summary>
+        /// invoke accept on master socket
+        /// </summary>
+        /// <returns>task where master socket wait accept from dependencies</returns>
         public Task AcceptConnection()
         {
             return Task.Run(() =>
@@ -37,7 +40,10 @@ namespace NetworkServiceCommunication
                 Debug.WriteLine("Connection accepted");
             });
         }
-
+        /// <summary>
+        /// receive messages from sockets
+        /// </summary>
+        /// <returns>recieved message</returns>
         public ServiceMessage<TEntity> Receive()
         {
             BinaryFormatter formatter = new BinaryFormatter();

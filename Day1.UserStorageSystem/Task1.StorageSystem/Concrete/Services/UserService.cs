@@ -132,6 +132,10 @@
             }
         }
 
+        /// <summary>
+        /// Add communicator to service to communicate through a network
+        /// </summary>
+        /// <param name="communicator">initialized communicator with receiver or sender</param>
         public virtual void AddCommunicator(UserServiceCommunicator communicator)
         {
             if (communicator == null)
@@ -142,12 +146,24 @@
             Communicator = communicator;
         }
 
+        /// <summary>
+        /// Allow services to specify additional functionality to save method 
+        /// </summary>
         public abstract void Save();
 
         public abstract void Initialize(); // get collection from xml file and get last generated Id
 
+        /// <summary>
+        /// Allow services to specify additional functionality to add method 
+        /// </summary>
+        /// <param name="user">service user</param>
+        /// <returns>Id of added user</returns>
         protected abstract int AddStrategy(User user);
 
+        /// <summary>
+        /// Allow services to specify additional functionality to delete method 
+        /// </summary>
+        /// <param name="user">service user</param>
         protected abstract void DeleteStrategy(User user);
     }
 }

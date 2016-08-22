@@ -9,6 +9,9 @@
     using NetworkServiceCommunication;
     using NetworkServiceCommunication.Entities;
 
+    /// <summary>
+    /// Represent a layer between user services and network types sender and receiver
+    /// </summary>
     [Serializable]
     public class UserServiceCommunicator : MarshalByRefObject, IDisposable
     {
@@ -40,6 +43,9 @@
 
         public event EventHandler RepositoryClear;
 
+        /// <summary>
+        /// Run receive method in receiver type
+        /// </summary>
         public async void RunReceiver()
         {
             await receiver.AcceptConnection();
@@ -51,7 +57,10 @@
             tokenSource = new CancellationTokenSource();
             recieverTask = Task.Run((Action)ReceiveMessages, tokenSource.Token);
         }
-
+        /// <summary>
+        /// connect to required group of slaves
+        /// </summary>
+        /// <param name="endPoints">addresses that master will connect to</param>
         public void ConnectGroup(IEnumerable<IPEndPoint> endPoints)
         {
             sender.ConnectGroup(endPoints);
@@ -64,7 +73,10 @@
                 tokenSource.Cancel();
             }
         }
-
+        /// <summary>
+        /// Send message with Add type
+        /// </summary>
+        /// <param name="args">data type with event arguments that will be translated into network message</param>
         public void SendAdd(UserDataApdatedEventArgs args)
         {
             if (sender == null)
@@ -127,6 +139,9 @@
             sender.Send(message);
         }
 
+        /// <summary>
+        /// Receive messages from network receive type, convert to messageEventArgs and invoke event
+        /// </summary>
         private void ReceiveMessages()
         {
             while (true)

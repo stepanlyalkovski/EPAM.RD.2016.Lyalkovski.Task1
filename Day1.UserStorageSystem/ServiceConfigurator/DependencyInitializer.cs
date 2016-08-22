@@ -6,6 +6,11 @@ namespace ServiceConfigurator
 {
     public class DependencyInitializer
     {
+        /// <summary>
+        /// Initializes slaves that master will conntect to.
+        /// </summary>
+        /// <param name="master">master service that will connect to dependencies</param>
+        /// <param name="configuration">settings from app.config</param>
         public static void InitalizeDependencies(MasterUserService master, DependencyConfiguration configuration)
         {
             if (master == null)

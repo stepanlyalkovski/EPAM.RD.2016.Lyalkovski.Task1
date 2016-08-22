@@ -8,6 +8,9 @@
     using Interfaces;
     using Interfaces.Repository;
 
+    /// <summary>
+    /// Represent memory collection with ability to save state to xml file
+    /// </summary>
     [Serializable]
     public class UserRepository : MarshalByRefObject, IRepository<User>
     {

@@ -40,6 +40,9 @@ namespace Task1.StorageSystem.Concrete.Services
             Repository.Save(LastGeneratedId);
         }
 
+        /// <summary>
+        /// Initialize data from repository
+        /// </summary>
         public override void Initialize()
         {
             if (LoggingEnabled)
