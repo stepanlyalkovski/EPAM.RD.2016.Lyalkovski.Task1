@@ -6,7 +6,7 @@ using Task1.StorageSystem.Concrete.IdGenerator;
 namespace Task1.Tests
 {
     [TestFixture]
-    class EvenIdGeneratorTests
+    public class EvenIdGeneratorTests
     {
         [Test]
         public void GenerateId_GetFirstFiveIDs_NumbersIsUnique()
@@ -18,8 +18,6 @@ namespace Task1.Tests
             for (int i = 0; i < count; i++)
             {
                 ds[i] = generator.GenerateId();
-
-                //temp 
                 Debug.WriteLine(ds[i]);
             }
 

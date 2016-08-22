@@ -75,6 +75,5 @@ namespace Task1.Tests
 
             Assert.AreNotEqual(TestUser.GetHashCode(), otherUser.GetHashCode());
         }
-
     }
 }

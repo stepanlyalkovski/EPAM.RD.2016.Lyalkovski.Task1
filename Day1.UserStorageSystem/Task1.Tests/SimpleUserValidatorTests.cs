@@ -7,7 +7,7 @@ using Task1.StorageSystem.Entities;
 namespace Task1.Tests
 {
     [TestFixture]
-    class SimpleUserValidatorTests
+    public class SimpleUserValidatorTests
     {
         public SimpleUserValidator Validator { get; set; } = new SimpleUserValidator();
         [Test]
@@ -72,7 +72,6 @@ namespace Task1.Tests
         public void Validate_SendNull_ThrownArgumentNullException()
         {
             Validator.Validate(null);
-
         }
     }
 }

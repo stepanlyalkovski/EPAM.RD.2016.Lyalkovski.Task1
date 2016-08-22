@@ -15,17 +15,6 @@ namespace Task1.Tests
     [TestFixture]
     public class SlaveUserServiceTests
     {
-        //Using Moq to create fake entities
-        private INumGenerator FakeNumGenerator { get; set; }
-        private IRepository<User> FakeRepository { get; set; }
-        private EmptyUserValidator FakeValidator { get; set; }
-        public User SimpleUser { get; set; } = new User
-        {
-            FirstName = "Ivan2",
-            LastName = "Ivanov2",
-            PersonalId = "MP12345",
-            BirthDate = DateTime.Now,
-        };
         public SlaveUserServiceTests()
         {
             int fakeId = 1;
@@ -34,11 +23,25 @@ namespace Task1.Tests
             FakeNumGenerator = moqGenerator.Object;
 
             var moqRepository = new Mock<IRepository<User>>();
-            // stab for repository
             moqRepository.Setup(r => r.Add(It.IsAny<User>()));
             FakeRepository = moqRepository.Object;
             FakeValidator = new EmptyUserValidator();
         }
+
+        public User SimpleUser { get; set; } = new User
+        {
+            FirstName = "Ivan2",
+            LastName = "Ivanov2",
+            PersonalId = "MP12345",
+            BirthDate = DateTime.Now,
+        };
+
+        private INumGenerator FakeNumGenerator { get; set; }
+
+        private IRepository<User> FakeRepository { get; set; }
+
+        private EmptyUserValidator FakeValidator { get; set; }
+
         [Test]
         [ExpectedException(typeof(NotSupportedException))]
         public void Add_AddSimpleUser_ThrownedNotSupportedException()
@@ -56,10 +59,12 @@ namespace Task1.Tests
             slave.Subscribe(master);
             int eventsNumber = 2;
             int receivedEvents = 0;
-            master.Deleted += delegate {
+            master.Deleted += delegate 
+            {
                 receivedEvents++;
             };
-            master.Added += delegate {
+            master.Added += delegate 
+            {
                 receivedEvents++;
             };
 
@@ -84,7 +89,6 @@ namespace Task1.Tests
             }).First();
 
             Assert.AreEqual(userIdFromMaster, userIdFromSlave);
-
         }
 
         [Test]

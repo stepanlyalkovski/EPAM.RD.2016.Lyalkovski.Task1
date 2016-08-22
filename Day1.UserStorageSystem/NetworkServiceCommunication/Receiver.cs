@@ -27,6 +27,7 @@ namespace NetworkServiceCommunication
         public IPEndPoint IpEndPoint { get; set; }
 
         protected TraceSource TraceSource { get; set; } = new TraceSource("StorageSystem");
+
         /// <summary>
         /// invoke accept on master socket
         /// </summary>
@@ -40,6 +41,7 @@ namespace NetworkServiceCommunication
                 Debug.WriteLine("Connection accepted");
             });
         }
+
         /// <summary>
         /// receive messages from sockets
         /// </summary>

@@ -21,9 +21,6 @@ namespace Task1.Tests
             var numbers = NumberGenerator.GetEvenNumbers().Take(count).ToList();
             Assert.IsNotNull(numbers);
 
-            // only for own test
-            //numbers.ForEach(n => Debug.WriteLine(n));
-
             int[] evenNumbers = { 0, 2, 4, 6, 8 };
             for (int i = 0; i < count; i++)
             {
@@ -41,7 +38,6 @@ namespace Task1.Tests
             {
                 bool isEven = number % 2 == 0;
                 Assert.IsTrue(isEven);
-
             }
         }
 

@@ -28,7 +28,6 @@ namespace NetworkServiceCommunication.Tests
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
                     receiverAddress = ip;
-
                 }
             }
 
@@ -45,7 +44,7 @@ namespace NetworkServiceCommunication.Tests
             var point2 = new IPEndPoint(receiverAddress, receiverPort2);
             var point3 = new IPEndPoint(receiverAddress, receiverPort3);
             var point4 = new IPEndPoint(receiverAddress, receiverPort4);
-            sender.ConnectGroup(new List<IPEndPoint> {point1, point2, point3, point4});
+            sender.ConnectGroup(new List<IPEndPoint> { point1, point2, point3, point4 });
             Console.WriteLine("Connected!");
             Thread.Sleep(3000);
             int iterations = 10;
@@ -60,20 +59,9 @@ namespace NetworkServiceCommunication.Tests
                     MessageType = MessageType.Add
                 });
             }
+
             sender.Dispose();
             receiver.Dispose();
-        }
-
-        private async void StartReceiver(Receiver<User> receiver)
-        {
-            Console.WriteLine("Wait for connection");
-            await receiver.AcceptConnection();
-            while (true)
-            {
-                Console.WriteLine("Sender connected to receiver");
-                var message = receiver.Receive();
-                Console.WriteLine(message.Entity.LastName);
-            }
         }
 
         [Test]
@@ -92,13 +80,11 @@ namespace NetworkServiceCommunication.Tests
 
             var receiver = new Receiver<User>(receiverAddress, receiverPort1);
             var sender = new Sender<User>();
-            //Task tsk = receiver.AcceptConnection();
             StartReceiver(receiver);
             sender.Connect(receiver.IpEndPoint);
             Thread.Sleep(1000);
             int iterations = 20;
             int receive = iterations;
-            ;
             while (iterations-- > 0)
             {
                 sender.Send(new ServiceMessage<User>
@@ -111,13 +97,19 @@ namespace NetworkServiceCommunication.Tests
                 });
             }
 
-            //while (receive-- > 0)
-            //{
-            //    var message = receiver.Receive();
-            //    Debug.WriteLine(message.Entity.LastName);
-            //}
             Thread.Sleep(5000);
+        }
+
+        private async void StartReceiver(Receiver<User> receiver)
+        {
+            Console.WriteLine("Wait for connection");
+            await receiver.AcceptConnection();
+            while (true)
+            {
+                Console.WriteLine("Sender connected to receiver");
+                var message = receiver.Receive();
+                Console.WriteLine(message.Entity.LastName);
+            }
         }
     }
 }
-

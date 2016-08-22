@@ -9,7 +9,6 @@ namespace Task1.Tests
     [TestFixture]
     public class UserXmlFileWorkerTests
     {
-
         [Test]
         public void SaveAndLoad_SaveUserDataAndThanLoad_ReturnedEqualData()
         {
@@ -20,8 +19,8 @@ namespace Task1.Tests
                 LastGeneratedId = 0,
                 Users = new List<User>
                 {
-                    new User { LastName = "Ivanov"},
-                    new User {LastName = "Petrov"}
+                    new User { LastName = "Ivanov" },
+                    new User { LastName = "Petrov" }
                 }
             };
             

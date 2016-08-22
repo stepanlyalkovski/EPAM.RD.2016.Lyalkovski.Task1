@@ -24,7 +24,6 @@ namespace Task1.Tests
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
                     receiverAddress = ip;
-
                 }
             }
 
@@ -34,12 +33,12 @@ namespace Task1.Tests
             UserServiceCommunicator masterCommunicator = new UserServiceCommunicator(sender);
             UserServiceCommunicator slaveCommunicator1 = new UserServiceCommunicator(slaveReceiver1);
             UserServiceCommunicator slaveCommunicator2 = new UserServiceCommunicator(slaveReceiver2);
-            masterCommunicator.ConnectGroup(new []{slaveReceiver1.IpEndPoint, slaveReceiver2.IpEndPoint});
+            masterCommunicator.ConnectGroup(new[] { slaveReceiver1.IpEndPoint, slaveReceiver2.IpEndPoint });
             slaveCommunicator1.RunReceiver();
             slaveCommunicator2.RunReceiver();
             slaveCommunicator1.UserAdded += (o, args) => Console.WriteLine("Event Generated in Slave 1! " + args.User.LastName);
             slaveCommunicator2.UserAdded += (o, args) => Console.WriteLine("Event Generated in Slave 2! " + args.User.LastName);
-            masterCommunicator.SendAdd(new UserDataApdatedEventArgs {User =  new User {LastName = "Smith"} });
+            masterCommunicator.SendAdd(new UserDataApdatedEventArgs { User = new User { LastName = "Smith" } });
             Thread.Sleep(2000);
 
             slaveCommunicator2.StopReceiver();
@@ -47,7 +46,6 @@ namespace Task1.Tests
             masterCommunicator.Dispose();
             slaveCommunicator2.Dispose();
             slaveCommunicator1.Dispose();
-
         }
 
         [Test]
@@ -63,7 +61,6 @@ namespace Task1.Tests
                 if (ip.AddressFamily == AddressFamily.InterNetwork)
                 {
                     receiverAddress = ip;
-
                 }
             }
 
@@ -75,7 +72,7 @@ namespace Task1.Tests
             UserServiceCommunicator slaveCommunicator2 = new UserServiceCommunicator(slaveReceiver2);
             slaveCommunicator.RunReceiver();
             slaveCommunicator2.RunReceiver();
-            masterCommunicator.ConnectGroup(new[] {slaveReceiver.IpEndPoint, slaveReceiver2.IpEndPoint });
+            masterCommunicator.ConnectGroup(new[] { slaveReceiver.IpEndPoint, slaveReceiver2.IpEndPoint });
             slaveCommunicator2.UserAdded += (o, args) => Console.WriteLine("Event Generated in Slave 2! " + args.User.LastName);
             slaveCommunicator.UserAdded += (o, args) => Console.WriteLine("Event Generated in Slave ! " + args.User.LastName);
             masterCommunicator.SendAdd(new UserDataApdatedEventArgs { User = new User { LastName = "Smith" } });
